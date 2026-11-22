@@ -1,0 +1,40 @@
+name: Lean Action CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read # Read access to repository contents
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Mathlib's compiled files take most of the runner's disk; remove preinstalled toolchains
+      # that the build does not use.
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+      - uses: actions/checkout@v7
+      - uses: leanprover/lean-action@v1
+      # `lake build` builds only the modules of the required libraries that this repository imports;
+      # the audit reads all of them.
+      - name: Build the libraries that the audit reads
+        run: lake build Phylogenetics TreeOfBlobs AllmanEtAl2023 TINNiK
+      # The audit sees a module's proofs only through its own `import all` line.
+      - name: Check that the audit imports every module of the libraries
+        run: python3 scripts/gen_audit.py --check
+      - name: Audit axioms and dependencies
+        run: lake env lean -DautoImplicit=false -DmaxSynthPendingDepth=3 scripts/Audit.lean
+      # The routes of the paper's proofs (docs/paper_routes.tsv) and the reviewed differences
+      # (docs/route_differences.tsv).
+      - name: Check that the proofs follow the routes of the paper's proofs
+        run: >-
+          python3 scripts/route_check.py check docs/paper_routes.tsv
+          --accept docs/route_differences.tsv
+      - name: Check the Markdown tables
+        run: python3 scripts/check_md_tables.py README.md REPORT.md CREDITS.md

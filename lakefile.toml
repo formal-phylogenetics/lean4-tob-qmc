@@ -1,0 +1,44 @@
+name = "TOBQMC"
+version = "0.1.0"
+keywords = ["math", "phylogenetics"]
+description = "A Lean 4 formalization of TOB-QMC (Dai, Han, Molloy 2026)"
+defaultTargets = ["TOBQMC"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+maxSynthPendingDepth = 3
+
+# The root of the collection: the shared library of phylogenetics.
+[[require]]
+name = "Phylogenetics"
+git = "https://github.com/vltanh/lean4-phylogenetics"
+rev = "f1a3592dee6e3f7d5e7a68a0695ac457de23d2de"
+
+# The hub of the tree-of-blobs papers: what they share.
+[[require]]
+name = "TreeOfBlobs"
+git = "https://github.com/vltanh/lean4-tob"
+rev = "389fcc736bb686d4f7e507c179dbb91a06e360a1"
+
+# Allman, Baños, Mitchell, Rhodes 2023, whose results this paper uses.
+[[require]]
+name = "AllmanEtAl2023"
+git = "https://github.com/vltanh/lean4-allman2023"
+rev = "1035acbad9fccbdd1bc3869b3584eaa707d49292"
+
+# TINNiK (Allman, Baños, Mitchell, Rhodes 2024), whose results this paper uses.
+[[require]]
+name = "TINNiK"
+git = "https://github.com/vltanh/lean4-tinnik"
+rev = "259a1295d22a51e7a8680c5928f96563669af3b5"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.36.0-rc1"
+
+# Every module of this repository is under TOBQMC/ (lean4-phylogenetics, docs/CONVENTIONS.md).
+[[lean_lib]]
+name = "TOBQMC"
+globs = ["TOBQMC.+"]

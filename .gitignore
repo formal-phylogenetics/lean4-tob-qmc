@@ -1,0 +1,8 @@
+/.lake
+# Private files, kept outside the repository and linked into it. No trailing slash: a pattern with
+# one does not match a symbolic link.
+/notes
+/NEXT.md
+/.vscode
+/CLAUDE.md
+__pycache__/
