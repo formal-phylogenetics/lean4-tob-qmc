@@ -120,7 +120,7 @@ sources:
 related_formalizations:
   - id: "https://github.com/vltanh/lean4-phylogenetics"
     relationship: "adapts"
-    note: "This repository imports this library, pinned at commit f1a3592, for its definitions and general results, so TOBQMC/MainResults.lean imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that, in lean4-tob (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written in lean4-tob and has moved to the library; the library's term-based level-1 network coalescent is not used."
+    note: "This repository imports this library, pinned at commit 4daee15, for its definitions and general results, so TOBQMC/MainResults.lean imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that, in lean4-tob (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written in lean4-tob and has moved to the library; the library's term-based level-1 network coalescent is not used."
   - id: "https://github.com/vltanh/lean4-camus"
     relationship: "independent"
     note: "Surveyed; no code used."

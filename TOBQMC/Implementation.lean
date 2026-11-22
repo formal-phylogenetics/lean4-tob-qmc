@@ -323,7 +323,7 @@ theorem exists_blocks_of_isBinaryTree {T : Finset (Finset X)} (hT : IsBinaryTree
     have hD : D ∈ childClusters H R := hCD ▸ mem_insert_of_mem (mem_singleton_self _)
     have hsup := hH.sup_childClusters hR2
     rw [hCD] at hsup
-    simp only [sup_insert, sup_singleton, id, sup_eq_union] at hsup
+    simp only [sup_insert, sup_singleton, id] at hsup
     exact ⟨C, D, hC, hD, hH.disjoint_of_mem_childClusters hC hD hne, hsup, hCD⟩
   have hsideOf : ∀ {C R : Finset X}, C ∈ childClusters H R → C ∈ unroot H := fun {C R} hC => by
     obtain ⟨hCH, hCR, -⟩ := mem_childClusters.mp hC

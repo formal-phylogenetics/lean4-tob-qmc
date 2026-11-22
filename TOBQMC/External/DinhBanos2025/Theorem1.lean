@@ -995,7 +995,7 @@ def hier (k : Bool) : Finset (Finset (Fin 5)) :=
 omit h in
 theorem clusterOf_mem_hier (k : Bool) (v : V₀) : clusterOf k v ∈ hier k := by
   rcases v with _ | (_ | a | (_ | a | (_ | a | (_ | a | a)))) | b | _ | d
-  any_goals first
+  all_goals first
     | exact a.elim
     | exact b.elim
     | (cases k <;> simp only [clusterOf] <;> decide)

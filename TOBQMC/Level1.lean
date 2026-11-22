@@ -671,7 +671,7 @@ theorem threeFixOneAlter_isDisjointCover {T : Finset (Finset X)} (hT : IsBinaryT
       simp
     let s : QuartetTree X := quartetTree (w 0) (w 1) (w 2) (w 3) hcard4
     have hst : s.taxa = {w 0, w 1, w 2, w 3} := by
-      simp only [QuartetTree.taxa, s, quartetTree, sup_insert, sup_singleton, id, sup_eq_union]
+      simp only [QuartetTree.taxa, s, quartetTree, sup_insert, sup_singleton, id]
       ext y
       simp only [mem_union, mem_insert, mem_singleton]
       tauto

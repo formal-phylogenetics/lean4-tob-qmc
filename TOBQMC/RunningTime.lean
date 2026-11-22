@@ -747,7 +747,7 @@ theorem pow_le_exp {p : ℝ} (h1 : p ≤ 1) (t : ℕ) : (1 - p) ^ t ≤ Real.exp
   have h := Real.one_sub_le_exp_neg p
   calc (1 - p) ^ t ≤ (Real.exp (-p)) ^ t := pow_le_pow_left₀ (by linarith) h t
     _ = Real.exp (- (t * p)) := by
-        rw [← Real.exp_nat_mul]
+        rw [← Real.exp_natCast_mul]
         congr 1
         ring
 

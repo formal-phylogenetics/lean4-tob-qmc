@@ -110,7 +110,7 @@ python3 scripts/route_check.py check docs/paper_routes.tsv --accept docs/route_d
 scripts/check_kernels.sh                                                          # Lean's kernel, NanoDa, con-ron
 ```
 
-- Lean and Mathlib `v4.36.0-rc1` ([`lean-toolchain`](lean-toolchain), [`lake-manifest.json`](lake-manifest.json)).
+- Lean and Mathlib `v4.37.0-rc1` ([`lean-toolchain`](lean-toolchain), [`lake-manifest.json`](lake-manifest.json)).
   [`lakefile.toml`](lakefile.toml) requires, by commit, [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics), [lean4-tob](https://github.com/vltanh/lean4-tob), [lean4-allman2023](https://github.com/vltanh/lean4-allman2023), [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
 - The audit checks every declaration of this repository and of the libraries it requires against Lean's
   standard axioms, and writes the routes of the proofs, which the route check compares with the paper's.

@@ -610,7 +610,7 @@ theorem displayedSides_eq_displayTree [Fintype V] (c : N.ParentChoice) :
   unfold displayedSides displayTree
   congr 1
   ext A
-  rw [mem_displayedClusters, mem_displayTreeClusters, nonempty_iff_ne_empty]
+  rw [mem_displayedClusters, mem_displayTreeClusters, ne_empty_iff_nonempty.symm]
   refine and_congr_right fun _ => exists_congr fun v => ?_
   have : N.displayedCluster c v = taxaBelowOff N (N.deletedArcs c) univ v := by
     ext x
