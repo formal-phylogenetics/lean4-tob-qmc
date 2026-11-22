@@ -13,25 +13,25 @@ maxSynthPendingDepth = 3
 [[require]]
 name = "Phylogenetics"
 git = "https://github.com/vltanh/lean4-phylogenetics"
-rev = "f1a3592dee6e3f7d5e7a68a0695ac457de23d2de"
+rev = "8c66a1354fc32f0e59ee22634916b154eebb54ee"
 
 # The hub of the tree-of-blobs papers: what they share.
 [[require]]
 name = "TreeOfBlobs"
 git = "https://github.com/vltanh/lean4-tob"
-rev = "389fcc736bb686d4f7e507c179dbb91a06e360a1"
+rev = "289439fa2a79279ca6cc9f3b1e39496602d93db1"
 
 # Allman, Baños, Mitchell, Rhodes 2023, whose results this paper uses.
 [[require]]
 name = "AllmanEtAl2023"
 git = "https://github.com/vltanh/lean4-allman2023"
-rev = "1035acbad9fccbdd1bc3869b3584eaa707d49292"
+rev = "3f2d0608ba389c2c858729a4bef0c514b57a0114"
 
 # TINNiK (Allman, Baños, Mitchell, Rhodes 2024), whose results this paper uses.
 [[require]]
 name = "TINNiK"
 git = "https://github.com/vltanh/lean4-tinnik"
-rev = "259a1295d22a51e7a8680c5928f96563669af3b5"
+rev = "4c07751536f46098470cd2962ce5a76f44e97ff5"
 
 [[require]]
 name = "mathlib"

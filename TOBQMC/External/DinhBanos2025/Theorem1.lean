@@ -1,6 +1,7 @@
 module
 
 public import Phylogenetics.NMSC.Level1.General
+public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.NMSC.Level1.MetricCycle.Realization
 public import Phylogenetics.NMSC.DisplayedTreeModel
 public import Phylogenetics.Tree.Splice

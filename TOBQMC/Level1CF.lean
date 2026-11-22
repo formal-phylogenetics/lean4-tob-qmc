@@ -4,6 +4,7 @@ public import AllmanEtAl2023.Basic
 public import TreeOfBlobs.Defs
 public import TreeOfBlobs.Level1CF
 public import Phylogenetics.NMSC.TreeCF
+public import Phylogenetics.Network.CutHierarchy
 /-!
 # TOB-QMC §4.3: concordance factors of induced cut-edge splits at level 1
 

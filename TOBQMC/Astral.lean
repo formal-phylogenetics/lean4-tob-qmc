@@ -2,6 +2,7 @@ module
 
 public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
+public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.Tree.AstralDP
 public import TOBQMC.WQC
 

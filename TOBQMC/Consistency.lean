@@ -7,6 +7,7 @@ public import TOBQMC.WQC
 public import AllmanEtAl2023.Basic
 public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
+public import Phylogenetics.Network.CutHierarchy
 public import TreeOfBlobs.Testing.Defs
 public import TreeOfBlobs.Testing.Trinomial.Bridge
 public import Phylogenetics.Tree.Detach

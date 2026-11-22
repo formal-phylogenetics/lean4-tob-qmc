@@ -3,6 +3,7 @@ module
 public import TreeOfBlobs.Defs
 public import TreeOfBlobs.TreeCounts
 public import Phylogenetics.Tree.Splits
+public import Phylogenetics.Network.CutHierarchy
 public import TINNiK.Counts
 public import TOBQMC.BipartitionSearch
 

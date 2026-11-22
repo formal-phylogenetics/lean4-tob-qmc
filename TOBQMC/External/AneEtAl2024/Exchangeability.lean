@@ -1,6 +1,7 @@
 module
 
 public import Phylogenetics.NMSC.Exchangeability
+public import Phylogenetics.Network.CutHierarchy
 
 /-!
 # Ané, Fogg, Allman, Baños, Rhodes 2024: exchangeability under the network multispecies coalescent

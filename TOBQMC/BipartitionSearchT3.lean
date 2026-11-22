@@ -4,6 +4,7 @@ public import AllmanEtAl2023.Basic
 public import TreeOfBlobs.Defs
 public import TreeOfBlobs.External.MitchellAllmanRhodes2019.T3Test
 public import Phylogenetics.NMSC.Basic
+public import Phylogenetics.Network.CutHierarchy
 public import TreeOfBlobs.Testing.Combining
 public import TreeOfBlobs.Testing.Defs
 public import TreeOfBlobs.Testing.IID

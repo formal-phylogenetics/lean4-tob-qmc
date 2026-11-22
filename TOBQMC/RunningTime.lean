@@ -3,6 +3,7 @@ module
 public import TreeOfBlobs.LCA
 public import TOBQMC.External.KaneTao2017.PartitioningClusters
 public import Phylogenetics.Tree.AstralDP
+public import Phylogenetics.Network.CutHierarchy
 public import TINNiK.Counts
 public import TOBQMC.Astral
 public import TOBQMC.Counts

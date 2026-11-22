@@ -2,6 +2,7 @@ module
 
 public import TreeOfBlobs.FinNetwork
 public import Phylogenetics.Tree.Detach
+public import Phylogenetics.Network.CutHierarchy
 
 /-!
 # TOB-QMC: a refinement of the tree of blobs need not be a display tree

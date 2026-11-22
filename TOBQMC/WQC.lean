@@ -4,6 +4,7 @@ public import TreeOfBlobs.Defs
 public import TreeOfBlobs.LocalObjective
 public import TOBQMC.External.AneEtAl2024.Exchangeability
 public import Phylogenetics.NMSC.Basic
+public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.Tree.Detach
 public import Mathlib.Probability.StrongLaw
 

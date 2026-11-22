@@ -4,6 +4,7 @@ public import TreeOfBlobs.Defs
 public import TreeOfBlobs.External.HuberEtAl2025.Theorem51
 public import Phylogenetics.Network.Cuts
 public import Phylogenetics.Tree.Splits
+public import Phylogenetics.Network.CutHierarchy
 public import TreeOfBlobs.Level1Blocks
 public import TreeOfBlobs.TreeCounts
 
