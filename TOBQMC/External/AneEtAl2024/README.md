@@ -5,7 +5,7 @@ multispecies coalescent: theory and prevalence*, J. Math. Biol. 88 (2024),
 <https://doi.org/10.1007/s00285-024-02050-7>, read in its bioRxiv text (10.1101/2023.08.18.553582).
 
 Used by TOB-QMC's proof of Lemma 3: "any 4-tuple of species covering `{Pi, Pj, Pk, Pl}` have the same
-expected qCFs ... see [1, 5]". `External.AneEtAl2024.exchangeability` proves it for this project's
+expected qCFs ... see [1, 5]". `External.AneEtAl2024.exchangeability` proves it for the library's
 NMSC, on arbitrary networks and with inheritance correlation, in the more general form `Phylogenetics.CutExchangeable`:
 a taxon may be replaced by any other that a cut edge groups with it, away from the other three taxa.
 
@@ -25,6 +25,6 @@ probable (`Phylogenetics.NMSC.cut_alternatives`), and a trivial 4-blob makes all
 
 "Even the number of subnetworks with exactly `1` hybrid node can be as large as `k 2^(k-1)`": `card_oneHybridChoices` counts these choices.
 
-Rule 2, "If the edges that are incident to `B` and that exit `B` ... have at most 2 descendants total, then `B` does not contain a `3₂`-cycle", is `rule2`, for the `3₂`-cycles of subnetworks, in the sense of `External.AllmanBanosRhodes2019.HasThreeTwoCycle`. Its reason, "the number of descendant leaves of a `3₂`-cycle is either 3 ... or 4", is `three_le_card_belowBlob` and `card_belowBlob_of_root`. "Deciding if rule 1 or 2 applies takes constant time after calculating a blob decomposition": on four taxa at most four arcs leave a blob by a bridge (`card_exitArcs_le`), so that the rules read at most four sets of descendants, each a subset of four taxa. The blob decomposition is `Basic/BridgeDFS.lean`.
+Rule 2, "If the edges that are incident to `B` and that exit `B` ... have at most 2 descendants total, then `B` does not contain a `3₂`-cycle", is `rule2`, for the `3₂`-cycles of subnetworks, in the sense of `External.AllmanBanosRhodes2019.HasThreeTwoCycle`. Its reason, "the number of descendant leaves of a `3₂`-cycle is either 3 ... or 4", is `three_le_card_belowBlob` and `card_belowBlob_of_root`. "Deciding if rule 1 or 2 applies takes constant time after calculating a blob decomposition": on four taxa at most four arcs leave a blob by a bridge (`card_exitArcs_le`), so that the rules read at most four sets of descendants, each a subset of four taxa. The blob decomposition is `TreeOfBlobs/BridgeDFS.lean` of lean4-tob.
 
 Not formalized: rule 1 in general, which is the source's Lemma 11, with its Lemmas 9 and 10. On a level-1 network it is the definition of a `3₂`-cycle by blocks. On a network with several hybrid nodes in the blob it constructs a cycle of a subnetwork from four paths.

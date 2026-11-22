@@ -50,7 +50,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1007/s00285-022-01838-9"
     relationship: "background"
-    note: "Cited; the proof of Lemma 1 uses its reduction, and the consistency claim its CF-detectability. It is formalized in its own entry, lean4-allman2023/."
+    note: "Cited; the proof of Lemma 1 uses its reduction, and the consistency claim its CF-detectability. It is formalized in its own repository, lean4-allman2023."
     author_endorsement: "not-contacted"
   - title: "TINNiK: inference of the tree of blobs of a species network under the coalescent model"
     authors:
@@ -62,7 +62,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1186/s13015-024-00266-2"
     relationship: "background"
-    note: "Cited; the consistency claim uses its hypothesis tests, with the levels of its proof of Theorem 4. It is formalized in its own entry, lean4-tinnik/."
+    note: "Cited; the consistency claim uses its hypothesis tests, with the levels of its proof of Theorem 4. It is formalized in its own repository, lean4-tinnik."
     author_endorsement: "not-contacted"
   - title: "Anomalous networks under the multispecies coalescent: theory and prevalence"
     authors:
@@ -120,7 +120,7 @@ sources:
 related_formalizations:
   - id: "https://github.com/vltanh/lean4-phylogenetics"
     relationship: "adapts"
-    note: "The project imports this library, pinned at commit f1a3592, for its definitions and general results, so TOBQMC/MainResults.lean imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written for this project and has moved to the library; the library's term-based level-1 network coalescent is not used."
+    note: "This repository imports this library, pinned at commit f1a3592, for its definitions and general results, so TOBQMC/MainResults.lean imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that, in lean4-tob (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written in lean4-tob and has moved to the library; the library's term-based level-1 network coalescent is not used."
   - id: "https://github.com/vltanh/lean4-camus"
     relationship: "independent"
     note: "Surveyed; no code used."
@@ -163,7 +163,7 @@ automation:
       prompting_notes: "Slash command with the three paper links, continuing from the earlier handoff; later the user asked to match the sources closely, to formalize what the report listed as not formalized, to add Gusfield et al. 2007 and Allman et al. 2023 as primary papers on the library lean4-phylogenetics, and to finish what remained, leaving only empirical claims and wrong statements."
   spend_usd: "not tracked"
   notes: >-
-    The user chose the papers and the versions of the first three, agreed to the statement corrections of ECToBlob and TOB-QMC, and decided the library's boundary, the layout, the kernels and publication. AI systems wrote the code, the statements, the audit and the documents. The automation above is for the whole project, which until 2026-11-04 also had Gusfield et al. 2007, since moved to its own repository, lean4-gusfield2007; each of the four papers here has an entry of its own in papers/<Paper>/palomar/. Now lean4-tob/ has 196 modules; the audit checks every declaration of the project and the library, all on the standard axioms; three kernels accept the 18 main theorems of this entry (scripts/check_kernels.sh TOBQMC/palomar/comparator.json). See lean4-tob/docs/CREDITS.md.
+    The user chose the papers and the versions of the first three, agreed to the statement corrections of ECToBlob and TOB-QMC, and decided the library's boundary, the layout, the kernels and publication. AI systems wrote the code, the statements, the audit and the documents. The automation above is for the whole project in lean4-tob, which until 2026-11-04 also had Gusfield et al. 2007, since moved to its own repository, lean4-gusfield2007; on 2026-11-21 each of its four papers moved, with its entry, to a repository of its own. Now TOBQMC/ has 24 modules; the audit checks every declaration of this repository and of the libraries it requires, all on the standard axioms; three kernels accepted the 18 main theorems of this entry in lean4-tob, before the split (scripts/check_kernels.sh), and have not been run here since. See lean4-tob/docs/CREDITS.md.
 
 fidelity:
   divergences: >-
@@ -189,7 +189,7 @@ review:
     - "none (no human review)"
   notes: >-
     Independent AI agents reviewed the statements against the sources and compared the formal proofs with the papers'; a
-    separate agent checked the findings. The route check and the three kernels (scripts/check_kernels.sh: Lean's kernel, NanoDa, con-ron) ran locally; Comparator runs on TOBQMC/MainResults.lean as both challenge and solution, so it compares no separate statement file with a proof.
+    separate agent checked the findings. The route check and, in lean4-tob before the split, the three kernels (scripts/check_kernels.sh: Lean's kernel, NanoDa, con-ron) ran locally; Comparator runs on TOBQMC/MainResults.lean as both challenge and solution, so it compares no separate statement file with a proof.
 
 alignment:
   namespace: "TreeOfBlobs"
