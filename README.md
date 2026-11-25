@@ -2,11 +2,11 @@
 
 [![CI](https://github.com/vltanh/lean4-tob-qmc/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/vltanh/lean4-tob-qmc/actions/workflows/lean_action_ci.yml)
 
-A Lean 4 formalization of J. Dai, Y. Han, E. K. Molloy, *Quartet-based species tree methods enable fast and consistent tree of blobs reconstruction under the network multispecies coalescent*, [bioRxiv 10.1101/2025.11.05.686850 v5](https://www.biorxiv.org/content/10.1101/2025.11.05.686850v5), with its supplement. The tree of blobs of a phylogenetic network is what remains of it when its reticulate parts, the blobs, are contracted. The paper shows that quartet-based species tree methods give a refinement of the tree of blobs under the network multispecies coalescent: almost surely, once there are enough gene trees, every optimal solution of Weighted Quartet Consensus refines it (Theorem 1). An oracle for treelikeness, applied to a disjoint cover of four-taxon subsets around each edge of the refinement, a linear number of them, then finds the edges to contract on a binary level-1 network (Theorem 2). With TINNiK's hypothesis tests as the oracle, the method, TOB-QMC, returns the tree of blobs with probability tending to one (§4.3).
+A Lean 4 formalization of Junyan Dai, Yunheng Han and Erin K. Molloy (2026), "Quartet-based species tree methods enable fast and consistent tree of blobs reconstruction under the network multispecies coalescent", [bioRxiv 10.1101/2025.11.05.686850 v5](https://www.biorxiv.org/content/10.1101/2025.11.05.686850v5), with its supplement. The tree of blobs of a phylogenetic network is what remains of it when its reticulate parts, the blobs, are contracted. The paper shows that quartet-based species tree methods give a refinement of the tree of blobs under the network multispecies coalescent: almost surely, once there are enough gene trees, every optimal solution of Weighted Quartet Consensus refines it (Theorem 1). An oracle for treelikeness, applied to a disjoint cover of four-taxon subsets around each edge of the refinement, a linear number of them, then finds the edges to contract on a binary level-1 network (Theorem 2). With TINNiK's hypothesis tests as the oracle, the method, TOB-QMC, returns the tree of blobs with probability tending to one (§4.3).
 
 Every numbered result of the paper is proved, as printed or in a corrected form, by the paper's arguments except the departures that [Section 7 of the report](docs/TobQmc/REPORT.md#7-departures-from-the-papers-proofs) lists. The formalization is unconditional: no result of the literature is assumed, and there is no `sorry` or `axiom` outside the Challenge's statements. Three claims of the supplement are false, and their failure is proved; main v5 does not make them. No person has reviewed the proofs.
 
-This paper is one of the four of the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), which presents them; it builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
+This paper is one of the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), on the tree of blobs of a phylogenetic network, a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), in the collection rooted at [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics). It builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
 
 ## Status
 
@@ -92,7 +92,7 @@ None of these affects a result of main v5, which states Theorem 2 at level 1, ke
 - [`scripts/Audit.lean`](scripts/Audit.lean) checks every declaration of this repository and of the libraries it requires, `Phylogenetics`, `PhyloNetwork`, `TreeOfBlobs`, `Allman2023` and `Tinnik`, including private and generated ones, against [`propext`](https://leanprover-community.github.io/mathlib4_docs/Init/Core.html#propext), [`Classical.choice`](https://leanprover-community.github.io/mathlib4_docs/Init/Prelude.html#Classical.choice) and [`Quot.sound`](https://leanprover-community.github.io/mathlib4_docs/Init/Prelude.html#Quot.sound), and writes the routes of the proofs.
 - [`scripts/route_check.py`](scripts/route_check.py) compares those routes with the paper's, in [`docs/TobQmc/paper_routes.tsv`](docs/TobQmc/paper_routes.tsv); [`docs/TobQmc/route_differences.tsv`](docs/TobQmc/route_differences.tsv) records every difference, with its reason.
 - Comparator checks that the Solution proves exactly the Challenge's statements, under Lean's kernel and NanoDa; [`scripts/check_kernels.sh`](scripts/check_kernels.sh) runs it, and con-ron on an export of the same theorems.
-- **No person has reviewed the proofs.** Independent agents reviewed the statements against the paper, compared the proofs with the paper's, and checked the findings.
+- No person has reviewed the proofs. Independent agents reviewed the statements against the paper, compared the proofs with the paper's, and checked the findings.
 
 ## Dependencies
 
@@ -104,7 +104,7 @@ None of these affects a result of main v5, which states Theorem 2 at level 1, ke
 
 ## Palomar
 
-No submission to Palomar is planned. [`palomar/TobQmc/`](palomar/TobQmc) has the files of an entry: the Challenge, which imports only Mathlib, the Solution, [`comparator.json`](palomar/TobQmc/comparator.json), which names them and the four theorems, and [`formalization.yaml`](palomar/TobQmc/formalization.yaml), the entry's metadata, with the statements aligned to the Challenge's theorems and every divergence from the paper. From the repository root, after `lake build`, run [`scripts/check_kernels.sh`](scripts/check_kernels.sh). CI checks that the Challenge's copy of the definitions is the block of [`TobQmc/Defs.lean`](TobQmc/Defs.lean) (`python3 scripts/sync_challenge_defs.py --check`).
+No submission to Palomar is planned. [`palomar/TobQmc/`](palomar/TobQmc) has the files of an entry: the Challenge, which imports only Mathlib, the Solution, [`comparator.json`](palomar/TobQmc/comparator.json), which names them and the theorems, and [`formalization.yaml`](palomar/TobQmc/formalization.yaml), the entry's metadata, with the statements aligned to the Challenge's theorems and every divergence from the paper. From the repository root, after `lake build`, run [`scripts/check_kernels.sh`](scripts/check_kernels.sh). CI checks that the Challenge's copy of the definitions is the block of [`TobQmc/Defs.lean`](TobQmc/Defs.lean) (`python3 scripts/sync_challenge_defs.py --check`).
 
 ## Building
 
@@ -157,9 +157,9 @@ An open question is whether, beyond level 1, every false edge of a refinement of
 
 ## Credits
 
-- Requested and supervised by The-Anh Vu-Le, who chose the paper and its version, agreed to the corrections of its statements, and decided the library's boundary and the project's layout. **No person has reviewed the proofs.** Independent agents reviewed the statements and compared the proofs with the paper.
-- Codex made the source audit and first foundations of the collection, on 2026-10-27. Claude (Opus 5.5) in Claude Code, with sub-agents, wrote the statements, proofs, audit and documents, following the [formalize-math-paper](https://github.com/vltanh/formalize-math-paper) procedure.
-- Made in lean4-phylo-tree-of-blobs on 2026-10-27 and from 2026-10-31 to 2026-11-01, with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-phylo-tree-of-blobs's [`docs/CREDITS.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
+- Maintainer: The-Anh Vu-Le, who requested and supervised the formalization, chose the paper and its version, agreed to the corrections of its statements, and decided the library's boundary and the project's layout.
+- Formalization: Codex made the source audit and first foundations of the collection on 2026-10-27, and Claude (Opus 5.5) in Claude Code, with sub-agents, wrote the statements, proofs, audit and documents from 2026-10-31 to 2026-11-01, following the [formalize-math-paper](https://github.com/vltanh/formalize-math-paper) procedure, both in lean4-phylo-tree-of-blobs with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-phylo-tree-of-blobs's [`docs/CREDITS.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
+- Review: no person has reviewed the proofs; Lean's kernel checks them. Independent agents reviewed the statements and compared the proofs with the paper.
 
 ## License
 
