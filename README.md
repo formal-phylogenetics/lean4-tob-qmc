@@ -6,7 +6,7 @@ A Lean 4 formalization of Junyan Dai, Yunheng Han and Erin K. Molloy (2026), "Qu
 
 Every numbered result of the paper is proved, as printed or in a corrected form, by the paper's arguments except the departures that [Section 7 of the report](docs/TobQmc/REPORT.md#7-departures-from-the-papers-proofs) lists. The formalization is unconditional: no result of the literature is assumed, and there is no `sorry` or `axiom` outside the Challenge's statements. Three claims of the supplement are false, and their failure is proved; main v5 does not make them. No person has reviewed the proofs.
 
-This paper is one of the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), on the tree of blobs of a phylogenetic network, a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), in the collection rooted at [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics). It builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
+This paper belongs to the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), on the tree of blobs of a phylogenetic network, a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), in the collection rooted at [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics). It builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
 
 ## Status
 
