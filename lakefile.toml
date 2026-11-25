@@ -2,7 +2,7 @@ name = "TobQmc"
 version = "0.1.0"
 keywords = ["math", "phylogenetics"]
 description = "A Lean 4 formalization of TOB-QMC (Dai, Han, Molloy 2026)"
-defaultTargets = ["TobQmc"]
+defaultTargets = ["TobQmc", "Palomar"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -44,11 +44,22 @@ name = "mathlib"
 scope = "leanprover-community"
 rev = "v4.37.0-rc1"
 
-# Every module of the project is in TobQmc/ (lean4-phylogenetics, docs/CONVENTIONS.md, Sections 2
-# and 3). Lake fails on a glob whose directory does not exist.
+# Every module of the project is in TobQmc/, but its Challenge and its Solution, which are in
+# palomar/ (lean4-phylogenetics, docs/CONVENTIONS.md, Sections 2 and 3). Lake fails on a glob whose
+# directory, or a root whose file, does not exist.
 
 # The paper's library, in the namespace TobQmc: general mathematics in TobQmc/Basic/, the results the
-# paper cites in TobQmc/External/, and the paper's sections.
+# paper cites in TobQmc/External/, the definitions of the Challenge in TobQmc/Defs.lean, and the
+# paper's sections.
 [[lean_lib]]
 name = "TobQmc"
 globs = ["TobQmc.+"]
+
+# The paper's Challenge and Solution, the modules TobQmc.Challenge and TobQmc.Solution of the source
+# directory palomar/ (Comparator: palomar/TobQmc/comparator.json). Declared last: Lake gives a module
+# to the last library whose patterns match it, and the glob above matches these names when the
+# paper's name is the root.
+[[lean_lib]]
+name = "Palomar"
+srcDir = "palomar"
+roots = ["TobQmc.Challenge", "TobQmc.Solution"]
