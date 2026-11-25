@@ -26,7 +26,7 @@ project:
 
 classification:
   arxiv: ["q-bio.PE", "math.ST"]
-  msc2020: ["92D15", "92B10", "05C90", "62F03", "60J28", "68V20"]
+  msc2020: ["92D15", "92B10", "05C90", "62F03", "60J28"]
 
 sources:
   - title: "Quartet-based species tree methods enable fast and consistent tree of blobs reconstruction under the network multispecies coalescent"
