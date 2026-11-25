@@ -4,7 +4,6 @@ public import TreeOfBlobs.Defs
 public import TreeOfBlobs.TreeCounts
 public import Phylogenetics.Tree.Splits
 public import Phylogenetics.Network.CutHierarchy
-public import Tinnik.Algorithms.Counts
 public import TobQmc.FalsePositives.BipartitionSearch
 
 /-!

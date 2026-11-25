@@ -1,6 +1,6 @@
 module
 
-public import Allman2023.LargeNetworks.Rule
+public import TobQmc.External.Allman2023.Rule
 public import TreeOfBlobs.Defs
 public import PhyloNetwork.External.MitchellAllmanRhodes2019.T3Test
 public import Phylogenetics.NMSC.Basic
@@ -9,7 +9,7 @@ public import Phylogenetics.NMSC.Exchangeability
 public import PhyloNetwork.Testing.Defs
 public import PhyloNetwork.Testing.Trinomial.Bridge
 public import Phylogenetics.Tree.Detach
-public import Tinnik.Consistency.T3
+public import TobQmc.External.Tinnik.T3
 public import TobQmc.FalsePositives.Consistency
 
 /-!
@@ -65,7 +65,7 @@ assumption is no more restrictive than the one made by TINNiK (T3 option)" (v5, 
 cut-edge split of the induced network. -/
 theorem isTQuartetNonanomalous_of_noAnomalous {N : RootedNetwork V E X} (hN : N.IsPhylogenetic)
     {p : QuartetTree X → ℝ} (h : NoAnomalousQuartets N p) : IsTQuartetNonanomalous N p :=
-  fun s hs r hr => h s (Allman2023.inducedCutSplit_of_displays hN hs) r hr
+  fun s hs r hr => h s (External.Allman2023.inducedCutSplit_of_displays hN hs) r hr
 
 /-- **At level 1, conditions 4 and 6b are equivalent.** The direction from 4 to 6b is `Level1.nmscCF_lt_of_inducedCutSplit`, a fact
 that the paper does not state. So 6b is no extra assumption on a level-1 network. -/
@@ -111,9 +111,9 @@ theorem consistencyT3_of_offModel [Fintype V] [Fintype E] {N : RootedNetwork V E
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   -- the tests are correct on all four-taxon subsets
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover => ?_⟩
-  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
     (Phylogenetics.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
   obtain ⟨⟨hB, -⟩, hopt⟩ := hω
@@ -138,7 +138,7 @@ The paper lists 6b as an assumption of the T3 option. On a level-1 network it fo
 for Theorem 1 (`noAnomalousQuartets_iff_tQuartetNonanomalous`), so it does not appear here. See `consistencyT3_of_noAnomalous` for the
 statement with 6b.
 
-The proof is that of `consistency`, with `Tinnik.tests_correct_t3_of_t3Detectable` in place of `Tinnik.tests_correct`. -/
+The proof is that of `consistency`, with `External.Tinnik.tests_correct_t3_of_t3Detectable` in place of `External.Tinnik.tests_correct`. -/
 theorem consistencyT3 [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
@@ -154,7 +154,7 @@ theorem consistencyT3 [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Me
           tobqmcT3 ml (α k) β (quartetCount unroot ω) (solve (quartetCount unroot ω))
             (cover (solve (quartetCount unroot ω))) = treeOfBlobs N) atTop (𝓝 1) :=
   consistencyT3_of_offModel hStd hLevel hNon
-    (fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
+    (fun q hq hnt => External.Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
 
 /-- **The consistency claim of §4.3 with the T3 option, under conditions 5, 6a and 6b**, as the paper lists them for the FP edge detection
 step. Condition 4, needed for Theorem 1, follows from 6b. -/

@@ -25,7 +25,7 @@ same three forms as `TobQmc.FalsePositives.ConsistencyT3`:
 
 The argument is that of the cut test. A true edge is not contracted, since all four-taxon subsets around its
 bipartition are treelike and the tests are correct on all four-taxon subsets
-(`Tinnik.tests_correct_t3_of_t3Detectable`). A false edge is contracted because of the disjoint cover, by Theorem 2.
+(`External.Tinnik.tests_correct_t3_of_t3Detectable`). A false edge is contracted because of the disjoint cover, by Theorem 2.
 Both are in `contractSides_cover_union_eq`, which does not depend on the test. The search itself, its counts
 (`SearchOut.counts`) and its minimum (`pValue_lt_iff`) do not depend on the test either.
 -/
@@ -103,10 +103,10 @@ theorem consistencyT3_around_of_offModel [Fintype V] [Fintype E] {N : RootedNetw
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistencyT3_of_offModel hStd hLevel hNon hOff hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover R hR => ?_⟩
-  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
     (Phylogenetics.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
   obtain ⟨⟨hB, -⟩, hout⟩ := hω
@@ -196,7 +196,7 @@ theorem consistencyT3_search [Fintype V] [Fintype E] {N : RootedNetwork V E X} {
             (cover (solve (quartetCount unroot ω))) argmin limit
             (pick (quartetCount unroot ω) (solve (quartetCount unroot ω))) = treeOfBlobs N) atTop (𝓝 1) :=
   consistencyT3_search_of_offModel hStd hLevel hNon
-    (fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
+    (fun q hq hnt => External.Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
 
 /-- **The claim of embedded lines 622-623 with the T3 option, under conditions 5, 6a and 6b**, as the paper lists them
 for the T3 option. Condition 4, needed for Theorem 1, follows from 6b. Parallel to `consistencyT3_of_noAnomalous`. -/

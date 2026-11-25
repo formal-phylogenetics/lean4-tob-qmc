@@ -1,11 +1,11 @@
 module
 
-public import Allman2023.FourTaxa.CFDetectable
+public import TobQmc.External.Allman2023.CFDetectable
 public import TreeOfBlobs.RhoOne
 public import TreeOfBlobs.FinNetwork
 public import TreeOfBlobs.UnitMetric
 public import TobQmc.External.AneEtAl2024.Proposition12
-public import Tinnik.Consistency.Theorem4
+public import TobQmc.External.Tinnik.Theorem4
 public import TobQmc.FalsePositives.ConsistencyT3
 public import TobQmc.Algorithms.Implementation
 
@@ -72,15 +72,15 @@ theorem tendsto_notMem_testedB (hN : N.IsPhylogenetic) {θ : MetricData E} (hθ 
     obtain ⟨x, -⟩ := card_pos.1 (by omega : 0 < s.taxa.card)
     exact ⟨x⟩
   have hd : IsDist (geneTreeDist N θ ρ) := ⟨geneTreeDist_nonneg hN hθ hρ, sum_geneTreeDist hN hθ hρ⟩
-  have hs := Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
+  have hs := External.Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
   have hoff : ¬ ∀ r ∈ treesOn s.taxa, displayCF (geneTreeDist N θ ρ) unroot r = 1 / 3 := by
     intro hall
     obtain ⟨r, hr⟩ := card_pos.1 (by rw [s.card_alternatives]; norm_num : 0 < s.alternatives.card)
     refine hc.1 r hr ((hall r ?_).trans (hall s (mem_treesOn.2 rfl)).symm)
     exact mem_treesOn.2 (QuartetTree.mem_alternatives.1 hr).1
-  have hstar := Tinnik.tendsto_star hd hs hq hoff hβ
+  have hstar := External.Tinnik.tendsto_star hd hs hq hoff hβ
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (Phylogenetics.tendsto_iidProb_and hd hstar (Tinnik.tendsto_good_cut hN hθ hρ hα₀ hml hc))
+    (Phylogenetics.tendsto_iidProb_and hd hstar (External.Tinnik.tendsto_good_cut hN hθ hρ hα₀ hml hc))
   obtain ⟨hω₁, hmlq, hω₃⟩ := hω
   rintro ⟨-, h | h⟩
   · exact absurd h (not_le.2 hω₁)
@@ -99,13 +99,13 @@ theorem tendsto_notMem_testedBT3 (hN : N.IsPhylogenetic) {θ : MetricData E} (h�
     obtain ⟨x, -⟩ := card_pos.1 (by omega : 0 < s.taxa.card)
     exact ⟨x⟩
   have hd : IsDist (geneTreeDist N θ ρ) := ⟨geneTreeDist_nonneg hN hθ hρ, sum_geneTreeDist hN hθ hρ⟩
-  have hs := Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
+  have hs := External.Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
   have hoff : ¬ ∀ r ∈ treesOn s.taxa, displayCF (geneTreeDist N θ ρ) unroot r = 1 / 3 := by
     intro hall
     obtain ⟨r, hr⟩ := card_pos.1 (by rw [s.card_alternatives]; norm_num : 0 < s.alternatives.card)
     refine (hc.1 r hr).ne ((hall r ?_).trans (hall s (mem_treesOn.2 rfl)).symm)
     exact mem_treesOn.2 (QuartetTree.mem_alternatives.1 hr).1
-  have hstar := Tinnik.tendsto_star hd hs hq hoff hβ
+  have hstar := External.Tinnik.tendsto_star hd hs hq hoff hβ
   have hnull := QuartetTests.t3Test_null hd hs (s := s) hc (fun r _ => nmscCF_pos hN hθ hρ r) hα₀
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
     (Phylogenetics.tendsto_iidProb_and hd hstar hnull)
@@ -659,7 +659,7 @@ theorem tendsto_tobqmc_eq_treeOfBlobs_rho_one {θ : MetricData (Fin 18)} (hθ : 
       tobqmc ml (α k) β (quartetCount unroot ω) B Q = treeOfBlobs net) atTop (𝓝 0) :=
   tendsto_tobqmc_eq_treeOfBlobs hθ ⟨zero_le_one, le_rfl⟩ (isStrictlyCutAt_rho_one hθ) hα₀ hβ hml hQ hQ'
 
-/-- (`tob2025:supplement_theorem1_generic`) **The method on `net` at `ρ = 0`, for generic parameters** (E25 of the report): at parameters with CF-detectability, as generic parameters have (`Allman2023.cfDetectable_generic`), the 4-blobs have non-cut concordance factors, so all the assumptions of
+/-- (`tob2025:supplement_theorem1_generic`) **The method on `net` at `ρ = 0`, for generic parameters** (E25 of the report): at parameters with CF-detectability, as generic parameters have (`External.Allman2023.cfDetectable_generic`), the 4-blobs have non-cut concordance factors, so all the assumptions of
 `TobQmc.consistency` but the level hold; and the same conclusion holds as at `ρ = 1`. -/
 theorem forGenericParams_tendsto_tobqmc_eq_treeOfBlobs :
     Allman2023.ForGenericParams net fun θ =>
@@ -669,7 +669,7 @@ theorem forGenericParams_tendsto_tobqmc_eq_treeOfBlobs :
         ∀ {Q : Finset (Fin 7) → Finset (Finset (Fin 7))}, Q A₀ = cover → Q A₀ᶜ = cover →
           Tendsto (fun k => iidProb (geneTreeDist net θ 0) k fun ω =>
             tobqmc ml (α k) β (quartetCount unroot ω) B Q = treeOfBlobs net) atTop (𝓝 0) := by
-  refine (Allman2023.cfDetectable_generic net_isPhylogenetic net_isBinary).mono ?_
+  refine (External.Allman2023.cfDetectable_generic net_isPhylogenetic net_isBinary).mono ?_
   rintro θ ⟨hθ, hnot⟩
   refine ⟨hθ, fun hdet => hnot ⟨hdet.blob, ?_⟩⟩
   intro α hα₀ β hβ ml hml Q hQ hQ'

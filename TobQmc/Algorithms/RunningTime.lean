@@ -4,7 +4,6 @@ public import TreeOfBlobs.LCA
 public import TobQmc.External.KaneTao2017.PartitioningClusters
 public import Phylogenetics.Tree.AstralDP
 public import Phylogenetics.Network.CutHierarchy
-public import Tinnik.Algorithms.Counts
 public import TobQmc.Refinement.Astral
 public import TobQmc.Algorithms.Counts
 public import TobQmc.Basic.Algebra.BigOperators.Basic

@@ -190,7 +190,7 @@ Weighted Quartet Consensus, any selection `tested` of four-taxon subsets around 
 on the data, and any minimizers, the procedure with the star test on the minimizer returns the tree of blobs with probability tending
 to one.
 
-The levels are those of `TobQmc.consistency`. On the event that the tests are correct on all four-taxon subsets (`Tinnik.tests_correct`), and
+The levels are those of `TobQmc.consistency`. On the event that the tests are correct on all four-taxon subsets (`External.Tinnik.tests_correct`), and
 that the solution refines the tree of blobs, which `TobQmc.consistency` gives, the cut test rejects on the non-treelike subsets
 (`Tinnik.Rejects`), and it does not reject on the treelike ones, on which the star test rejects. Then
 `tobqmcImplementation_eq_of_tests` applies. -/
@@ -219,10 +219,10 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistency hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve tested hcover haround mini hmini => ?_⟩
-  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   -- the cut test rejects on the non-treelike subsets
   have hall := tendsto_iidProb_forall hd (ι := {q : Finset X // q.card = 4 ∧ ¬ IsTreelike N q})
     (fun q k ω => ∀ s ∈ treesOn q.val, cutPValue (quartetCount unroot ω) s < α k)
@@ -251,7 +251,7 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
     exact hnt ⟨Y, hY, hnty⟩ _ (hml _ Y hY).1
 
 /-- **The claim of TOB-QMC for its implementation, with the T3 test**, the paper's default (`tob2025:implementation`), under conditions 4, 5
-and 6a. Parallel to `consistency_implementation`, through `Tinnik.tests_correct_t3_of_t3Detectable`. On a level-1 network 6b follows from
+and 6a. Parallel to `consistency_implementation`, through `External.Tinnik.tests_correct_t3_of_t3Detectable`. On a level-1 network 6b follows from
 condition 4 (`noAnomalousQuartets_iff_tQuartetNonanomalous`). -/
 theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
@@ -278,12 +278,12 @@ theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork 
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hOff : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q → ¬ IsT3Null (nmscCF N θ ρ) q :=
-    fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)
+    fun q hq hnt => External.Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistencyT3 hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve tested hcover haround mini hmini => ?_⟩
-  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   have hall := tendsto_iidProb_forall hd (ι := {q : Finset X // q.card = 4 ∧ ¬ IsTreelike N q})
     (fun q k ω => ∀ s ∈ treesOn q.val, t3PValue (quartetCount unroot ω) s < α k)
     (fun q => hrej q.val q.property.1 q.property.2)

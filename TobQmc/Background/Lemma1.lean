@@ -1,6 +1,6 @@
 module
 
-public import Allman2023.LargeNetworks.Reduction
+public import TobQmc.External.Allman2023.Reduction
 public import PhyloNetwork.InducedSplits
 public import PhyloNetwork.Level1Blobs
 public import Phylogenetics.NMSC.DisplayedTreeModel
@@ -19,7 +19,7 @@ by deleting all but one parent hybrid edge from each hybrid node in N, and then 
 contained in any up-down path between two leaves." The library's notion is `TobQmc.NetworkDisplays`, of Definition 1
 of TOB-QMC: a choice `c` of a parent at each reticulation (`IsDisplayDeletion`), with an arc kept by the choice having
 exactly a cherry of the quartet tree below it. The proof works with the arcs `D` that a choice deletes, as
-`Allman2023.exists_reduction` does:
+`External.Allman2023.exists_reduction` does:
 
 * `IsDisplayDeletion N D`: `D` leaves one parent at each vertex but the root. These are the complements of the
   `displayArcs` of the choices (`isDisplayDeletion_compl_displayArcs`, `IsDisplayDeletion.exists_choice`).
@@ -36,7 +36,7 @@ The source's proof has two directions, and this file has its steps:
   has a lowest hybrid node h such that removing either parent edge of h leads to subnetworks without a 4-blob [...].
   Then one can show e1 and e2 correspond to incompatible splits [...]. As any tree displayed in N1 or N2 is also
   displayed in N, quartets with these splits are both displayed by N." This is
-  `Allman2023.exists_reduction` and `exists_isDisplayDeletion_superset`.
+  `External.Allman2023.exists_reduction` and `exists_isDisplayDeletion_superset`.
 
 A displayed tree of a binary network never leaves a quartet unresolved (`existsUnique_inducesQuartet`), which is why
 "binary quartet tree" is the right count. This uses that the network is binary: the star tree on four taxa displays no
@@ -48,7 +48,8 @@ The statement is proved for four taxa `q` of a network on any number of taxa, as
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Allman2023 Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs External.Allman2023 Finset
+open Allman2023 (taxaBelowOff HasUniqueParentsBelow StarOff)
 open scoped Classical
 
 namespace TobQmc

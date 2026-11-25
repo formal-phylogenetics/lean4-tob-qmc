@@ -737,7 +737,7 @@ def tobqmcSearch (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (
 /-- **Consistency with further four-taxon sets around the bipartitions**, under the hypotheses of
 `TobQmc.consistency`, for any selection `R` of four-taxon sets around the bipartitions, possibly depending on the
 data. The levels are those of `TobQmc.consistency`'s proof. On the event that the tests are correct on all four-taxon
-sets (`Tinnik.tests_correct`) and that the solution refines the tree of blobs, the method is the oracle's, and
+sets (`External.Tinnik.tests_correct`) and that the solution refines the tree of blobs, the method is the oracle's, and
 `contractSides_cover_union_eq` applies. That the solution refines the tree of blobs comes from `TobQmc.consistency`
 itself, whose output is contained in the solution. -/
 theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
@@ -762,10 +762,10 @@ theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistency hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover R hR => ?_⟩
-  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
     (Phylogenetics.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
   obtain ⟨⟨hB, -⟩, hout⟩ := hω

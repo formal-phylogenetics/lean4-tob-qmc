@@ -1,6 +1,6 @@
 module
 
-public import Tinnik.Consistency.Theorem4
+public import TobQmc.External.Tinnik.Theorem4
 public import TobQmc.FalsePositives.Level1
 public import TobQmc.FalsePositives.Level1CF
 public import TobQmc.Refinement.WQC
@@ -125,7 +125,7 @@ The proof combines Theorem 1 (`theorem1_optimal`), Theorem 2 (`theorem2`) and th
 hypothesis tests on all four-taxon subsets, as the paper says.
 
 Departure from the paper, repairing E21 of the report: the paper cites TINNiK's Theorem 4 for that
-correctness; it is a step of that theorem's proof (`Tinnik.tests_correct`), whose hypothesis,
+correctness; it is a step of that theorem's proof (`External.Tinnik.tests_correct`), whose hypothesis,
 CF-detectability, holds under the paper's assumptions (`Level1.cfDetectable`). The paper does not say why:
 it is 6a on the non-treelike subsets, nonanomaly and exchangeability on those the tree of blobs resolves,
 and `Level1.nmscCF_lt_of_not_displays`, a fact about level-1 networks, on the other treelike subsets. -/
@@ -149,9 +149,9 @@ theorem consistency [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Metr
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   -- the tests are correct on all four-taxon subsets
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := External.Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover => ?_⟩
-  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := External.Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
     (Phylogenetics.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
   obtain ⟨⟨hB, -⟩, hopt⟩ := hω
