@@ -6,20 +6,20 @@ multispecies coalescent: theory and prevalence*, J. Math. Biol. 88 (2024),
 
 Used by TOB-QMC's proof of Lemma 3: "any 4-tuple of species covering `{Pi, Pj, Pk, Pl}` have the same
 expected qCFs ... see [1, 5]". [`External.AneEtAl2024.exchangeability`](Exchangeability.lean#L29) proves it for the library's
-NMSC, on arbitrary networks and with inheritance correlation, in the more general form [`Phylogenetics.CutExchangeable`](https://github.com/vltanh/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/Network/Quartets.lean#L67):
+NMSC, on arbitrary networks and with inheritance correlation, in the more general form [`Phylogenetics.CutExchangeable`](https://github.com/formal-phylogenetics/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/Network/Quartets.lean#L67):
 a taxon may be replaced by any other that a cut edge groups with it, away from the other three taxa.
 
 The proof is in `Phylogenetics/NMSC/` of the library: the Markov property of the process at an arc (`Factor`), its
 equivariance under relabelling lineages (`Symmetry`), and sampling consistency (`Marginal`). It also gives
 the two forward facts that ECToBlob's Proposition 5.1 uses: a cut-edge split of an induced network makes the two alternatives equally
-probable ([`Phylogenetics.NMSC.cut_alternatives`](https://github.com/vltanh/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/NMSC/Exchangeability.lean#L550)), and a trivial 4-blob makes all three `1/3`
-([`Phylogenetics.NMSC.trivial_uniform`](https://github.com/vltanh/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/NMSC/Exchangeability.lean#L771)).
+probable ([`Phylogenetics.NMSC.cut_alternatives`](https://github.com/formal-phylogenetics/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/NMSC/Exchangeability.lean#L550)), and a trivial 4-blob makes all three `1/3`
+([`Phylogenetics.NMSC.trivial_uniform`](https://github.com/formal-phylogenetics/lean4-phylogenetics/blob/3fcabfd7d191990dda268b0b3968d945b65eb59a/Phylogenetics/NMSC/Exchangeability.lean#L771)).
 
 ## Proposition 12 (`Proposition12.lean`)
 
 "Under the common inheritance model with `ρ = 1`, a 4-taxon binary metric network is not anomalous", by the source's proof: the mixture over displayed trees, the entries of each displayed tree, a convex sum.
 [`proposition12`](Proposition12.lean#L156) is Definition 1, on any four taxa of any network at weak parameters; [`proposition12_class2`](Proposition12.lean#L163) and [`proposition12_class1`](Proposition12.lean#L174) are Definition 2. Being binary is not used. The strict form on cut-edge splits is
-[`Phylogenetics.RootedNetwork.nmscCF_lt_rho_one`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/RhoOne.lean#L27) in `lean4-phylo-tree-of-blobs/TreeOfBlobs/RhoOne.lean`.
+[`Phylogenetics.RootedNetwork.nmscCF_lt_rho_one`](https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/RhoOne.lean#L27) in `lean4-phylo-tree-of-blobs/TreeOfBlobs/RhoOne.lean`.
 
 ## Section 3.3, `3₂`-cycle containment (`Rules.lean`)
 

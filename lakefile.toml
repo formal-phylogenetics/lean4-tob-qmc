@@ -12,31 +12,31 @@ maxSynthPendingDepth = 3
 # The root of the collection: the shared library of phylogenetics.
 [[require]]
 name = "Phylogenetics"
-git = "https://github.com/vltanh/lean4-phylogenetics"
+git = "https://github.com/formal-phylogenetics/lean4-phylogenetics"
 rev = "3fcabfd7d191990dda268b0b3968d945b65eb59a"
 
 # The hub above this paper's: what the papers on network estimation share.
 [[require]]
 name = "PhyloNetwork"
-git = "https://github.com/vltanh/lean4-phylo-network"
+git = "https://github.com/formal-phylogenetics/lean4-phylo-network"
 rev = "4ed2bb0f7085acbf1326f43e2a5c582ba4566125"
 
 # The hub of the tree-of-blobs papers: what only they share.
 [[require]]
 name = "TreeOfBlobs"
-git = "https://github.com/vltanh/lean4-phylo-tree-of-blobs"
+git = "https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs"
 rev = "265ba443cb147a33ff2478cbc311a5597db1c1c7"
 
 # Allman, Baños, Mitchell, Rhodes 2023, whose results this paper uses.
 [[require]]
 name = "Allman2023"
-git = "https://github.com/vltanh/lean4-allman2023"
+git = "https://github.com/formal-phylogenetics/lean4-allman2023"
 rev = "46efa61d0988df12649089689ae77bc100be034f"
 
 # TINNiK (Allman, Baños, Mitchell, Rhodes 2024), whose results this paper uses.
 [[require]]
 name = "Tinnik"
-git = "https://github.com/vltanh/lean4-tinnik"
+git = "https://github.com/formal-phylogenetics/lean4-tinnik"
 rev = "de514e1f14522531f16dcdfa12244fe72fe05944"
 
 [[require]]

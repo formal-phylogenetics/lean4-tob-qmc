@@ -145,7 +145,7 @@ sources:
       limit laws by a direct argument.
 
 related_formalizations:
-  - id: "https://github.com/vltanh/lean4-phylogenetics"
+  - id: "https://github.com/formal-phylogenetics/lean4-phylogenetics"
     relationship: "adapts"
     note: >-
       This repository imports this library, pinned at commit 3fcabfd, for its definitions and
@@ -155,7 +155,7 @@ related_formalizations:
       lean4-phylo-tree-of-blobs/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary
       networks was first written in lean4-phylo-tree-of-blobs and has moved to the library; the
       library's term-based level-1 network coalescent is not used.
-  - id: "https://github.com/vltanh/lean4-camus"
+  - id: "https://github.com/formal-phylogenetics/lean4-camus"
     relationship: "independent"
     note: "Surveyed; no code used."
 

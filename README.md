@@ -1,12 +1,12 @@
 # TOB-QMC: quartet-based tree of blobs reconstruction, in Lean
 
-[![CI](https://github.com/vltanh/lean4-tob-qmc/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/vltanh/lean4-tob-qmc/actions/workflows/lean_action_ci.yml)
+[![CI](https://github.com/formal-phylogenetics/lean4-tob-qmc/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/formal-phylogenetics/lean4-tob-qmc/actions/workflows/lean_action_ci.yml)
 
 A Lean 4 formalization of Junyan Dai, Yunheng Han and Erin K. Molloy (2026), "Quartet-based species tree methods enable fast and consistent tree of blobs reconstruction under the network multispecies coalescent", [bioRxiv 10.1101/2025.11.05.686850 v5](https://www.biorxiv.org/content/10.1101/2025.11.05.686850v5), with its supplement. The tree of blobs of a phylogenetic network is what remains of it when its reticulate parts, the blobs, are contracted. The paper shows that quartet-based species tree methods give a refinement of the tree of blobs under the network multispecies coalescent: almost surely, once there are enough gene trees, every optimal solution of Weighted Quartet Consensus refines it (Theorem 1). An oracle for treelikeness, applied to a disjoint cover of four-taxon subsets around each edge of the refinement, a linear number of them, then finds the edges to contract on a binary level-1 network (Theorem 2). With TINNiK's hypothesis tests as the oracle, the method, TOB-QMC, returns the tree of blobs with probability tending to one (§4.3).
 
 Every numbered result of the paper is proved, as printed or in a corrected form, by the paper's arguments except the departures that [Section 7 of the report](docs/TobQmc/REPORT.md#7-departures-from-the-papers-proofs) lists. The formalization is unconditional: no result of the literature is assumed, and there is no `sorry` or `axiom` outside the Challenge's statements. Three claims of the supplement are false, and their failure is proved; main v5 does not make them. No person has reviewed the proofs.
 
-This paper belongs to the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), on the tree of blobs of a phylogenetic network, a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), in the collection rooted at [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics). It builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
+This paper belongs to the hub [lean4-phylo-tree-of-blobs](https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs), on the tree of blobs of a phylogenetic network, a sub-hub of [lean4-phylo-network](https://github.com/formal-phylogenetics/lean4-phylo-network), in the collection rooted at [lean4-phylogenetics](https://github.com/formal-phylogenetics/lean4-phylogenetics). It builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/formal-phylogenetics/lean4-allman2023) and [lean4-tinnik](https://github.com/formal-phylogenetics/lean4-tinnik).
 
 ## Status
 
@@ -63,13 +63,13 @@ The statements of record are the theorems of the Challenge, [`palomar/TobQmc/Cha
 
 | Source | Lean | Statement |
 | --- | --- | --- |
-| Huber et al. 2025, Theorem 5.1 (the paper's Lemma 2 is its forward direction) | [`External.HuberEtAl2025.theorem5_1`](https://github.com/vltanh/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/HuberEtAl2025/Theorem51.lean#L168) | a split is the split of a cut edge exactly when it is trivial or every `a₁a₂\|b₁b₂` across it is a cut-edge split of the induced network; proved in lean4-phylo-network |
+| Huber et al. 2025, Theorem 5.1 (the paper's Lemma 2 is its forward direction) | [`External.HuberEtAl2025.theorem5_1`](https://github.com/formal-phylogenetics/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/HuberEtAl2025/Theorem51.lean#L168) | a split is the split of a cut edge exactly when it is trivial or every `a₁a₂\|b₁b₂` across it is a cut-edge split of the induced network; proved in lean4-phylo-network |
 | Ané et al. 2024, exchangeability and Proposition 12 | [`External.AneEtAl2024.exchangeability`](TobQmc/External/AneEtAl2024/Exchangeability.lean#L29), [`External.AneEtAl2024.proposition12`](TobQmc/External/AneEtAl2024/Proposition12.lean#L156) | taxa on one side of a cut edge are exchangeable for quartets; at `ρ = 1` a network with weak parameters is not anomalous |
 | Allman et al. 2023 | [`External.Allman2023.exists_reduction`](TobQmc/External/Allman2023/Reduction.lean#L70), [`External.Allman2023.cfDetectable_generic`](TobQmc/External/Allman2023/CFDetectable.lean#L33), [`External.Allman2023.inducedCutSplit_of_displays`](TobQmc/External/Allman2023/Rule.lean#L27) | the reduction of part (b) of the proof of their Theorem 1, `CF`-detectability for generic parameters, and the quartet trees of the tree of blobs; proved from lean4-allman2023 |
 | TINNiK, the proof of Theorem 4 | [`External.Tinnik.tests_correct`](TobQmc/External/Tinnik/Theorem4.lean#L43), [`External.Tinnik.tests_correct_t3_of_t3Detectable`](TobQmc/External/Tinnik/T3.lean#L47) | at parameters with `CF`-detectability, the star and cut tests, or the T3 test, are correct on all sets of four taxa with probability tending to one; proved from lean4-tinnik |
 | Dinh, Baños 2025, Theorem 1 | [`External.DinhBanos2025.theorem1`](TobQmc/External/DinhBanos2025/Theorem1.lean#L600) | under their conditions (6) and (7), a tree that the network does not display has a higher expected ASTRAL score than both displayed trees |
 | Kane, Tao 2017, Theorem 1 | [`External.KaneTao2017.theorem1`](TobQmc/External/KaneTao2017/PartitioningClusters.lean#L974) | the number of triples `(A₁, A₂, A)` of a finite collection of finite sets with `A = A₁ ⊎ A₂` is at most `\|X\|^(3/p)`, `p = log₃(27/4)`: the exponent `1.726` of ASTRAL-III |
-| Mitchell et al. 2019, Propositions 4.1, 4.2, 5.1, 5.2 | [`External.MitchellAllmanRhodes2019.proposition4_1`](https://github.com/vltanh/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/MitchellAllmanRhodes2019/T3Limit.lean#L480), [`External.MitchellAllmanRhodes2019.proposition4_2`](https://github.com/vltanh/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/MitchellAllmanRhodes2019/T3Density.lean#L839) | the limit laws and densities of the T3 and T1 tests, behind the T3 option; proved in lean4-phylo-network |
+| Mitchell et al. 2019, Propositions 4.1, 4.2, 5.1, 5.2 | [`External.MitchellAllmanRhodes2019.proposition4_1`](https://github.com/formal-phylogenetics/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/MitchellAllmanRhodes2019/T3Limit.lean#L480), [`External.MitchellAllmanRhodes2019.proposition4_2`](https://github.com/formal-phylogenetics/lean4-phylo-network/blob/4ed2bb0f7085acbf1326f43e2a5c582ba4566125/PhyloNetwork/External/MitchellAllmanRhodes2019/T3Density.lean#L839) | the limit laws and densities of the T3 and T1 tests, behind the T3 option; proved in lean4-phylo-network |
 
 ## What the audit found
 
@@ -97,10 +97,10 @@ None of these affects a result of main v5, which states Theorem 2 at level 1, ke
 ## Dependencies
 
 - [Mathlib](https://github.com/leanprover-community/mathlib4), at `v4.37.0-rc1`.
-- [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics), the library of the collection, pinned by commit in [`lakefile.toml`](lakefile.toml): networks, trees and quartets, blobs and the tree of blobs, induced networks, the network multispecies coalescent with inheritance correlation and its exchangeability, ASTRAL's dynamic program.
-- [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), the library of the hub of network estimation, pinned by commit: the hypothesis tests on quartet counts and their limit laws, the blobs, blocks and wedge paths of level-1 networks, cut splits of induced networks, and the sources Huber et al. 2025 and Mitchell et al. 2019.
-- [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), the library of this paper's hub, pinned by commit: TOB-QMC's algorithm and standing assumptions, the local objective at a multifurcation, no anomalous quartets at `ρ = 1`, lowest common ancestors, counts of tree edges, and networks given by tables.
-- [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik), Allman et al. 2023 and TINNiK, pinned by commit: the results the proofs here use, which [`TobQmc/External/Allman2023/`](TobQmc/External/Allman2023) and [`TobQmc/External/Tinnik/`](TobQmc/External/Tinnik) state and prove from their theorems.
+- [lean4-phylogenetics](https://github.com/formal-phylogenetics/lean4-phylogenetics), the library of the collection, pinned by commit in [`lakefile.toml`](lakefile.toml): networks, trees and quartets, blobs and the tree of blobs, induced networks, the network multispecies coalescent with inheritance correlation and its exchangeability, ASTRAL's dynamic program.
+- [lean4-phylo-network](https://github.com/formal-phylogenetics/lean4-phylo-network), the library of the hub of network estimation, pinned by commit: the hypothesis tests on quartet counts and their limit laws, the blobs, blocks and wedge paths of level-1 networks, cut splits of induced networks, and the sources Huber et al. 2025 and Mitchell et al. 2019.
+- [lean4-phylo-tree-of-blobs](https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs), the library of this paper's hub, pinned by commit: TOB-QMC's algorithm and standing assumptions, the local objective at a multifurcation, no anomalous quartets at `ρ = 1`, lowest common ancestors, counts of tree edges, and networks given by tables.
+- [lean4-allman2023](https://github.com/formal-phylogenetics/lean4-allman2023) and [lean4-tinnik](https://github.com/formal-phylogenetics/lean4-tinnik), Allman et al. 2023 and TINNiK, pinned by commit: the results the proofs here use, which [`TobQmc/External/Allman2023/`](TobQmc/External/Allman2023) and [`TobQmc/External/Tinnik/`](TobQmc/External/Tinnik) state and prove from their theorems.
 
 ## Palomar
 
@@ -122,7 +122,7 @@ python3 scripts/linkify_docs.py                                       # the docu
 
 - Toolchain: Lean and Mathlib `v4.37.0-rc1` ([`lean-toolchain`](lean-toolchain), [`lake-manifest.json`](lake-manifest.json)).
 - `lake comparator`, `leanexport` and `con-ron` come from the toolchain, under `lake env`. The kernels' replays need much memory.
-- [lean4-phylo-tree-of-blobs's `docs/CONFIGURATION.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CONFIGURATION.md) records the versions, the decisions, and what "line N" means.
+- [lean4-phylo-tree-of-blobs's `docs/CONFIGURATION.md`](https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CONFIGURATION.md) records the versions, the decisions, and what "line N" means.
 
 ## Layout
 
@@ -158,9 +158,9 @@ An open question is whether, beyond level 1, every false edge of a refinement of
 ## Credits
 
 - Maintainer: The-Anh Vu-Le, who requested and supervised the formalization, chose the paper and its version, agreed to the corrections of its statements, and decided the library's boundary and the project's layout.
-- Formalization: Codex made the source audit and first foundations of the collection on 2026-10-27, and Claude (Opus 5.5) in Claude Code, with sub-agents, wrote the statements, proofs, audit and documents from 2026-10-31 to 2026-11-01, following the [formalize-math-paper](https://github.com/vltanh/formalize-math-paper) procedure, both in lean4-phylo-tree-of-blobs with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-phylo-tree-of-blobs's [`docs/CREDITS.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
+- Formalization: Codex made the source audit and first foundations of the collection on 2026-10-27, and Claude (Opus 5.5) in Claude Code, with sub-agents, wrote the statements, proofs, audit and documents from 2026-10-31 to 2026-11-01, following the [formalize-math-paper](https://github.com/vltanh/formalize-math-paper) procedure, both in lean4-phylo-tree-of-blobs with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-phylo-tree-of-blobs's [`docs/CREDITS.md`](https://github.com/formal-phylogenetics/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
 - Review: no person has reviewed the proofs; Lean's kernel checks them. Independent agents reviewed the statements and compared the proofs with the paper.
 
 ## License
 
-Apache-2.0: [LICENSE](LICENSE). Code adapted from [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics) (Apache-2.0) keeps its notice in each file's header.
+Apache-2.0: [LICENSE](LICENSE). Code adapted from [lean4-phylogenetics](https://github.com/formal-phylogenetics/lean4-phylogenetics) (Apache-2.0) keeps its notice in each file's header.
