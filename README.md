@@ -153,7 +153,7 @@ From [Section 10 of the report](docs/TobQmc/REPORT.md#10-the-paper-in-the-litera
 
 ## What's next
 
-An open question is whether, beyond level 1, every false edge of a refinement of the tree of blobs has a non-treelike four-taxon set around it: the formal justification of TOB-QMC stops at level 1, and the supplement's claim for disjoint covers fails at level 2 (E25). That failure is proved at `ρ = 1` and for generic parameters at `ρ = 0`, and other values of `ρ` remain. [Section 11 of the report](docs/TobQmc/REPORT.md#11-whats-next) has these and the simpler arguments that the formalization found. A private `NEXT.md` holds the candidate follow-up papers.
+An open question is whether, beyond level 1, every false edge of a refinement of the tree of blobs has a non-treelike four-taxon set around it: the formal justification of TOB-QMC stops at level 1, and the supplement's claim for disjoint covers fails at level 2 (E25). That failure is proved at `ρ = 1` and for generic parameters at `ρ = 0`, and other values of `ρ` remain. [Section 11 of the report](docs/TobQmc/REPORT.md#11-whats-next) has these and the simpler arguments that the formalization found.
 
 ## Credits
 
