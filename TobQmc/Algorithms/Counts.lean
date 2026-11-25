@@ -5,7 +5,7 @@ public import TreeOfBlobs.TreeCounts
 public import Phylogenetics.Tree.Splits
 public import Phylogenetics.Network.CutHierarchy
 public import Tinnik.Algorithms.Counts
-public import TOBQMC.BipartitionSearch
+public import TobQmc.FalsePositives.BipartitionSearch
 
 /-!
 # TOB-QMC: operation counts
@@ -35,10 +35,10 @@ the taxon `r`.
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {X : Type*} [Fintype X] [DecidableEq X]
 
@@ -226,4 +226,4 @@ theorem search_total_le_of_limit_le {n limit C : ℕ} (hn : 1 ≤ n) (hlimit : l
 
 end Search
 
-end TOBQMC
+end TobQmc

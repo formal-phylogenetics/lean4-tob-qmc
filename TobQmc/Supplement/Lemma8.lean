@@ -26,7 +26,7 @@ Two slips of the printed text:
 
 open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} {N : RootedNetwork V E X}
 
@@ -115,4 +115,4 @@ theorem not_two_le_indegree_of_sameBlob_leaf (hN : N.IsPhylogenetic) (x : X) {u 
   rw [hux, hN.leaf_indegree x]
   norm_num
 
-end TOBQMC
+end TobQmc

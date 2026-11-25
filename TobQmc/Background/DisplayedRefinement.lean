@@ -8,16 +8,16 @@ public import Phylogenetics.Network.CutHierarchy
 # TOB-QMC: a refinement of the tree of blobs need not be a display tree
 
 TOB-QMC (v5, embedded lines 366-367): "Any tree displayed by a network refines the TOB (as all cut edges are preserved); however, a TOB refinement need not be a display tree of the network (Fig. 1C)." The supplement's line 206 says the same. The first half is
-`Phylogenetics.RootedNetwork.treeOfBlobs_subset_displayedSides`. The second is `refinement_not_displayed`, on the binary level-1 network `TreeOfBlobs.FinNetwork.Binary.net` of `src/ECToBlob/DisplayedTreeExample.lean`: a cut edge `de|abc`, and a 4-cycle through `a`, `b`, `c`. Its displayed trees have the cherries `ac` and
+`Phylogenetics.RootedNetwork.treeOfBlobs_subset_displayedSides`. The second is `refinement_not_displayed`, on the binary level-1 network `TreeOfBlobs.FinNetwork.Binary.net` of `TreeOfBlobs.FinNetwork`: a cut edge `de|abc`, and a 4-cycle through `a`, `b`, `c`. Its displayed trees have the cherries `ac` and
 `bc`. The tree with the cherries `ab` and `de` refines the tree of blobs, and no parent choice displays it.
 -/
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset
 open scoped Classical
 
-namespace TOBQMC.DisplayedRefinement
+namespace TobQmc.DisplayedRefinement
 
 open TreeOfBlobs.FinNetwork TreeOfBlobs.FinNetwork.Binary PhyloNetwork
 
@@ -64,4 +64,4 @@ theorem refinement_not_displayed :
     simp only [quartetTree] at hv
     exact absurd hv (by decide)
 
-end TOBQMC.DisplayedRefinement
+end TobQmc.DisplayedRefinement

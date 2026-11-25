@@ -14,7 +14,7 @@ it directly on the non-treelike subsets (6a) and on the subsets that the tree of
 (T-quartet-nonanomaly, with exchangeability). The paper does not discuss the third class: an
 induced cut-edge split `s` that the tree of blobs does not display. Nothing needs to be assumed there, as
 `s` has the strictly largest concordance factor: `Level1.nmscCF_lt_of_not_displays`, in
-`src/Basic/Level1CF.lean`, which does not use Lemma 4.
+`PhyloNetwork.Level1CF`, which does not use Lemma 4.
 
 ## Main results
 
@@ -25,10 +25,10 @@ induced cut-edge split `s` that the tree of blobs does not display. Nothing need
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1 Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs PhyloNetwork PhyloNetwork.Level1 Finset
 open scoped Classical
 
-namespace TOBQMC.Level1
+namespace TobQmc.Level1
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X] {N : RootedNetwork V E X}
 
@@ -63,4 +63,4 @@ theorem cfDetectable {θ : MetricData E} {ρ : ℝ} (hStd : StandardAssumptions 
 
 end LevelOne
 
-end TOBQMC.Level1
+end TobQmc.Level1

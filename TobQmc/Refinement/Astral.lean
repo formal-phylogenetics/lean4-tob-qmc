@@ -4,7 +4,7 @@ public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.Tree.AstralDP
-public import TOBQMC.WQC
+public import TobQmc.Refinement.WQC
 
 /-!
 # TOB-QMC §4.2: the tree that ASTRAL's dynamic program returns refines the tree of blobs
@@ -15,7 +15,7 @@ solves WQC within a constrained search space, defined by the bipartitions induce
 bipartitions have probability strictly greater than zero under the NMSC and thus will appear as the number of gene
 trees goes to infinity".
 
-`TOBQMC.astral_corollary` speaks of the exact optima in the search space `AstralSpace`, and no algorithm appears in it.
+`TobQmc.astral_corollary` speaks of the exact optima in the search space `AstralSpace`, and no algorithm appears in it.
 This file runs the dynamic program of `Phylogenetics/Tree/AstralDP.lean` on the gene tree counts `geneCount`, with
 the allowed clusters `astralClusters` (the default mode of Mirarab et al. 2014: "all bipartitions from the input set
 of unrooted gene trees"), and shows that:
@@ -32,10 +32,10 @@ containing the gene tree bipartitions.
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset MeasureTheory
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset MeasureTheory
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -136,7 +136,7 @@ theorem ae_astralSpace_unroot (hN : N.IsPhylogenetic) [Nonempty X] {P : Measure 
   filter_upwards [ae_isBinaryHierarchy hN hG 0] with ω hω k hk
   exact astralSpace_unroot_of_lt hk hω
 
-/-- The ASTRAL corollary of Theorem 1 (TOB-QMC §4.2, `TOBQMC.astral_corollary`), for the program under any rule for
+/-- The ASTRAL corollary of Theorem 1 (TOB-QMC §4.2, `TobQmc.astral_corollary`), for the program under any rule for
 breaking ties: almost surely, for all large `k`, every tree that backtracking can produce on the gene tree counts of
 the first `k` gene trees refines the tree of blobs. The program returns an optimum in the search space
 (`IsTraceback.isAstralOptimal`), and `astral_corollary` applies. -/
@@ -154,7 +154,7 @@ theorem isTraceback_refines_treeOfBlobs (hStd : StandardAssumptions N θ ρ)
 
 /-- **The ASTRAL corollary of Theorem 1, for the program** (TOB-QMC §4.2, embedded lines 517-521: "ASTRAL (version 3
 or earlier) returns a TOB refinement almost surely, as the number of gene trees goes to infinity";
-`TOBQMC.astral_corollary` is its form for the optima of the search space). Under the hypotheses of `astral_corollary`,
+`TobQmc.astral_corollary` is its form for the optima of the search space). Under the hypotheses of `astral_corollary`,
 almost surely, for all large `k`, the tree that the dynamic program returns on the first `k` gene trees is a binary tree
 refining the tree of blobs. -/
 theorem astral_refines_treeOfBlobs (hStd : StandardAssumptions N θ ρ)
@@ -172,7 +172,7 @@ theorem astral_refines_treeOfBlobs (hStd : StandardAssumptions N θ ρ)
 
 /-- Almost surely, from some point on, the search space contains all the binary trees: every bipartition of a binary
 tree has positive probability, at least that of a binary gene tree inducing it (`geneTreeDist_pos`), so it appears.
-This repeats a step of the proof of `TOBQMC.astral_corollary`, which does not export it. -/
+This repeats a step of the proof of `TobQmc.astral_corollary`, which does not export it. -/
 theorem ae_forall_astralSpace (hStd : StandardAssumptions N θ ρ) [Nonempty X] {P : Measure Ω}
     [IsProbabilityMeasure P] {G : ℕ → Ω → Finset (Finset X)} (hG : IsGeneTreeSample N θ ρ P G) :
     ∀ᵐ ω ∂P, ∃ K, ∀ k, K ≤ k → ∀ T, IsBinaryTree T → AstralSpace G k ω T := by
@@ -233,4 +233,4 @@ theorem isTraceback_refines_treeOfBlobs_of_superset (hStd : StandardAssumptions 
 
 end Sample
 
-end TOBQMC
+end TobQmc

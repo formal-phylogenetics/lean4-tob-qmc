@@ -10,13 +10,13 @@ public import PhyloNetwork.Testing.Defs
 public import PhyloNetwork.Testing.Trinomial.Bridge
 public import Phylogenetics.Tree.Detach
 public import Tinnik.Consistency.T3
-public import TOBQMC.Consistency
+public import TobQmc.FalsePositives.Consistency
 
 /-!
 # TOB-QMC §4.3: statistical consistency with the T3 option
 
 TOB-QMC's oracle for treelikeness is "TINNiK's hypothesis tests", with the T3 test the default ("the T3 option is the default in
-TINNiK due to its strong empirical performance", v5, lines 121–122). `TOBQMC.consistency` treats the star and cut tests. This file
+TINNiK due to its strong empirical performance", v5, lines 121–122). `TobQmc.consistency` treats the star and cut tests. This file
 gives the same claim with the T3 option, under the paper's conditions 5, 6a and 6b.
 
 ## Which assumption the T3 option needs
@@ -47,10 +47,10 @@ and 6b adds nothing to condition 4. On any network, 6b implies condition 4 (`isT
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -174,4 +174,4 @@ theorem consistencyT3_of_noAnomalous [Fintype V] [Fintype E] {N : RootedNetwork 
             (cover (solve (quartetCount unroot ω))) = treeOfBlobs N) atTop (𝓝 1) :=
   consistencyT3 hStd hLevel (isTQuartetNonanomalous_of_noAnomalous hStd.phylogenetic h6b) hBlob hX
 
-end TOBQMC
+end TobQmc

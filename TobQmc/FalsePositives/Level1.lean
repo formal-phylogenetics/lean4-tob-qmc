@@ -12,7 +12,7 @@ public import TreeOfBlobs.TreeCounts
 # TOB-QMC §4.3: false positives in a refinement, with a linear number of tests, for level-1 networks
 
 Lemma 2, Lemma 4, Corollary 1, Theorem 2 and the 3-fix-1-alter search. Definition 2 is `IsDisjointCover` in
-`src/Basic/Defs.lean`.
+`TreeOfBlobs.Defs`.
 A taxon set's oracle answer *treelike* is `IsTreelike N Y`: the restriction has a cut edge with a
 non-trivial split, equivalently no 4-blob. On four taxa this is a cut edge of the union of the wedge
 paths between them (`Level1.isTreelike_iff_hasWedgeCutSplit`), which is where Lemma 4 is proved.
@@ -20,10 +20,10 @@ paths between them (`Level1.isTreelike_iff_hasWedgeCutSplit`), which is where Le
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1 Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs PhyloNetwork PhyloNetwork.Level1 Finset
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X] {N : RootedNetwork V E X}
 
@@ -90,7 +90,7 @@ theorem isTreelike_of_hasCutSplit (hN : N.IsPhylogenetic) {A Y : Finset X}
 /-! ### Lemma 4, `⇒`, two taxa in one block
 
 The other two cases, `Level1.not_isTreelike_of_distinct` and `Level1.isTreelike_of_not_below`, are in
-`src/Basic/Level1Blocks.lean`. -/
+`PhyloNetwork.Level1Blocks`. -/
 
 omit [Fintype V] [Fintype E] in
 /-- Lemma 4, `⇒`, same block: two taxa in one block, with the other two on the other side of the edge,
@@ -355,7 +355,7 @@ reticulation vertex is `h`. For a four-taxon set `Y` around the edge, the restri
 `Y` has a 4-blob if and only if the taxa of `Y` lie in distinct blocks at the blob and exactly one
 of them descends from `h`.
 
-The proof is the paper's, on the subnetwork `N.wedgeArcs Y` of `src/Basic/Wedge.lean`, the union of the
+The proof is the paper's, on the subnetwork `N.wedgeArcs Y` of `PhyloNetwork.Wedge`, the union of the
 wedge paths between taxa of `Y`. Its cut edges with both sides nonempty are those of the network induced
 on `Y` (`hasWedgeCutSplit_iff_hasCutSplitOn`, `hasWedgeCutSplit_iff_inducedNetwork_hasCutSplit`), so
 `IsTreelike N Y` says that one of them induces a `2|2` split (`isTreelike_iff_hasWedgeCutSplit`).
@@ -373,7 +373,7 @@ exclude (`existsUnique_below`).
 Departure from the paper, in two places. The paper reads the 4-blob on `N⁻|Y`, the subnetwork with its
 degree-two vertices, parallel edges and degree-two blobs suppressed (lines 544-545). The proof here stops at
 the subnetwork: it reads "contains a 4-blob" as "no cut edge of the subnetwork induces a `2|2` split". In a
-binary network, suppressing these changes no split of a cut edge (the header of `src/Basic/Wedge.lean`), which is
+binary network, suppressing these changes no split of a cut edge (the header of `PhyloNetwork.Wedge`), which is
 not formalized and not needed. Also, in `⇐`, the paper stops at the cycle with the four taxa attached at
 distinct vertices (lines 541-546), without saying why that excludes a `2|2` cut edge (E19). The proof shows
 that such an edge would leave two taxa attaching through it, against distinct blocks, so it does not use the
@@ -799,4 +799,4 @@ theorem threeFixOneAlter_correct (hN : N.IsPhylogenetic) (hBin : N.IsBinary) (hL
     (threeFixOneAlter_isDisjointCover hB hA (P A) (hP A hA) (hcover A hA) (hP₁ A hA) (hmem A hA)
       (z A) (hz A hA)).1
 
-end TOBQMC
+end TobQmc

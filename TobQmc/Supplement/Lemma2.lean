@@ -18,7 +18,7 @@ from it to a quartet tree of `T_N` fails, already on a binary level-1 network:
 * Its tree of blobs is a star (`mem_treeOfBlobs_iff`), but with `h` and `d` gone the arc `r→u` is a cut edge of the network induced on
   `{e, a, b, c}`, with the split `ab|ce` (`isTreelike_eab`).
 
-The forward direction is `TOBQMC.lemma2`.
+The forward direction is `TobQmc.lemma2`.
 
 The printed proof of the converse is by contradiction from "`N|Y` is a 4-blob", which it glosses as "there exists a blob `B` in `N` such
 that each taxon in `Y` is separated from the other three taxa in `Y` by a cut edge incident to `B`", and it ends with `T_N|Y` a star: this
@@ -29,10 +29,10 @@ and its use at lines 503-505 and 542-543 needs that.
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset
 open scoped Classical
 
-namespace TOBQMC.SupplementLemma2
+namespace TobQmc.SupplementLemma2
 
 open TreeOfBlobs.FinNetwork PhyloNetwork
 
@@ -167,4 +167,4 @@ theorem not_lemma2Converse : ¬ Lemma2Converse := by
   obtain ⟨s, -, hs⟩ := h net net_isPhylogenetic net_isBinary eabc (by decide) isTreelike_eabc
   exact not_displays s hs
 
-end TOBQMC.SupplementLemma2
+end TobQmc.SupplementLemma2

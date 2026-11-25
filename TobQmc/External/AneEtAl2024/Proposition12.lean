@@ -21,7 +21,7 @@ printed proof:
 
 Being binary is not used: on a nonbinary network, a displayed tree may leave the four taxa unresolved, and then its
 entries are all `1/3`. The strict form on cut-edge splits is `Phylogenetics.RootedNetwork.nmscCF_lt_rho_one` in
-`src/Basic/RhoOne.lean`.
+`TreeOfBlobs.RhoOne`.
 
 The lengths of hybrid arcs may vanish, and a hybrid arc of length zero is a tree arc of length zero in a displayed tree, so
 the comparison in a displayed tree is made at positive lengths, and passes to the limit, as

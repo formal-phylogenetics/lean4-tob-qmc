@@ -8,16 +8,16 @@ public import Phylogenetics.Network.CutHierarchy
 public import PhyloNetwork.Testing.Combining
 public import PhyloNetwork.Testing.Defs
 public import PhyloNetwork.Testing.IID
-public import TOBQMC.BipartitionSearch
-public import TOBQMC.ConsistencyT3
+public import TobQmc.FalsePositives.BipartitionSearch
+public import TobQmc.FalsePositives.ConsistencyT3
 
 /-!
 # TOB-QMC §4.3: the bipartition search combined with 3-fix-1-alter, with the T3 option
 
-`src/TOBQMC/BipartitionSearch.lean` proves the claim of TOB-QMC at embedded lines 622-623 ("combining the bipartition
+`TobQmc.FalsePositives.BipartitionSearch` proves the claim of TOB-QMC at embedded lines 622-623 ("combining the bipartition
 search heuristic with 3f1a yields a consistent method for level-1 networks") with TINNiK's star and cut tests. The T3
-test is TOB-QMC's default option (`src/TOBQMC/ConsistencyT3.lean`). This file is the same claim with the T3 option, in the
-same three forms as `src/TOBQMC/ConsistencyT3.lean`:
+test is TOB-QMC's default option (`TobQmc.FalsePositives.ConsistencyT3`). This file is the same claim with the T3 option, in the
+same three forms as `TobQmc.FalsePositives.ConsistencyT3`:
 
 * `consistencyT3_search_of_offModel`: with what the T3 test uses on the non-treelike subsets, off the T3 model;
 * `consistencyT3_search`: under conditions 4, 5 and 6a;
@@ -32,10 +32,10 @@ Both are in `contractSides_cover_union_eq`, which does not depend on the test. T
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -253,4 +253,4 @@ theorem consistencyT3_threeFixOneAlter_search [Fintype V] [Fintype E] {N : Roote
   obtain ⟨h₁, h₂, h₃, h₄, h₅⟩ := hPz B hB A hA
   exact (threeFixOneAlter_isDisjointCover hB hA (P B A) h₁ h₂ h₃ h₄ (z B A) h₅).1
 
-end TOBQMC
+end TobQmc

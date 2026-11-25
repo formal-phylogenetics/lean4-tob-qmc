@@ -1,13 +1,13 @@
 module
 
 public import PhyloNetwork.Testing.Tails
-public import TOBQMC.BipartitionSearch
-public import TOBQMC.ConsistencyT3
+public import TobQmc.FalsePositives.BipartitionSearch
+public import TobQmc.FalsePositives.ConsistencyT3
 
 /-!
 # TOB-QMC: the implementation of the tests, with the star test on the minimizer only
 
-`TOBQMC.tobqmc` and `TOBQMC.tobqmcSearch` read "TINNiK's hypothesis tests" as TINNiK's Step 2 on each four-taxon subset tested.
+`TreeOfBlobs.tobqmc` and `TobQmc.tobqmcSearch` read "TINNiK's hypothesis tests" as TINNiK's Step 2 on each four-taxon subset tested.
 TOB-QMC's implementation (v5, embedded lines 127-140) is different:
 
 > TOB-QMC-exhaustive tests for treelikeness among all four-taxon subsets around each edge in the refinement tree, storing the
@@ -32,7 +32,7 @@ every subset tested is treelike, and off the centroid.
 * `consistency_implementation_exhaustive`, `consistency_implementation_threeFixOneAlter`,
   `consistency_implementation_search`: TOB-QMC-exhaustive, TOB-QMC-3f1a and the combination of Algorithm 2 with 3f1a, as instances.
   The modes `fast` and `default`, which use Algorithm 2 alone, have no consistency claim in the paper.
-* `tobqmc_subset_implementation`: this contracts fewer edges than the reading of `TOBQMC.tobqmc`, which applies the star test to all
+* `tobqmc_subset_implementation`: this contracts fewer edges than the reading of `TreeOfBlobs.tobqmc`, which applies the star test to all
   subsets tested.
 * `implementation_contracted_mono`, `implementation_mono`: "higher `α` and lower `β` result in more edges being contracted".
 * `tobqmcImplementation_eq_offline`: "the impact of `α`, `β` can be evaluated offline".
@@ -42,10 +42,10 @@ every subset tested is treelike, and off the centroid.
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -185,13 +185,13 @@ theorem tobqmcImplementation_eq_of_tests [Fintype V] [Fintype E] {N : RootedNetw
 /-! ### Consistency -/
 
 /-- **The claim of TOB-QMC for its implementation**, with the cut test (`tob2025:implementation`): under the hypotheses of
-`TOBQMC.consistency`, there are levels `α_k → 0` such that for any `β > 0`, any selection of maximum likelihood topologies, any solver of
+`TobQmc.consistency`, there are levels `α_k → 0` such that for any `β > 0`, any selection of maximum likelihood topologies, any solver of
 Weighted Quartet Consensus, any selection `tested` of four-taxon subsets around each edge that contains a disjoint cover, possibly depending
 on the data, and any minimizers, the procedure with the star test on the minimizer returns the tree of blobs with probability tending
 to one.
 
-The levels are those of `TOBQMC.consistency`. On the event that the tests are correct on all four-taxon subsets (`Tinnik.tests_correct`), and
-that the solution refines the tree of blobs, which `TOBQMC.consistency` gives, the cut test rejects on the non-treelike subsets
+The levels are those of `TobQmc.consistency`. On the event that the tests are correct on all four-taxon subsets (`Tinnik.tests_correct`), and
+that the solution refines the tree of blobs, which `TobQmc.consistency` gives, the cut test rejects on the non-treelike subsets
 (`Tinnik.Rejects`), and it does not reject on the treelike ones, on which the star test rejects. Then
 `tobqmcImplementation_eq_of_tests` applies. -/
 theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
@@ -227,7 +227,7 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
   have hall := tendsto_iidProb_forall hd (ι := {q : Finset X // q.card = 4 ∧ ¬ IsTreelike N q})
     (fun q k ω => ∀ s ∈ treesOn q.val, cutPValue (quartetCount unroot ω) s < α k)
     (fun q => hrej q.val q.property.1 q.property.2)
-  -- a disjoint cover, to use `TOBQMC.consistency` for the refinement
+  -- a disjoint cover, to use `TobQmc.consistency` for the refinement
   choose! Q₀ hQ₀ using fun (B : Finset (Finset X)) (hB : IsBinaryTree B) (A : Finset X) (hA : A ∈ internalSides B) =>
     hcover (fun _ => 0) B hB A hA
   have hrefine := hcons β hβ ml hml solve hsolve Q₀ fun B hB A hA => (hQ₀ B hB A hA).2
@@ -384,7 +384,7 @@ theorem exists_blocks_of_isBinaryTree {T : Finset (Finset X)} (hT : IsBinaryTree
           exact Or.inr ((mem_union.1 hxR).resolve_left (by simpa using hxS))
         · exact Or.inl hxR
 
-/-- **A disjoint cover exists around every internal edge of a binary tree**, so that the selections of covers in `TOBQMC.consistency` and
+/-- **A disjoint cover exists around every internal edge of a binary tree**, so that the selections of covers in `TobQmc.consistency` and
 the theorems around it can be made: the subsets of Algorithm 1, on the quadripartition of the edge, with any anchors. -/
 theorem exists_isDisjointCover {T : Finset (Finset X)} (hT : IsBinaryTree T) {A : Finset X} (hA : A ∈ internalSides T) :
     ∃ Q, IsDisjointCover T A Q := by
@@ -599,4 +599,4 @@ theorem starPValue_lt_one {c : QuartetTree X → ℝ} (hc : ∀ r, 0 ≤ c r) {q
   simp only [starPValue, chiSqTwoTail]
   exact Real.exp_lt_one_iff.2 (by linarith)
 
-end TOBQMC
+end TobQmc

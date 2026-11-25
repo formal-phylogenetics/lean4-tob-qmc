@@ -1,7 +1,7 @@
 module
 
 public import PhyloNetwork.InducedSplits
-public import TOBQMC.WQC
+public import TobQmc.Refinement.WQC
 
 /-!
 # TOB-QMC supplement, Lemma 4: the margin as printed vanishes
@@ -14,16 +14,16 @@ By exchangeability, the two alternatives of a quartet tree that `T_N` displays h
 (`isPrintedPi_zero`), hence `π_min = 0` whenever `T_N` is not a star (`isPrintedPiMin_zero`), so `π_min > 0` is false
 (`not_printedPiMin_pos`), and no weights meet the hypothesis of the printed Lemma 4 (`not_exists_printedError_lt`).
 
-The margin that the supplement's proof uses compares the displayed quartet with its alternatives: `TOBQMC.Margin`, with `TOBQMC.supplementLemma4`,
-at the same radius, and `TOBQMC.exists_margin`.
+The margin that the supplement's proof uses compares the displayed quartet with its alternatives: `TobQmc.Margin`, with `TobQmc.supplementLemma4`,
+at the same radius, and `TobQmc.exists_margin`.
 -/
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -80,4 +80,4 @@ theorem not_exists_printedError_lt {N : RootedNetwork V E X} [Fintype V] [Fintyp
   rw [hπ.unique (isPrintedPiMin_zero hN hθ hρ hne), zero_div] at h0
   exact absurd h0 (not_lt.2 (abs_nonneg _))
 
-end TOBQMC
+end TobQmc

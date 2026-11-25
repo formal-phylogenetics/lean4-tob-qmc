@@ -1,21 +1,23 @@
 module
 
 public import TreeOfBlobs.LCA
-public import TOBQMC.External.KaneTao2017.PartitioningClusters
+public import TobQmc.External.KaneTao2017.PartitioningClusters
 public import Phylogenetics.Tree.AstralDP
 public import Phylogenetics.Network.CutHierarchy
 public import Tinnik.Algorithms.Counts
-public import TOBQMC.Astral
-public import TOBQMC.Counts
+public import TobQmc.Refinement.Astral
+public import TobQmc.Algorithms.Counts
+public import TobQmc.Basic.Algebra.BigOperators.Basic
+public import TobQmc.Basic.Data.Nat.Choose.Sum
 
 /-!
 # TOB-QMC: the running times, with what they rest on
 
-`src/TOBQMC/Counts.lean` counts the four-taxon subsets. This file goes on to the rest of TOB-QMC's running time claims (v5), each as a count of operations. A measured time on a machine is
+`TobQmc.Algorithms.Counts` counts the four-taxon subsets. This file goes on to the rest of TOB-QMC's running time claims (v5), each as a count of operations. A measured time on a machine is
 not a mathematical claim, and is not treated.
 
 * **Embedded lines 602-605, the time per subset and the precomputation.** `Phylogenetics.GeneTree.displays_iff_displaysByQueries` decides a quartet tree by five LCA queries, and each query reads two entries
-  of a sparse table of `O(n log n)` entries (`src/Basic/LCA.lean`). So `threeFixOneAlterReads_le`: `O(n² k + n log(n) k)`, as printed. The sentence names binary lifting, whose query takes `Θ(log n)` steps
+  of a sparse table of `O(n log n)` entries (`TreeOfBlobs.LCA`). So `threeFixOneAlterReads_le`: `O(n² k + n log(n) k)`, as printed. The sentence names binary lifting, whose query takes `Θ(log n)` steps
   (`Phylogenetics.LCA.length_ge_of_sum_two_pow`); with it, `threeFixOneAlterLifting_le` gives `O(n² k log n)`. So the numbers are right, for a sparse table, and the name of the data structure is
   not.
 * **Embedded lines 618-619 and 623, the bipartition search.** `searchReads_le`: `O(n³ k + n log(n) k)`, with or without 3f1a.
@@ -31,15 +33,15 @@ not a mathematical claim, and is not treated.
 * **Supplement, lines 642-649, the remark on sampling.** `card_around_of_blocks`: on the printed example, one four-taxon subset around the bipartition in `(m + 1)² / 4` draws one taxon from each block, which is
   `16 / n²`. The printed `4 (n - 2)² / (n - 1)⁴` is not that value, and has the same order, as the remark uses it. `one_sub_pow_le_mul`, `pow_le_exp`: so a quadratic number of samples is what is needed.
 
-No machine model is used. Han and Molloy's supplement and Zhang et al.'s text were read; Kane and Tao's theorem is proved in `src/External/KaneTao2017/`.
+No machine model is used. Han and Molloy's supplement and Zhang et al.'s text were read; Kane and Tao's theorem is proved in `TobQmc/External/KaneTao2017/`.
 -/
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {X : Type*} [Fintype X] [DecidableEq X]
 
@@ -53,7 +55,7 @@ theorem readsPerEvaluation_eq : (GeneTree.quartetQueries (X := Unit) () () () ()
 /-- The reads to test `tests` four-taxon subsets on `k` gene trees, for three quartet trees each (`sum_card_evaluations`), and the precomputation, by `GeneTree.precomputation_le`: `3 n + n log₂ n` per gene tree. -/
 def sparseReads (n k tests : ℕ) : ℕ := tests * (3 * k * readsPerEvaluation) + k * (3 * n + n * Nat.log 2 n)
 
-/-- **"The total time complexity of applying the 3f1a algorithm to every branch is `O(n² k + n log(n) k)`"** (embedded line 605), with the structure that gives it: at most `(n - 3)²` subsets (`TOBQMC.card_threeFixOneAlter_total_le`), each
+/-- **"The total time complexity of applying the 3f1a algorithm to every branch is `O(n² k + n log(n) k)`"** (embedded line 605), with the structure that gives it: at most `(n - 3)²` subsets (`TobQmc.card_threeFixOneAlter_total_le`), each
 read off `k` gene trees in `O(1)` per gene tree after the precomputation. -/
 theorem threeFixOneAlterReads_le {n k tests : ℕ} (htests : tests ≤ (n - 3) * (n - 3)) :
     sparseReads n k tests ≤ 30 * (n ^ 2 * k) + 3 * (n * k) + n * Nat.log 2 n * k := by
@@ -66,7 +68,7 @@ theorem threeFixOneAlterReads_le {n k tests : ℕ} (htests : tests ≤ (n - 3) *
   simp only [readsPerEvaluation] at h₂ ⊢
   nlinarith
 
-/-- **The bipartition search** (embedded lines 618-619 and 623): at `O(n³)` tests in total (`TOBQMC.search_total_le_of_limit_le`), "the time complexity of detecting FPs" is `O(n³ k + n log(n) k)`. -/
+/-- **The bipartition search** (embedded lines 618-619 and 623): at `O(n³)` tests in total (`TobQmc.search_total_le_of_limit_le`), "the time complexity of detecting FPs" is `O(n³ k + n log(n) k)`. -/
 theorem searchReads_le {n k tests C : ℕ} (htests : tests ≤ C * n ^ 3) :
     sparseReads n k tests ≤ 30 * C * (n ^ 3 * k) + 3 * (n * k) + n * Nat.log 2 n * k := by
   have h₂ : tests * (3 * k * readsPerEvaluation) ≤ C * n ^ 3 * (3 * k * readsPerEvaluation) :=
@@ -243,44 +245,6 @@ def qiFast (a b c : ι → ℝ) : ℝ :=
   ∑ i, choose2 (b i) * ((∑ j, a j - a i) * (∑ j, c j - c i) - ∑ j, a j * c j + a i * c i) +
   ∑ i, choose2 (c i) * ((∑ j, a j - a i) * (∑ j, b j - b i) - ∑ j, a j * b j + a i * b i)
 
-/-- The inner sum: `∑_{j≠i} ∑_{k≠i,j} b_j c_k`. -/
-theorem sum_sum_ite_eq (b c : ι → ℝ) (i : ι) :
-    (∑ j, ∑ k, if j ≠ i ∧ k ≠ i ∧ k ≠ j then b j * c k else 0) =
-      (∑ j, b j - b i) * (∑ j, c j - c i) - ∑ j, b j * c j + b i * c i := by
-  have h₁ : ∀ j, (∑ k, if j ≠ i ∧ k ≠ i ∧ k ≠ j then b j * c k else 0) =
-      if j ≠ i then b j * (∑ k, c k - c i - c j) else 0 := by
-    intro j
-    by_cases hj : j = i
-    · simp [hj]
-    · have hsplit : ∑ k, c k = c i + (c j + ∑ k ∈ (univ.erase i).erase j, c k) := by
-        rw [← add_sum_erase _ _ (mem_univ i), ← add_sum_erase _ _ (mem_erase.2 ⟨hj, mem_univ j⟩)]
-      have hsum : (∑ k, if k ≠ i ∧ k ≠ j then c k else 0) = ∑ k ∈ (univ.erase i).erase j, c k := by
-        rw [← sum_filter]
-        refine sum_congr ?_ fun _ _ => rfl
-        ext k
-        simp only [mem_filter, mem_univ, true_and, mem_erase, ne_eq]
-        tauto
-      simp only [hj, ne_eq, not_false_eq_true, true_and, ↓reduceIte]
-      have hpull : (∑ k, if ¬ k = i ∧ ¬ k = j then b j * c k else 0) = b j * ∑ k, if ¬ k = i ∧ ¬ k = j then c k else 0 := by
-        rw [mul_sum]
-        refine sum_congr rfl fun k _ => ?_
-        split_ifs <;> simp
-      rw [hpull]
-      congr 1
-      simp only [ne_eq] at hsum
-      rw [hsum]
-      linarith
-  simp only [h₁]
-  have h₂ : (∑ j, if j ≠ i then b j * (∑ k, c k - c i - c j) else 0) =
-      ∑ j, (b j * (∑ k, c k - c i) - b j * c j) - (b i * (∑ k, c k - c i) - b i * c i) := by
-    rw [← add_sum_erase _ (fun j => b j * (∑ k, c k - c i) - b j * c j) (mem_univ i), add_sub_cancel_left,
-      ← sum_filter]
-    refine sum_congr ?_ fun j _ => by ring
-    ext j
-    simp [mem_erase]
-  rw [h₂, sum_sub_distrib, ← sum_mul]
-  ring
-
 /-- **Lemma 1 of Zhang et al. 2018** (`ext:astral3_lemma1`): Equation 4 is Equation 6, which has `Θ(d)` terms. Their derivation is in their Additional file 1, Appendix B.1, by summing over `i`, `j`, `k`; this is the expansion
 `(a + b + c - 3) / 2 · a b c = C(a, 2) b c + a C(b, 2) c + a b C(c, 2)`. -/
 theorem qi_eq_qiFast (a b c : ι → ℝ) : qi a b c = qiFast a b c := by
@@ -306,18 +270,18 @@ theorem qi_eq_qiFast (a b c : ι → ℝ) : qi a b c = qiFast a b c := by
   · congr 1
     · refine sum_congr rfl fun i _ => ?_
       simp only [← mul_sum]
-      rw [sum_sum_ite_eq]
+      rw [Fintype.sum_sum_ite_ne_mul]
     · rw [sum_comm]
       refine sum_congr rfl fun j _ => ?_
       simp only [← mul_sum]
-      rw [sum_sum_ite_eq]
+      rw [Fintype.sum_sum_ite_ne_mul]
   · have hsw : (∑ i, ∑ j, ∑ k, choose2 (c k) * (if i ≠ k ∧ j ≠ k ∧ j ≠ i then a i * b j else 0)) =
         ∑ k, ∑ i, ∑ j, choose2 (c k) * (if i ≠ k ∧ j ≠ k ∧ j ≠ i then a i * b j else 0) :=
       (sum_congr rfl fun _ _ => sum_comm).trans sum_comm
     rw [hsw]
     refine sum_congr rfl fun k _ => ?_
     simp only [← mul_sum]
-    rw [sum_sum_ite_eq]
+    rw [Fintype.sum_sum_ite_ne_mul]
 
 /-- **The operations of Equation 6**: nine sums of `d` terms each, so `Θ(d)`, against `Θ(d³)` in Equation 4. The six sums `S_a`, `S_b`, `S_c`, `S_{a,b}`, `S_{a,c}`, `S_{b,c}`, and the three outer sums. -/
 def qiFastTerms (d : ℕ) : ℕ := 9 * d
@@ -559,36 +523,10 @@ theorem card_bipartitionQuartets_of_two {A : Finset X} (hA : A.card = 2) :
   rw [card_bipartitionQuartets, hA, card_compl, hA]
   simp
 
-/-- `∑_{a ≤ n} C(a, 2) C(n - a, s) = C(n + 1, s + 3)`. -/
-theorem sum_choose_mul_choose_aux (n s : ℕ) :
-    ∑ a ∈ range (n + 1), a.choose 2 * (n - a).choose s = (n + 1).choose (s + 3) := by
-  induction n generalizing s with
-  | zero =>
-    rw [Nat.choose_eq_zero_of_lt (by omega)]
-    simp
-  | succ n ih =>
-    cases s with
-    | zero =>
-      have h0 := ih 0
-      simp only [Nat.choose_zero_right, mul_one] at h0 ⊢
-      rw [sum_range_succ, h0, Nat.choose_succ_succ (n + 1) 2, add_comm]
-    | succ s =>
-      rw [sum_range_succ]
-      have hlast : (n + 1 - (n + 1)).choose (s + 1) = 0 := by simp
-      rw [hlast, mul_zero, add_zero]
-      have hpascal : ∀ a ∈ range (n + 1), a.choose 2 * (n + 1 - a).choose (s + 1) =
-          a.choose 2 * (n - a).choose (s + 1) + a.choose 2 * (n - a).choose s := by
-        intro a ha
-        have ha' : a ≤ n := by simpa [Nat.lt_succ_iff] using ha
-        rw [show n + 1 - a = (n - a) + 1 by omega, Nat.choose_succ_succ]
-        ring
-      rw [sum_congr rfl hpascal, sum_add_distrib, ih, ih, show s + 1 + 3 = (s + 3) + 1 by ring, Nat.choose_succ_succ (n + 1) (s + 3)]
-      ring
-
-/-- **On a caterpillar, the brute force tests `C(n + 1, 5)` subsets**: its edges have one side of each size `a`, for `2 ≤ a ≤ n - 2`, and `TOBQMC.card_bipartitionQuartets` counts each. So `Ω(n⁵)` (embedded line 570) on this tree. The terms with `a < 2` or `n - a < 2` vanish. -/
+/-- **On a caterpillar, the brute force tests `C(n + 1, 5)` subsets**: its edges have one side of each size `a`, for `2 ≤ a ≤ n - 2`, and `TobQmc.card_bipartitionQuartets` counts each. So `Ω(n⁵)` (embedded line 570) on this tree. The terms with `a < 2` or `n - a < 2` vanish. -/
 theorem sum_choose_mul_choose (n : ℕ) :
     ∑ a ∈ range (n + 1), a.choose 2 * (n - a).choose 2 = (n + 1).choose 5 :=
-  sum_choose_mul_choose_aux n 2
+  Nat.sum_range_choose_two_mul_choose n 2
 
 /-- **The count over the edges of a caterpillar**: a tree whose edges have one side of each size from `2` to `n - 2`. -/
 theorem sum_card_bipartitionQuartets_of_caterpillar {E : Finset (Finset X)} (hinj : Set.InjOn Finset.card (E : Set (Finset X)))
@@ -751,4 +689,4 @@ theorem pow_le_exp {p : ℝ} (h1 : p ≤ 1) (t : ℕ) : (1 - p) ^ t ≤ Real.exp
         congr 1
         ring
 
-end TOBQMC
+end TobQmc

@@ -9,7 +9,7 @@ public import PhyloNetwork.Wedge
 `MetricDigraph.IsLevel1` says of a digraph that no two cycles of its undirected graph share an edge.
 `RootedNetwork.IsLevelOne` says of a rooted network that every blob has at most one more reticulation arc than reticulation
 vertices. The library has the implication from the first to the second (`MetricDigraph.isLevelOne_ofBinary`). The converse
-uses the structure of a level-1 blob in `src/Basic/Wedge.lean`: the arcs of a blob of a binary level-1 network are at most two at
+uses the structure of a level-1 blob in `PhyloNetwork.Wedge`: the arcs of a blob of a binary level-1 network are at most two at
 each vertex (`Level1.BlobCycle.degLeTwo`), and an edge on a cycle has a second one at each end, so the edges that are not bridges
 form a graph of cycles (`MetricDigraph.isLevel1_of_isCycles`).
 
@@ -21,7 +21,7 @@ Nothing else imports this file.
 open Finset Phylogenetics Phylogenetics.RootedNetwork Phylogenetics.MetricDigraph PhyloNetwork
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V : Type*} {X : Type*} {G : MetricDigraph V X}
 
@@ -120,4 +120,4 @@ theorem isLevel1_of_isLevelOne (hb : G.IsBinary) (hl : G.IsLabelled) (h : (ofBin
 theorem isLevel1_iff_isLevelOne (hb : G.IsBinary) (hl : G.IsLabelled) : G.IsLevel1 ↔ (ofBinary hb).IsLevelOne :=
   ⟨isLevelOne_ofBinary hb hl, isLevel1_of_isLevelOne hb hl⟩
 
-end TOBQMC
+end TobQmc

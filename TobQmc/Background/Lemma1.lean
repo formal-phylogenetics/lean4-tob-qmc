@@ -2,8 +2,9 @@ module
 
 public import Allman2023.LargeNetworks.Reduction
 public import PhyloNetwork.InducedSplits
+public import PhyloNetwork.Level1Blobs
 public import Phylogenetics.NMSC.DisplayedTreeModel
-public import TOBQMC.WQC
+public import TobQmc.Refinement.WQC
 
 /-!
 # TOB-QMC Lemma 1: displayed quartet trees and 4-blobs
@@ -15,7 +16,7 @@ single quartet tree (i.e., is of class 1) if, and only if, it does not have a 4-
 
 The definition of that source (§2.1): "A (topological) tree T is displayed in a network N if it can be obtained from N
 by deleting all but one parent hybrid edge from each hybrid node in N, and then deleting any edge and node not
-contained in any up-down path between two leaves." The library's notion is `TOBQMC.NetworkDisplays`, of Definition 1
+contained in any up-down path between two leaves." The library's notion is `TobQmc.NetworkDisplays`, of Definition 1
 of TOB-QMC: a choice `c` of a parent at each reticulation (`IsDisplayDeletion`), with an arc kept by the choice having
 exactly a cherry of the quartet tree below it. The proof works with the arcs `D` that a choice deletes, as
 `Allman2023.exists_reduction` does:
@@ -47,10 +48,10 @@ The statement is proved for four taxa `q` of a network on any number of taxa, as
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Allman2023 Finset
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Allman2023 Finset
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} {N : RootedNetwork V E X} {D : Set E}
 
@@ -232,17 +233,6 @@ theorem childClusters_eq_pair_of_isHierarchy {H : Finset (Finset X)} (hH : IsHie
     · exact ⟨h₁, hlt₁, fun C hC hlt hgt => hgap₁ C hC hlt hgt⟩
     · exact ⟨h₂, hlt₂, fun C hC hlt hgt => hgap₂ C hC hlt hgt⟩
 
-omit [Fintype X] [DecidableEq X] in
-/-- A vertex of a binary network has at most two children. -/
-theorem outdegree_le_two (hN : N.IsPhylogenetic) (hBin : N.IsBinary) (v : V) :
-    N.graph.outdegree v ≤ 2 := by
-  by_cases hv : v = N.root
-  · subst hv
-    exact hBin.1.le
-  · have h₁ := hN.nonroot_indegree v hv
-    have h₂ := degree_le_three_of_isBinary hN hBin v
-    omega
-
 /-- **A displayed tree of a binary network is binary.** A cluster with at least two taxa is that of a lowest vertex
 with these taxa below it; this vertex has two children with taxa below them, and at most two children. -/
 theorem isBinaryTree_displayTree [Nonempty X] (hN : N.IsPhylogenetic) (hBin : N.IsBinary)
@@ -322,7 +312,7 @@ theorem isBinaryTree_displayTree [Nonempty X] (hN : N.IsPhylogenetic) (hBin : N.
         have h3 : ({f, g, h} : Set E).ncard = 3 := by
           rw [Set.ncard_eq_three]
           exact ⟨f, g, h, hfg, fun e => hhf e.symm, fun e => hhg e.symm, rfl⟩
-        have := outdegree_le_two hN hBin v
+        have := PhyloNetwork.Level1.outdegree_le_two hN hBin v
         simp only [DirectedMultigraph.outdegree] at this
         omega
   have hmem : ∀ e : E, e ∉ D → N.graph.source e = v → (taxaBelowOff N D (univ : Finset X) (N.graph.target e)).Nonempty →
@@ -620,4 +610,4 @@ theorem displayedSides_eq_displayTree [Fintype V] (c : N.ParentChoice) :
 
 end ParentChoices
 
-end TOBQMC
+end TobQmc

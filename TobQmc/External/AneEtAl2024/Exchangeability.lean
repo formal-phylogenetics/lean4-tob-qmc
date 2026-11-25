@@ -11,7 +11,7 @@ coalescent: theory and prevalence*, J. Math. Biol. 88 (2024), https://doi.org/10
 
 The exchangeability of taxa on the same side of a cut edge is cited by TOB-QMC's proof of Lemma 3 from
 this source and from TINNiK (ECToBlob §5.1 and Remark 3.3 use the same fact). It is proved here for this
-project's NMSC, on arbitrary networks and with inheritance correlation; see `src/External/AneEtAl2024/README.md`.
+project's NMSC, on arbitrary networks and with inheritance correlation; see `TobQmc/External/AneEtAl2024/README.md`.
 -/
 
 @[expose] public noncomputable section

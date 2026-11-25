@@ -7,7 +7,7 @@ public import Phylogenetics.Network.CutHierarchy
 public import PhyloNetwork.Testing.Combining
 public import PhyloNetwork.Testing.Defs
 public import PhyloNetwork.Testing.IID
-public import TOBQMC.Consistency
+public import TobQmc.FalsePositives.Consistency
 
 /-!
 # TOB-QMC §4.3: the bipartition search (Algorithm 2) combined with 3-fix-1-alter
@@ -54,10 +54,10 @@ So `consistency_search` holds for all picks, and so does `consistency_threeFixOn
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*}
 
@@ -171,7 +171,7 @@ theorem SearchTuple.IsAround.neighbours (h : t.IsAround A) {n : SearchTuple X} (
 
 /-- `|N| ≤ 2 (|A| - 2) + 2 (|B| - 2) = 2 (n - 4)`. -/
 theorem SearchTuple.IsAround.card_neighbours_le (h : t.IsAround A) :
-    (TOBQMC.neighbours A t).card ≤ 2 * (Fintype.card X - 4) := by
+    (TobQmc.neighbours A t).card ≤ 2 * (Fintype.card X - 4) := by
   obtain ⟨a₁, a₂, b₁, b₂⟩ := t
   obtain ⟨h₁, h₂, ha, h₃, h₄, hb⟩ := h
   simp only at h₁ h₂ ha h₃ h₄ hb
@@ -434,7 +434,7 @@ omit [Fintype X] [DecidableEq X] in
 /-- Line 14 keeps a minimizer. -/
 theorem IsBestOf.betterTuple {best : Option (SearchTuple X)} {T T' : Finset (SearchTuple X)} {q : SearchTuple X}
     (h : IsBestOf p best T) (hq : q ∈ T') (hTT : T ⊆ T') (hmin : ∀ t ∈ T', t ∈ T ∨ p q ≤ p t) :
-    IsBestOf p (TOBQMC.betterTuple p best q) T' := by
+    IsBestOf p (TobQmc.betterTuple p best q) T' := by
   cases best with
   | none =>
     have hT : T = ∅ := h
@@ -445,7 +445,7 @@ theorem IsBestOf.betterTuple {best : Option (SearchTuple X)} {T T' : Finset (Sea
     · exact h'
   | some b =>
     obtain ⟨hb, hbmin⟩ : b ∈ T ∧ ∀ t ∈ T, p b ≤ p t := h
-    simp only [TOBQMC.betterTuple]
+    simp only [TobQmc.betterTuple]
     split_ifs with hlt
     · refine ⟨hq, fun t ht => ?_⟩
       rcases hmin t ht with h' | h'
@@ -670,8 +670,8 @@ theorem minP_lt_iff {α : ℝ} (hα : α ≤ 1) {P : Multiset ℝ} : minP P < α
 star test does not reject at level `β`, and the p-value of the cut test otherwise. At a level `α > 0` of the cut test,
 it is below `α` exactly when the set is judged non-treelike (`judgedP_lt_iff`).
 
-This reads the tests as `TOBQMC.tobqmc` does, TOB-QMC §4.3's "TINNiK's hypothesis tests", with the cut test;
-`src/TOBQMC/BipartitionSearchT3.lean` has the T3 option. The implementation described at embedded lines 133-137 instead
+This reads the tests as `TreeOfBlobs.tobqmc` does, TOB-QMC §4.3's "TINNiK's hypothesis tests", with the cut test;
+`TobQmc.FalsePositives.BipartitionSearchT3` has the T3 option. The implementation described at embedded lines 133-137 instead
 keeps the p-value of the treelikeness test and applies the star test to the minimizer alone. -/
 def judgedP (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (β : ℝ) (c : QuartetTree X → ℝ) (Y : Finset X) : ℝ :=
   if β ≤ starPValue .lrt c Y then 0 else cutPValue c (ml c Y)
@@ -735,10 +735,10 @@ def tobqmcSearch (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (
 /-! ### Consistency -/
 
 /-- **Consistency with further four-taxon sets around the bipartitions**, under the hypotheses of
-`TOBQMC.consistency`, for any selection `R` of four-taxon sets around the bipartitions, possibly depending on the
-data. The levels are those of `TOBQMC.consistency`'s proof. On the event that the tests are correct on all four-taxon
+`TobQmc.consistency`, for any selection `R` of four-taxon sets around the bipartitions, possibly depending on the
+data. The levels are those of `TobQmc.consistency`'s proof. On the event that the tests are correct on all four-taxon
 sets (`Tinnik.tests_correct`) and that the solution refines the tree of blobs, the method is the oracle's, and
-`contractSides_cover_union_eq` applies. That the solution refines the tree of blobs comes from `TOBQMC.consistency`
+`contractSides_cover_union_eq` applies. That the solution refines the tree of blobs comes from `TobQmc.consistency`
 itself, whose output is contained in the solution. -/
 theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
@@ -792,7 +792,7 @@ theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ
 /-- **The claim of TOB-QMC at embedded lines 622-623** on consistency (`tob2025:consistency`, as extended there):
 combining the bipartition search with a disjoint cover, the p-value of each edge being the minimum over the cover and
 over the four-taxon sets the search tested, is consistent for level-1 networks. The hypotheses are those of
-`TOBQMC.consistency`; the iteration limit and the picks of Algorithm 2 are arbitrary, its picks being around the
+`TobQmc.consistency`; the iteration limit and the picks of Algorithm 2 are arbitrary, its picks being around the
 bipartition, and may depend on the data. -/
 theorem consistency_search [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
@@ -868,4 +868,4 @@ theorem consistency_threeFixOneAlter_search [Fintype V] [Fintype E] {N : RootedN
   obtain ⟨h₁, h₂, h₃, h₄, h₅⟩ := hPz B hB A hA
   exact (threeFixOneAlter_isDisjointCover hB hA (P B A) h₁ h₂ h₃ h₄ (z B A) h₅).1
 
-end TOBQMC
+end TobQmc

@@ -4,10 +4,10 @@ public import Allman2023.FourTaxa.CFDetectable
 public import TreeOfBlobs.RhoOne
 public import TreeOfBlobs.FinNetwork
 public import TreeOfBlobs.UnitMetric
-public import TOBQMC.External.AneEtAl2024.Proposition12
+public import TobQmc.External.AneEtAl2024.Proposition12
 public import Tinnik.Consistency.Theorem4
-public import TOBQMC.ConsistencyT3
-public import TOBQMC.Implementation
+public import TobQmc.FalsePositives.ConsistencyT3
+public import TobQmc.Algorithms.Implementation
 
 /-!
 # TOB-QMC supplement, Lemma 7 and Theorem 1: false at level 2
@@ -20,7 +20,7 @@ E25 of the report. The supplement states for "a directed binary species network"
 * Theorem 1 (lines 595-599): for a refinement of the tree of blobs, under a relaxed quartet-nonanomaly, "an algorithm `A` that contracts edges in `T|'_N` by applying hypothesis
   tests to disjoint covers of each branch is a consistent estimator of `T_N`".
 
-Main v5 restricts these to level 1, as `TOBQMC.lemma4`, `TOBQMC.theorem2` and `TOBQMC.consistency`. This file shows that the restriction is needed.
+Main v5 restricts these to level 1, as `TobQmc.lemma4`, `TobQmc.theorem2` and `TobQmc.consistency`. This file shows that the restriction is needed.
 
 ## The network
 
@@ -49,10 +49,10 @@ this is `NMSC.nmscCF_lt_of_fork` at all `ρ`, but `{5, 7, 10, 12}` has no fork, 
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs PhyloNetwork Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 /-! ### The tests on one set of four taxa -/
 
@@ -152,7 +152,7 @@ def SupplementLemma7 : Prop :=
       RefinesBlob N A v → ∀ Y : Finset X, Y.card = 4 → (A ∩ Y).card = 2 → (∀ x ∈ Y, ∀ y ∈ Y, x ≠ y → ¬ SameBlock N v x y) →
         (∃ x ∈ Y, AttachesAtReticulation N v x) → ¬ IsTreelike N Y
 
-/-- **Theorem 2 of v5 without "level 1"**: `TOBQMC.theorem2` with its hypothesis on the level left out, as the supplement's Theorem 1 claims for the oracle on four taxa. -/
+/-- **Theorem 2 of v5 without "level 1"**: `TobQmc.theorem2` with its hypothesis on the level left out, as the supplement's Theorem 1 claims for the oracle on four taxa. -/
 def Theorem2WithoutLevelOne : Prop :=
   ∀ {V E X : Type} [Fintype V] [Fintype E] [Fintype X] [DecidableEq X] (N : RootedNetwork V E X), N.IsPhylogenetic → N.IsBinary →
     ∀ B : Finset (Finset X), IsUnrootedTree B → treeOfBlobs N ⊆ B → ∀ Q : Finset X → Finset (Finset X),
@@ -160,7 +160,7 @@ def Theorem2WithoutLevelOne : Prop :=
       contractSides B ((internalSides B).filter fun A => ∃ Y ∈ Q A, ¬ IsTreelike N Y) = treeOfBlobs N
 
 /-- **Theorem 1 of the supplement, as printed**: for a binary metric network under a relaxed quartet-nonanomaly, read as both conditions 1 of the supplement's Definition 1 and T-quartet-nonanomaly, and
-any binary refinement of its tree of blobs with disjoint covers, TINNiK's tests on the covers give a consistent estimator of the tree of blobs. The levels are as in `TOBQMC.consistency`. -/
+any binary refinement of its tree of blobs with disjoint covers, TINNiK's tests on the covers give a consistent estimator of the tree of blobs. The levels are as in `TobQmc.consistency`. -/
 def SupplementTheorem1 : Prop :=
   ∀ {V E X : Type} [Fintype V] [Fintype E] [Fintype X] [DecidableEq X] (N : RootedNetwork V E X) (θ : MetricData E) (ρ : ℝ),
     StandardAssumptions N θ ρ → IsRelaxedNonanomalous N θ ρ → IsTQuartetNonanomalous N (nmscCF N θ ρ) → 4 ≤ Fintype.card X →
@@ -607,8 +607,8 @@ theorem A₀_mem_contractSides {Q : Finset (Fin 7) → Finset (Finset (Fin 7))} 
     rw [hQ'] at hY
     exact hR Y hY hRY
 
-/-- (`tob2025:theorem2_needs_level_one`) **The oracle on four taxa fails on a disjoint cover at level 2** (E25 of the report): on the network `net` the output of `TOBQMC.theorem2`'s procedure keeps the false edge.
-So `TOBQMC.theorem2` needs its hypothesis of level 1. -/
+/-- (`tob2025:theorem2_needs_level_one`) **The oracle on four taxa fails on a disjoint cover at level 2** (E25 of the report): on the network `net` the output of `TobQmc.theorem2`'s procedure keeps the false edge.
+So `TobQmc.theorem2` needs its hypothesis of level 1. -/
 theorem not_theorem2_without_level_one : ¬ Theorem2WithoutLevelOne := by
   intro h
   have he := h net net_isPhylogenetic net_isBinary B B_isBinaryTree.isUnrootedTree treeOfBlobs_subset Q₀ Q₀_isDisjointCover
@@ -660,7 +660,7 @@ theorem tendsto_tobqmc_eq_treeOfBlobs_rho_one {θ : MetricData (Fin 18)} (hθ : 
   tendsto_tobqmc_eq_treeOfBlobs hθ ⟨zero_le_one, le_rfl⟩ (isStrictlyCutAt_rho_one hθ) hα₀ hβ hml hQ hQ'
 
 /-- (`tob2025:supplement_theorem1_generic`) **The method on `net` at `ρ = 0`, for generic parameters** (E25 of the report): at parameters with CF-detectability, as generic parameters have (`Allman2023.cfDetectable_generic`), the 4-blobs have non-cut concordance factors, so all the assumptions of
-`TOBQMC.consistency` but the level hold; and the same conclusion holds as at `ρ = 1`. -/
+`TobQmc.consistency` but the level hold; and the same conclusion holds as at `ρ = 1`. -/
 theorem forGenericParams_tendsto_tobqmc_eq_treeOfBlobs :
     Allman2023.ForGenericParams net fun θ =>
       (∀ q : Finset (Fin 7), q.card = 4 → ¬ IsTreelike net q → Allman2023.IsNonCut (nmscCF net θ 0) q) ∧
@@ -717,7 +717,7 @@ theorem exists_isMLSelection : ∃ ml : (QuartetTree (Fin 7) → ℝ) → Finset
   exact ⟨ml, fun c q hq => hml c q hq⟩
 
 /-- (`tob2025:supplement_theorem1_false`) **Theorem 1 of the supplement is false at level 2** (E25 of the report). On the binary level-2 network `net`, at `ρ = 1` and at all valid parameters, all its hypotheses hold, and hypothesis tests on the disjoint covers `Q₀` of the refinement `B`,
-with `cover` at the false edge, return the tree of blobs with probability tending to zero, at all levels. Main v5 restricts its Theorem 2 to level 1, as `TOBQMC.consistency` does. -/
+with `cover` at the false edge, return the tree of blobs with probability tending to zero, at all levels. Main v5 restricts its Theorem 2 to level 1, as `TobQmc.consistency` does. -/
 theorem not_supplementTheorem1 : ¬ SupplementTheorem1 := by
   intro h
   have hθ := TreeOfBlobs.isMetric_unitMetric net
@@ -732,4 +732,4 @@ theorem not_supplementTheorem1 : ¬ SupplementTheorem1 := by
 
 end LevelTwo
 
-end TOBQMC
+end TobQmc

@@ -1,7 +1,7 @@
 module
 
-public import TOBQMC.External.AneEtAl2024.Proposition12
-public import PhyloNetwork.Level1Blobs
+public import TobQmc.External.AneEtAl2024.Proposition12
+public import PhyloNetwork.Level1CF
 public import Phylogenetics.Network.Cuts
 
 /-!
@@ -145,52 +145,6 @@ theorem rule2 {N : RootedNetwork V E X} {q : Finset X} {h : V} (hq : q.card = 4)
 /-- The arcs that leave the blob of `h` by a bridge. -/
 def exitArcs (N : RootedNetwork V E X) (h : V) : Set E :=
   {e | N.graph.underlying.IsBridge e ∧ N.graph.blobSetoid h (N.graph.source e) ∧ ¬ N.graph.blobSetoid h (N.graph.target e)}
-
-omit [Fintype X] [DecidableEq X] in
-/-- A taxon below a bridge is dominated by it: the root is on the side of its source. -/
-theorem dominates_of_isBridge {N : RootedNetwork V E X} (hN : N.IsPhylogenetic) {e : E} {x : X} (he : N.graph.underlying.IsBridge e) (hx : N.IsBelow e x) : N.Dominates e x := by
-  obtain ⟨S, hS⟩ := (N.graph.isBridge_iff e).1 he
-  obtain ⟨T, hT, htT, hsT⟩ : ∃ T : Set V, (∀ f, N.graph.Crosses f T ↔ f = e) ∧ N.graph.target e ∈ T ∧ N.graph.source e ∉ T := by
-    rcases (hS e).2 rfl with ⟨h₁, h₂⟩ | ⟨h₁, h₂⟩
-    · refine ⟨Sᶜ, fun f => ?_, h₂, by simpa using h₁⟩
-      rw [← hS f]
-      simp only [DirectedMultigraph.Crosses, Set.mem_compl_iff, not_not]
-      tauto
-    · exact ⟨S, hS, h₁, h₂⟩
-  have hdown : ∀ w, N.graph.Reaches (N.graph.target e) w → w ∈ T := by
-    intro w hw
-    induction hw with
-    | refl => exact htT
-    | @tail a b _ hab ih =>
-      obtain ⟨f, rfl, rfl⟩ := hab
-      by_contra hb
-      have hfe := (hT f).1 (Or.inl ⟨ih, hb⟩)
-      subst hfe
-      exact hsT ih
-  have hroot : N.root ∉ T := by
-    intro hr
-    have key : ∀ w, N.graph.Reaches N.root w → w ∈ T := by
-      intro w hw
-      induction hw with
-      | refl => exact hr
-      | @tail a b _ hab ih =>
-        obtain ⟨f, rfl, rfl⟩ := hab
-        by_contra hb
-        have hfe := (hT f).1 (Or.inl ⟨ih, hb⟩)
-        subst hfe
-        exact hsT ih
-    exact hsT (key _ (hN.root_reaches _))
-  intro hav
-  have hin : N.leaf x ∈ T := hdown _ hx
-  have key : ∀ w, N.AvoidingReach e N.root w → w ∉ T := by
-    intro w hw
-    induction hw with
-    | refl => exact hroot
-    | @tail a b _ hab ih =>
-      obtain ⟨f, hfe, rfl, rfl⟩ := hab
-      intro hb
-      exact hfe ((hT f).1 (Or.inr ⟨hb, ih⟩))
-  exact key _ hav hin
 
 omit [Fintype X] [DecidableEq X] in
 /-- Two arcs leaving a blob by bridges have no taxon below both. -/

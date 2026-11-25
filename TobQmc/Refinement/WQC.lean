@@ -2,7 +2,7 @@ module
 
 public import TreeOfBlobs.Defs
 public import TreeOfBlobs.LocalObjective
-public import TOBQMC.External.AneEtAl2024.Exchangeability
+public import TobQmc.External.AneEtAl2024.Exchangeability
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.Tree.Detach
@@ -27,10 +27,10 @@ refinement, the compatibility supertree of the paper, which is `splice`.
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology MeasureTheory ProbabilityTheory
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology MeasureTheory ProbabilityTheory
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -1116,4 +1116,4 @@ theorem astral_corollary [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ :
   exact hK₀ k ((le_max_left _ _).trans hk) B hB.1 fun T hT =>
     hopt T (hspace k ((le_max_right _ _).trans hk) T hT)
 
-end TOBQMC
+end TobQmc

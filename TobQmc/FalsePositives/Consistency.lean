@@ -1,9 +1,9 @@
 module
 
 public import Tinnik.Consistency.Theorem4
-public import TOBQMC.Level1
-public import TOBQMC.Level1CF
-public import TOBQMC.WQC
+public import TobQmc.FalsePositives.Level1
+public import TobQmc.FalsePositives.Level1CF
+public import TobQmc.Refinement.WQC
 public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
@@ -19,15 +19,15 @@ The unnumbered claim at the end of §4.3 (`tob2025:consistency`), combining Theo
 the tests of TINNiK Theorem 4: for level-1 networks, with levels `α_k → 0` and any `β > 0`, labelling the edges of
 any optimal solution of Weighted Quartet Consensus by hypothesis tests on a disjoint cover and
 contracting those labelled false positives returns the tree of blobs with probability tending to one.
-The tests are TINNiK's star and cut tests; the T3 option is in `TOBQMC.ConsistencyT3`.
+The tests are TINNiK's star and cut tests; the T3 option is in `TobQmc.FalsePositives.ConsistencyT3`.
 -/
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork TreeOfBlobs Finset Filter Topology
 open scoped Classical
 
-namespace TOBQMC
+namespace TobQmc
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
@@ -166,4 +166,4 @@ theorem consistency [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Metr
   rw [hB]
   exact ⟨fun h => h.2, fun h => ⟨QuartetTree.card_taxa s, h⟩⟩
 
-end TOBQMC
+end TobQmc
