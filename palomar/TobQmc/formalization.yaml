@@ -50,7 +50,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1007/s00285-022-01838-9"
     relationship: "background"
-    note: "Cited; the proof of Lemma 1 uses its reduction, and the consistency claim its CF-detectability. It is formalized in its own repository, lean4-allman2023."
+    note: "Cited; the proof of Lemma 1 uses its reduction, and the consistency claim its CF-detectability. It is formalized in its own repository, lean4-allman2023; the results that the proofs here use are stated in TobQmc/External/Allman2023 and proved from its theorems."
     author_endorsement: "not-contacted"
   - title: "TINNiK: inference of the tree of blobs of a species network under the coalescent model"
     authors:
@@ -62,7 +62,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1186/s13015-024-00266-2"
     relationship: "background"
-    note: "Cited; the consistency claim uses its hypothesis tests, with the levels of its proof of Theorem 4. It is formalized in its own repository, lean4-tinnik."
+    note: "Cited; the consistency claim uses its hypothesis tests, with the levels of its proof of Theorem 4. It is formalized in its own repository, lean4-tinnik; the steps of that proof that the proofs here use are stated in TobQmc/External/Tinnik and proved from its theorems."
     author_endorsement: "not-contacted"
   - title: "Anomalous networks under the multispecies coalescent: theory and prevalence"
     authors:
@@ -75,7 +75,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1007/s00285-024-02050-7"
     relationship: "background"
-    note: "Exchangeability across a cut edge is proved in TOBQMC/External/AneEtAl2024 for arbitrary networks with correlated inheritance, with Proposition 12 and rule 2; rule 1 in general, its Lemma 11, is not."
+    note: "Exchangeability across a cut edge is proved in TobQmc/External/AneEtAl2024 for arbitrary networks with correlated inheritance, with Proposition 12 and rule 2; rule 1 in general, its Lemma 11, is not."
   - title: "When are quarnets sufficient to reconstruct semi-directed phylogenetic networks?"
     authors:
       - "Katharina T. Huber"
@@ -87,7 +87,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1007/s11538-025-01510-5"
     relationship: "background"
-    note: "Theorem 5.1, both directions, is proved in lean4-tob/TreeOfBlobs/External/HuberEtAl2025; the proof of the converse isn't the source's, and is documented there."
+    note: "Theorem 5.1, both directions, is proved in lean4-phylo-network/PhyloNetwork/External/HuberEtAl2025; the proof of the converse isn't the source's, and is documented there."
   - title: "Misspecification strikes: ASTRAL can mislead in the presence of hybridization, even for nonanomalous scenarios"
     authors:
       - "Vu Dinh"
@@ -96,7 +96,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.1093/molbev/msaf049"
     relationship: "background"
-    note: "Theorem 1 and Corollary 2 are proved in TOBQMC/External/DinhBanos2025. The n-cycle supplement and the simulations are not formalized."
+    note: "Theorem 1 and Corollary 2 are proved in TobQmc/External/DinhBanos2025. The n-cycle supplement and the simulations are not formalized."
   - title: "A bound on partitioning clusters"
     authors:
       - "Daniel Kane"
@@ -105,7 +105,7 @@ sources:
     type: "article"
     location: "https://doi.org/10.37236/6797"
     relationship: "background"
-    note: "The bound of Theorem 1 is proved in TOBQMC/External/KaneTao2017, for the running time of ASTRAL-III, with one inequality by another argument, documented there. Its sharpness is not formalized."
+    note: "The bound of Theorem 1 is proved in TobQmc/External/KaneTao2017, for the running time of ASTRAL-III, with one inequality by another argument, documented there. Its sharpness is not formalized."
   - title: "Hypothesis testing near singularities and boundaries"
     authors:
       - "Jonathan D. Mitchell"
@@ -115,12 +115,12 @@ sources:
     type: "article"
     location: "https://doi.org/10.1214/19-EJS1576"
     relationship: "background"
-    note: "The conclusion of Theorem 3.1 for the trinomial cut model, and Propositions 4.1, 4.2, 5.1 and 5.2, are proved in lean4-tob/TreeOfBlobs/External/MitchellAllmanRhodes2019, the limit laws by a direct argument."
+    note: "The conclusion of Theorem 3.1 for the trinomial cut model, and Propositions 4.1, 4.2, 5.1 and 5.2, are proved in lean4-phylo-network/PhyloNetwork/External/MitchellAllmanRhodes2019, the limit laws by a direct argument."
 
 related_formalizations:
   - id: "https://github.com/vltanh/lean4-phylogenetics"
     relationship: "adapts"
-    note: "This repository imports this library, pinned at commit b56ce53, for its definitions and general results, so TOBQMC/MainResults.lean imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that, in lean4-tob (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written in lean4-tob and has moved to the library; the library's term-based level-1 network coalescent is not used."
+    note: "This repository imports this library, pinned at commit 3fcabfd, for its definitions and general results, so the Solution imports it too. Finite Kingman coalescent and hierarchy modules were adapted from commit 06f684e5 under Apache-2.0 before that, in lean4-tob (lean4-tob/docs/ADAPTED_SOURCES.md, lean4-tob/docs/COALESCENT_SOURCES.md). The network coalescent on arbitrary networks was first written in lean4-tob and has moved to the library; the library's term-based level-1 network coalescent is not used."
   - id: "https://github.com/vltanh/lean4-camus"
     relationship: "independent"
     note: "Surveyed; no code used."
@@ -136,7 +136,7 @@ status:
     3-fix-1-alter, the implementation that applies the star test to the minimizer only, ASTRAL's dynamic program, exact
     on its search space, and the counts of operations behind its running-time claims. Not formalized: simulations and
     empirical tables, and results of cited sources that no proof here uses. Running times are counts of operations, with
-    no machine model. See Section 9 of REPORT.md.
+    no machine model. See Section 9 of docs/TobQmc/REPORT.md.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -163,14 +163,14 @@ automation:
       prompting_notes: "Slash command with the three paper links, continuing from the earlier handoff; later the user asked to match the sources closely, to formalize what the report listed as not formalized, to add Gusfield et al. 2007 and Allman et al. 2023 as primary papers on the library lean4-phylogenetics, and to finish what remained, leaving only empirical claims and wrong statements."
   spend_usd: "not tracked"
   notes: >-
-    The user chose the papers and the versions of the first three, agreed to the statement corrections of ECToBlob and TOB-QMC, and decided the library's boundary, the layout, the kernels and publication. AI systems wrote the code, the statements, the audit and the documents. The automation above is for the whole project in lean4-tob, which until 2026-11-04 also had Gusfield et al. 2007, since moved to its own repository, lean4-gusfield2007; on 2026-11-21 each of its four papers moved, with its entry, to a repository of its own. Now TOBQMC/ has 24 modules; the audit checks every declaration of this repository and of the libraries it requires, all on the standard axioms; three kernels accepted the 18 main theorems of this entry in lean4-tob, before the split (scripts/check_kernels.sh), and have not been run here since. See lean4-tob/docs/CREDITS.md.
+    The user chose the papers and the versions of the first three, agreed to the statement corrections of ECToBlob and TOB-QMC, and decided the library's boundary, the layout, the kernels and publication. AI systems wrote the code, the statements, the audit and the documents. The automation above is for the whole project in lean4-tob, which until 2026-11-04 also had Gusfield et al. 2007, since moved to its own repository, lean4-gusfield2007; on 2026-11-21 each of its four papers moved, with its entry, to a repository of its own. TobQmc/ is the library; the audit checks every declaration of this repository and of the libraries it requires, all on the standard axioms, and Lean's kernel, NanoDa and con-ron accept the four theorems of the Challenge (scripts/check_kernels.sh). See docs/TobQmc/CREDITS.md and lean4-tob's docs/CREDITS.md at 05a024a.
 
 fidelity:
   divergences: >-
-    Statements corrected (Sections 3, 4 and 6 of REPORT.md): the margin of its supplement Lemma 4, vacuous
+    Statements corrected (Sections 3, 4 and 6 of docs/TobQmc/REPORT.md): the margin of its supplement Lemma 4, vacuous
     as printed (E22); its Lemma 2, forward direction only, with N|Y the induced subnetwork (E23); its Lemma 8 for
     nontrivial blobs (E26). Library statements omit hypotheses that the proofs do not use (Section 5 of the report);
-    TOBQMC/MainResults.lean keeps them. Readings: Section 6 of the report and of lean4-tob/docs/REPORT.md. False claims found,
+    the Challenge's statements keep them. Readings: Section 6 of the report. False claims found,
     not formalized as stated: the supplement's Lemma 7 and Theorem 1 at level 2 (E25).
 
 
@@ -180,8 +180,8 @@ fidelity:
     not disjoint paths); Huber et al. Theorem 5.1's converse (domination, in place of excellent cycles); Kane and Tao's
     inequality (abc) (Gibbs' inequality, in place of compactness and a numerically located root); Ané et al. Proposition
     12 (conditioning at the arc). No printed argument to follow: ASTRAL's dynamic program. Narrower than the source:
-    Dinh and Baños, rooted on a hybrid edge, with pendant and hybrid lengths 1 and rho = 0. docs/route_differences.tsv
-    records every difference of route.
+    Dinh and Baños, rooted on a hybrid edge, with pendant and hybrid lengths 1 and rho = 0.
+    docs/TobQmc/route_differences.tsv records every difference of route.
 
 review:
   status: "agent-reviewed"
@@ -189,100 +189,31 @@ review:
     - "none (no human review)"
   notes: >-
     Independent AI agents reviewed the statements against the sources and compared the formal proofs with the papers'; a
-    separate agent checked the findings. The route check and, in lean4-tob before the split, the three kernels (scripts/check_kernels.sh: Lean's kernel, NanoDa, con-ron) ran locally; Comparator runs on TOBQMC/MainResults.lean as both challenge and solution, so it compares no separate statement file with a proof.
+    separate agent checked the findings. The route check, Comparator (Lean's kernel and NanoDa) and con-ron
+    (scripts/check_kernels.sh) run locally.
 
 alignment:
-  namespace: "TreeOfBlobs"
+  namespace: "TobQmcChallenge"
   statements:
     - source: "TOB-QMC v5, Theorem 1"
-      lean: "TreeOfBlobs.theorem1"
-      module: "TOBQMC.MainResults"
+      lean: "TobQmcChallenge.theorem1"
+      module: "TobQmc.Challenge"
       status: "proved"
-      note: "With deterministic K, as printed."
+      note: "With deterministic K, as printed. The library's TobQmc.astral_corollary is the ASTRAL corollary."
     - source: "TOB-QMC v5, Theorem 1, the 'put simply' form"
-      lean: "TreeOfBlobs.theorem1_optimal"
-      module: "TOBQMC.MainResults"
+      lean: "TobQmcChallenge.theorem1_optimal"
+      module: "TobQmc.Challenge"
       status: "proved"
       note: "Almost surely, for all large k, every optimal solution refines the tree of blobs."
     - source: "TOB-QMC v5, Theorem 2"
-      lean: "TreeOfBlobs.theorem2"
-      module: "TOBQMC.MainResults"
+      lean: "TobQmcChallenge.theorem2"
+      module: "TobQmc.Challenge"
       status: "proved"
-      note: "As printed, B is any refinement; Definition 2's quadripartition is read as the multipartition at the edge."
+      note: "As printed, B is any refinement; Definition 2's quadripartition is read as the multipartition at the edge. The supplement's form without the level-1 hypothesis fails (E25: TobQmc.LevelTwo.not_theorem2_without_level_one)."
     - source: "TOB-QMC v5, consistency claim of §4.3"
-      lean: "TreeOfBlobs.consistency"
-      module: "TOBQMC.MainResults"
+      lean: "TobQmcChallenge.consistency"
+      module: "TobQmc.Challenge"
       status: "proved"
-      note: "Under the printed assumptions, with TINNiK's cut test (assumption 6a). The T3 option is TOBQMC.consistencyT3_of_noAnomalous."
-    - source: "TOB-QMC v5, the implementation"
-      lean: "TreeOfBlobs.tobqmc_consistency_implementation"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "The star test on the minimizer only, as printed."
-    - source: "TOB-QMC v5, a refinement need not be a display tree"
-      lean: "TreeOfBlobs.tobqmc_refinement_not_displayed"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "On one binary level-1 network."
-    - source: "TOB-QMC supplement, the margin of Lemma 4 as printed"
-      lean: "TreeOfBlobs.tobqmc_not_printedPiMin_pos"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E22."
-    - source: "TOB-QMC supplement, Lemma 4 as printed"
-      lean: "TreeOfBlobs.tobqmc_not_exists_printedError_lt"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E22: no instance on a network whose tree of blobs is not a star."
-    - source: "TOB-QMC supplement, the converse of Lemma 2"
-      lean: "TreeOfBlobs.tobqmc_not_lemma2Converse"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source's definition"
-      note: "E23: with N|Y the induced subnetwork, as the supplement defines it. Under the gloss in its proof, a blob of N, the converse doesn't fail."
-    - source: "TOB-QMC supplement, Lemma 7 at level 2"
-      lean: "TreeOfBlobs.tobqmc_not_supplementLemma7"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E25."
-    - source: "TOB-QMC supplement, Theorem 1 at level 2"
-      lean: "TreeOfBlobs.tobqmc_not_supplementTheorem1"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E25: at rho = 1, with relaxed nonanomalous read as condition 1 of Definition 1 and T-quartet nonanomaly."
-    - source: "TOB-QMC, Theorem 2 without level 1"
-      lean: "TreeOfBlobs.tobqmc_not_theorem2_without_level_one"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes a stronger form"
-      note: "E25: v5 has the hypothesis."
-    - source: "TOB-QMC supplement, level 2, the T3 option at rho = 1"
-      lean: "TreeOfBlobs.tobqmc_tendsto_tobqmcT3_rho_one"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E25."
-    - source: "TOB-QMC supplement, level 2, generic parameters at rho = 0"
-      lean: "TreeOfBlobs.tobqmc_forGenericParams_tendsto"
-      module: "TOBQMC.MainResults"
-      status: "proved, refutes the source"
-      note: "E25: other values of rho aren't proved."
-    - source: "Ané et al. 2024, Proposition 12"
-      lean: "TreeOfBlobs.ane_proposition12"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "By the source's proof, on any network with weak parameters."
-    - source: "Huber et al. 2025, Theorem 5.1"
-      lean: "TreeOfBlobs.huber_theorem5_1"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "On rooted networks of any degree; the converse isn't the source's proof, and is documented."
-    - source: "Dinh, Baños 2025, Theorem 1"
-      lean: "TreeOfBlobs.dinhBanos_theorem1"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "Rooted on a hybrid edge, with pendant and hybrid edge lengths 1 and ρ = 0, as documented."
-    - source: "Kane, Tao 2017, Theorem 1"
-      lean: "TreeOfBlobs.kaneTao_theorem1"
-      module: "TOBQMC.MainResults"
-      status: "proved"
-      note: "The bound. The inequality (abc) by another argument, documented; sharpness not formalized."
+      note: "Under the printed assumptions, with TINNiK's star and cut tests (assumption 6a). The library's TobQmc.consistencyT3_of_noAnomalous is the T3 option, TobQmc.consistency_implementation the implementation with the star test on the minimizer only, and TobQmc.LevelTwo.not_supplementTheorem1 the failure of the supplement's Theorem 1 at level 2 (E25)."
 
 acknowledgements: "Lean, Mathlib; the Phylogenetics library of the maintainer (lean4-phylogenetics), for adapted Kingman coalescent modules; the authors of the papers and sources."

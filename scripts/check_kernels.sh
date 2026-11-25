@@ -2,14 +2,14 @@
 # Check the main theorems under the three kernels that Palomar uses, after `lake build`: Comparator runs
 # Lean's kernel and NanoDa, and con-ron checks an export of the same theorems. All three reject any axiom
 # outside the three standard ones.
-# The module and the theorems come from Comparator configurations: by default those of the entries in
-# comparator.json, one per paper, or the files given as arguments.
+# The module and the theorems come from Comparator configurations: by default the paper's,
+# palomar/TobQmc/comparator.json, or the files given as arguments.
 set -u
 
 if [ "$#" -gt 0 ]; then
   configs=("$@")
 else
-  configs=(comparator.json)
+  configs=(palomar/TobQmc/comparator.json)
 fi
 out=$(mktemp -d)
 trap 'rm -rf "$out"' EXIT

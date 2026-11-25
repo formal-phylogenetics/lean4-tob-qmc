@@ -4,13 +4,13 @@
 The *route* of a proof is the set of numbered results of the paper that it uses. For the paper,
 these are the results that the proof cites (`\\cref`, `\\Cref`, `\\ref`, `\\autoref`); for the
 formalization, the numbered results that the Lean proof reaches through the library's helper
-lemmas, which `scripts/Audit.lean` writes to `.lake/route_deps.tsv`.
+lemmas, which `scripts/Audit.lean` (from the skill's `assets/`) writes to `.lake/route_deps.tsv`.
 A formal proof that follows the paper's argument cites the same results. Every difference is
 either a proof to fix or a departure from the paper to record.
 
-    route_check.py extract main.tex [MORE.tex | DIR ...] > docs/paper_routes.tsv
-    route_check.py check docs/paper_routes.tsv [--deps .lake/route_deps.tsv]
-                         [--accept docs/route_differences.tsv]
+    route_check.py extract main.tex [MORE.tex | DIR ...] > docs/PaperName/paper_routes.tsv
+    route_check.py check docs/PaperName/paper_routes.tsv [--deps .lake/route_deps.tsv]
+                         [--accept docs/PaperName/route_differences.tsv]
 
 `extract` reads the TeX source, following `\\input` and `\\include` from each file given (a
 directory stands for its `.tex` files in sorted order), and writes one line per labelled

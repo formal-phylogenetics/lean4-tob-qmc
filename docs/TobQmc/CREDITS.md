@@ -14,3 +14,9 @@ TOB-QMC (Dai, Han, Molloy 2026), in Lean.
 - **Moved to this repository** on 2026-11-21, by Claude (Opus 5.5) in Claude Code, when lean4-tob became the hub
   of its papers. No statement and no proof changed: only module paths did. Every declaration keeps its name and its
   type, checked against lean4-tob at commit `6e7bc49`, and the audit and the route check pass here.
+- **Arranged in the layout of the collection** on 2026-11-25, by Claude (Opus 5.5) in Claude Code: the root
+  [`TobQmc`](../../TobQmc), the library by the paper's sections, general mathematics in [`TobQmc/Basic/`](../../TobQmc/Basic), the results of
+  Allman et al. 2023 and of TINNiK that the proofs use stated in [`TobQmc/External/`](../../TobQmc/External) and proved from lean4-allman2023
+  and lean4-tinnik, and a Challenge that states Theorems 1 and 2 and the consistency claim of §4.3 on definitions in
+  Mathlib's vocabulary, with the bridges to the library's. The statements of the library keep their meaning; the
+  declarations are renamed from the namespace `TOBQMC` to [`TobQmc`](../../TobQmc).
