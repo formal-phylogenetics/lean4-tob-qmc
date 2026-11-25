@@ -1,7 +1,7 @@
 module
 
 public import TreeOfBlobs.FinNetwork
-public import TreeOfBlobs.Level1Blobs
+public import PhyloNetwork.Level1Blobs
 public import Mathlib.Tactic.FinCases
 
 /-!
@@ -34,7 +34,7 @@ open scoped Classical
 
 namespace TOBQMC.SupplementLemma2
 
-open ECToBlob.FinNetwork ECToBlob.FalseEdge ECToBlob.Coarsening
+open TreeOfBlobs.FinNetwork PhyloNetwork
 
 /-- The tails of the arcs `s→e, s→r, r→u, u→v, v→h, r→w, w→h, u→a, v→b, w→c, h→d`, with the taxa `e, a, b, c, d = 0, …, 4`, and
 `h, v, w, u, r, s = 5, …, 10`. -/
@@ -62,7 +62,7 @@ theorem tables : Tables src tgt 10 desc avoid :=
   ⟨by decide, by decide, by decide, by decide, by decide, by decide, by decide⟩
 
 /-- **The network of E23.** -/
-abbrev net : RootedNetwork (Fin 11) (Fin 11) (Fin 5) := ECToBlob.FinNetwork.net src tgt 10 lf
+abbrev net : RootedNetwork (Fin 11) (Fin 11) (Fin 5) := TreeOfBlobs.FinNetwork.net src tgt 10 lf
 
 theorem net_isPhylogenetic : net.IsPhylogenetic :=
   isPhylogenetic_of_down (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
@@ -71,13 +71,13 @@ theorem indegree_eq (v : Fin 11) : net.graph.indegree v = (univ.filter fun e => 
   rw [DirectedMultigraph.indegree, Set.ncard_eq_toFinset_card']
   congr 1
   ext e
-  simp [ECToBlob.FinNetwork.net]
+  simp [TreeOfBlobs.FinNetwork.net]
 
 theorem outdegree_eq (v : Fin 11) : net.graph.outdegree v = (univ.filter fun e => src e = v).card := by
   rw [DirectedMultigraph.outdegree, Set.ncard_eq_toFinset_card']
   congr 1
   ext e
-  simp [ECToBlob.FinNetwork.net]
+  simp [TreeOfBlobs.FinNetwork.net]
 
 /-- It is binary. -/
 theorem net_isBinary : net.IsBinary := by

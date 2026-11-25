@@ -1,7 +1,7 @@
 module
 
-public import AllmanEtAl2023.Reduction
-public import TreeOfBlobs.InducedSplits
+public import Allman2023.LargeNetworks.Reduction
+public import PhyloNetwork.InducedSplits
 public import Phylogenetics.NMSC.DisplayedTreeModel
 public import TOBQMC.WQC
 
@@ -18,7 +18,7 @@ by deleting all but one parent hybrid edge from each hybrid node in N, and then 
 contained in any up-down path between two leaves." The library's notion is `TOBQMC.NetworkDisplays`, of Definition 1
 of TOB-QMC: a choice `c` of a parent at each reticulation (`IsDisplayDeletion`), with an arc kept by the choice having
 exactly a cherry of the quartet tree below it. The proof works with the arcs `D` that a choice deletes, as
-`AllmanEtAl2023.exists_reduction` does:
+`Allman2023.exists_reduction` does:
 
 * `IsDisplayDeletion N D`: `D` leaves one parent at each vertex but the root. These are the complements of the
   `displayArcs` of the choices (`isDisplayDeletion_compl_displayArcs`, `IsDisplayDeletion.exists_choice`).
@@ -35,7 +35,7 @@ The source's proof has two directions, and this file has its steps:
   has a lowest hybrid node h such that removing either parent edge of h leads to subnetworks without a 4-blob [...].
   Then one can show e1 and e2 correspond to incompatible splits [...]. As any tree displayed in N1 or N2 is also
   displayed in N, quartets with these splits are both displayed by N." This is
-  `AllmanEtAl2023.exists_reduction` and `exists_isDisplayDeletion_superset`.
+  `Allman2023.exists_reduction` and `exists_isDisplayDeletion_superset`.
 
 A displayed tree of a binary network never leaves a quartet unresolved (`existsUnique_inducesQuartet`), which is why
 "binary quartet tree" is the right count. This uses that the network is binary: the star tree on four taxa displays no
@@ -47,7 +47,7 @@ The statement is proved for four taxa `q` of a network on any number of taxa, as
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork AllmanEtAl2023 Finset
+open Phylogenetics Phylogenetics.RootedNetwork Allman2023 Finset
 open scoped Classical
 
 namespace TOBQMC
@@ -522,7 +522,7 @@ theorem IsDisplayDeletion.existsUnique_splitOffAt (hN : N.IsPhylogenetic) (hBin 
     (by rw [hroot]; omega) with ⟨s, hs, e, hse⟩ | ⟨w, hw⟩
   · refine ⟨s, ⟨hs, e, hse⟩, ?_⟩
     rintro r ⟨hr, e', hr'⟩
-    exact eq_of_splitOffAt hN hD.toIsDeletion ((mem_treesOn.mp hr).trans (mem_treesOn.mp hs).symm) hr' hse
+    exact PhyloNetwork.eq_of_splitOffAt hN hD.toIsDeletion ((mem_treesOn.mp hr).trans (mem_treesOn.mp hs).symm) hr' hse
   · have h₁ := hw.four_le_degree hN hq
     have h₂ := degree_le_three_of_isBinary hN hBin w
     omega
@@ -550,7 +550,7 @@ only non-trivial split in its displayed trees", and from a 4-blob, the reduction
 network.
 
 Departure from the paper: the source gets the cut edge from "it has two 3-blobs", by Lemma 1 of Allman et al. 2023
-(`AllmanEtAl2023.lemma1`). A cut edge with a `2|2` split is what `IsTreelike` says, so this step is not needed. -/
+(`Allman2023.lemma1`). A cut edge with a `2|2` split is what `IsTreelike` says, so this step is not needed. -/
 theorem lemma1 (hN : N.IsPhylogenetic) (hBin : N.IsBinary) {q : Finset X} (hq : q.card = 4) :
     (∃! s, s ∈ treesOn q ∧ NetworkDisplays N s) ↔ IsTreelike N q := by
   constructor
@@ -572,7 +572,7 @@ theorem lemma1 (hN : N.IsPhylogenetic) (hBin : N.IsBinary) {q : Finset X} (hq : 
       ⟨D₀, hD₀, e, splitOffAt_of_subset (Set.empty_subset _) hse⟩⟩, ?_⟩
     rintro r ⟨hr, hrd⟩
     obtain ⟨D, hD, e', hr'⟩ := (networkDisplays_iff hN).mp hrd
-    exact eq_of_splitOffAt hN hD.toIsDeletion ((mem_treesOn.mp hr).trans (mem_treesOn.mp hs).symm) hr'
+    exact PhyloNetwork.eq_of_splitOffAt hN hD.toIsDeletion ((mem_treesOn.mp hr).trans (mem_treesOn.mp hs).symm) hr'
       (splitOffAt_of_subset (Set.empty_subset _) hse)
 
 /-- **Lemma 1** (`tob2025:lemma1`) as printed, for a network on four taxa: it displays exactly one binary quartet tree

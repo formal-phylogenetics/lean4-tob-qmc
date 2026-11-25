@@ -4,7 +4,7 @@ public import TreeOfBlobs.Defs
 public import TreeOfBlobs.TreeCounts
 public import Phylogenetics.Tree.Splits
 public import Phylogenetics.Network.CutHierarchy
-public import TINNiK.Counts
+public import Tinnik.Algorithms.Counts
 public import TOBQMC.BipartitionSearch
 
 /-!
@@ -59,7 +59,7 @@ theorem card_threeFixOneAlter_total_le (hT : IsBinaryTree T) (h3 : 3 ≤ Fintype
     (hz : ∀ A ∈ internalSides T, ∀ i, z A i ∈ P A i) :
     ((edgeSides r T).biUnion fun A => threeFixOneAlter (P A) (z A)).card ≤
       (Fintype.card X - 3) * (Fintype.card X - 3) := by
-  refine card_biUnion_edgeSides_le hT h3 r fun A hA => ?_
+  refine TreeOfBlobs.card_biUnion_edgeSides_le hT h3 r fun A hA => ?_
   have hA' := (mem_filter.mp hA).1
   exact (threeFixOneAlter_isDisjointCover hT hA' (P A) (hP A hA') (hcover A hA') (hP₁ A hA') (hmem A hA')
     (z A) (hz A hA')).2.le
@@ -205,7 +205,7 @@ theorem card_search_total_le (hT : IsBinaryTree T) (h3 : 3 ≤ Fintype.card X) (
     (hQ : ∀ A ∈ edgeSides r T, (Q A).card = Fintype.card X - 3) :
     ((edgeSides r T).biUnion fun A => Q A ∪ (bipartitionSearch A (p A) (argmin A) limit (pick A)).testedSets).card ≤
       (Fintype.card X - 3) * ((Fintype.card X - 3) + 2 * limit + 2 * (Fintype.card X - 4)) :=
-  card_biUnion_edgeSides_le hT h3 r fun A hA =>
+  TreeOfBlobs.card_biUnion_edgeSides_le hT h3 r fun A hA =>
     card_threeFixOneAlter_union_testedSets_le (hargmin A hA) (hpick A hA) (hQ A hA)
 
 /-- **"By default, we bound the number of tests conducted by `O(n²)`"** (embedded line 618): at a limit of at most `C

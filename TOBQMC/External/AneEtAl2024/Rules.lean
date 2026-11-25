@@ -1,7 +1,7 @@
 module
 
 public import TOBQMC.External.AneEtAl2024.Proposition12
-public import TreeOfBlobs.Level1Blobs
+public import PhyloNetwork.Level1Blobs
 public import Phylogenetics.Network.Cuts
 
 /-!
@@ -50,7 +50,7 @@ section Rules
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
-open Phylogenetics Phylogenetics.RootedNetwork TOBQMC.Level1
+open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1
 
 /-- The taxa of `q` below the blob of `h`: below some vertex of it. -/
 def belowBlob (N : RootedNetwork V E X) (h : V) (q : Finset X) : Finset X :=

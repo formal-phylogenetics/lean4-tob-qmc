@@ -1,11 +1,11 @@
 module
 
-public import AllmanEtAl2023.CFDetectable
+public import Allman2023.FourTaxa.CFDetectable
 public import TreeOfBlobs.RhoOne
 public import TreeOfBlobs.FinNetwork
 public import TreeOfBlobs.UnitMetric
 public import TOBQMC.External.AneEtAl2024.Proposition12
-public import TINNiK.Basic
+public import Tinnik.Consistency.Theorem4
 public import TOBQMC.ConsistencyT3
 public import TOBQMC.Implementation
 
@@ -49,7 +49,7 @@ this is `NMSC.nmscCF_lt_of_fork` at all `ρ`, but `{5, 7, 10, 12}` has no fork, 
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset Filter Topology
+open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork Finset Filter Topology
 open scoped Classical
 
 namespace TOBQMC
@@ -62,7 +62,7 @@ variable {V E X : Type*} [Fintype V] [Fintype E] [Fintype X] [DecidableEq X] {N 
 
 /-- At a strictly cut concordance factor, TINNiK's tests judge the set of four taxa treelike, with probability tending to one: the star test rejects, and the cut test doesn't. -/
 theorem tendsto_notMem_testedB (hN : N.IsPhylogenetic) {θ : MetricData E} (hθ : N.IsMetric θ) {ρ : ℝ}
-    (hρ : 0 ≤ ρ ∧ ρ ≤ 1) {s : QuartetTree X} (hc : AllmanEtAl2023.IsStrictlyCutAt (nmscCF N θ ρ) s) {α : ℕ → ℝ}
+    (hρ : 0 ≤ ρ ∧ ρ ≤ 1) {s : QuartetTree X} (hc : Allman2023.IsStrictlyCutAt (nmscCF N θ ρ) s) {α : ℕ → ℝ}
     (hα₀ : Tendsto α atTop (𝓝 0)) {β : ℝ} (hβ : 0 < β) {ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X}
     (hml : IsMLSelection ml) :
     Tendsto (fun k => iidProb (geneTreeDist N θ ρ) k fun ω =>
@@ -72,15 +72,15 @@ theorem tendsto_notMem_testedB (hN : N.IsPhylogenetic) {θ : MetricData E} (hθ 
     obtain ⟨x, -⟩ := card_pos.1 (by omega : 0 < s.taxa.card)
     exact ⟨x⟩
   have hd : IsDist (geneTreeDist N θ ρ) := ⟨geneTreeDist_nonneg hN hθ hρ, sum_geneTreeDist hN hθ hρ⟩
-  have hs := TINNiK.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
+  have hs := Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
   have hoff : ¬ ∀ r ∈ treesOn s.taxa, displayCF (geneTreeDist N θ ρ) unroot r = 1 / 3 := by
     intro hall
     obtain ⟨r, hr⟩ := card_pos.1 (by rw [s.card_alternatives]; norm_num : 0 < s.alternatives.card)
     refine hc.1 r hr ((hall r ?_).trans (hall s (mem_treesOn.2 rfl)).symm)
     exact mem_treesOn.2 (QuartetTree.mem_alternatives.1 hr).1
-  have hstar := TINNiK.tendsto_star hd hs hq hoff hβ
+  have hstar := Tinnik.tendsto_star hd hs hq hoff hβ
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd hstar (TINNiK.tendsto_good_cut hN hθ hρ hα₀ hml hc))
+    (Phylogenetics.tendsto_iidProb_and hd hstar (Tinnik.tendsto_good_cut hN hθ hρ hα₀ hml hc))
   obtain ⟨hω₁, hmlq, hω₃⟩ := hω
   rintro ⟨-, h | h⟩
   · exact absurd h (not_le.2 hω₁)
@@ -91,24 +91,24 @@ theorem tendsto_notMem_testedB (hN : N.IsPhylogenetic) {θ : MetricData E} (hθ 
 theorem tendsto_notMem_testedBT3 (hN : N.IsPhylogenetic) {θ : MetricData E} (hθ : N.IsMetric θ) {ρ : ℝ}
     (hρ : 0 ≤ ρ ∧ ρ ≤ 1) {s : QuartetTree X} (hc : IsT1Strict (nmscCF N θ ρ) s) {α : ℕ → ℝ}
     (hα₀ : Tendsto α atTop (𝓝 0)) {β : ℝ} (hβ : 0 < β) {ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X}
-    (hml : TINNiK.IsT3MLSelection ml) :
+    (hml : Tinnik.IsT3MLSelection ml) :
     Tendsto (fun k => iidProb (geneTreeDist N θ ρ) k fun ω =>
-      s.taxa ∉ TINNiK.testedBT3 ml (α k) β (quartetCount unroot ω)) atTop (𝓝 1) := by
+      s.taxa ∉ Tinnik.testedBT3 ml (α k) β (quartetCount unroot ω)) atTop (𝓝 1) := by
   have hq := s.card_taxa
   have hne : Nonempty X := by
     obtain ⟨x, -⟩ := card_pos.1 (by omega : 0 < s.taxa.card)
     exact ⟨x⟩
   have hd : IsDist (geneTreeDist N θ ρ) := ⟨geneTreeDist_nonneg hN hθ hρ, sum_geneTreeDist hN hθ hρ⟩
-  have hs := TINNiK.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
+  have hs := Tinnik.displaysOne_nmsc (θ := θ) (ρ := ρ) hN
   have hoff : ¬ ∀ r ∈ treesOn s.taxa, displayCF (geneTreeDist N θ ρ) unroot r = 1 / 3 := by
     intro hall
     obtain ⟨r, hr⟩ := card_pos.1 (by rw [s.card_alternatives]; norm_num : 0 < s.alternatives.card)
     refine (hc.1 r hr).ne ((hall r ?_).trans (hall s (mem_treesOn.2 rfl)).symm)
     exact mem_treesOn.2 (QuartetTree.mem_alternatives.1 hr).1
-  have hstar := TINNiK.tendsto_star hd hs hq hoff hβ
+  have hstar := Tinnik.tendsto_star hd hs hq hoff hβ
   have hnull := QuartetTests.t3Test_null hd hs (s := s) hc (fun r _ => nmscCF_pos hN hθ hρ r) hα₀
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd hstar hnull)
+    (Phylogenetics.tendsto_iidProb_and hd hstar hnull)
   obtain ⟨hω₁, hω₂, hω₃⟩ := hω
   rintro ⟨-, h | h⟩
   · exact absurd h (not_le.2 hω₁)
@@ -173,7 +173,7 @@ def SupplementTheorem1 : Prop :=
 
 namespace LevelTwo
 
-open ECToBlob.FinNetwork ECToBlob.FalseEdge ECToBlob.Coarsening
+open TreeOfBlobs.FinNetwork PhyloNetwork
 
 /-! ### The network -/
 
@@ -229,7 +229,7 @@ theorem tables : Tables src tgt 16 desc avoid :=
     by decide +kernel⟩
 
 /-- **The network of E25.** -/
-abbrev net : RootedNetwork (Fin 17) (Fin 18) (Fin 7) := ECToBlob.FinNetwork.net src tgt 16 lf
+abbrev net : RootedNetwork (Fin 17) (Fin 18) (Fin 7) := TreeOfBlobs.FinNetwork.net src tgt 16 lf
 
 theorem net_isPhylogenetic : net.IsPhylogenetic :=
   isPhylogenetic_of_down (by decide +kernel) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by decide +kernel)
@@ -239,13 +239,13 @@ theorem indegree_eq (v : Fin 17) : net.graph.indegree v = (univ.filter fun e => 
   rw [DirectedMultigraph.indegree, Set.ncard_eq_toFinset_card']
   congr 1
   ext e
-  simp [ECToBlob.FinNetwork.net]
+  simp [TreeOfBlobs.FinNetwork.net]
 
 theorem outdegree_eq (v : Fin 17) : net.graph.outdegree v = (univ.filter fun e => src e = v).card := by
   rw [DirectedMultigraph.outdegree, Set.ncard_eq_toFinset_card']
   congr 1
   ext e
-  simp [ECToBlob.FinNetwork.net]
+  simp [TreeOfBlobs.FinNetwork.net]
 
 /-- It is binary. -/
 theorem net_isBinary : net.IsBinary := by
@@ -527,7 +527,7 @@ theorem isTreelike_of_mem_cover {Y : Finset (Fin 7)} (hY : Y ∈ cover) : IsTree
 
 /-- **The expected concordance factors on the sets of the cover are cut**, at all valid parameters: hypothesis testing on them finds no 4-blob. -/
 theorem not_isNonCut_of_mem_cover {θ : MetricData (Fin 18)} (hθ : net.IsMetric θ) {ρ : ℝ} (hρ : 0 ≤ ρ ∧ ρ ≤ 1)
-    {Y : Finset (Fin 7)} (hY : Y ∈ cover) : ¬ AllmanEtAl2023.IsNonCut (nmscCF net θ ρ) Y := by
+    {Y : Finset (Fin 7)} (hY : Y ∈ cover) : ¬ Allman2023.IsNonCut (nmscCF net θ ρ) Y := by
   obtain ⟨i, rfl⟩ := exists_quartets_of_mem_cover hY
   intro hnc
   obtain ⟨r, hr, r', hr', hne⟩ := Finset.one_lt_card.1
@@ -621,7 +621,7 @@ theorem not_theorem2_without_level_one : ¬ Theorem2WithoutLevelOne := by
 /-- **The method keeps the false edge**: at parameters at which the concordance factors of the four quartet trees are strictly cut, for all levels `α_k → 0` and `β > 0`, TINNiK's tests on a cover that is `cover` at the false edge
 return the tree of blobs with probability tending to zero. -/
 theorem tendsto_tobqmc_eq_treeOfBlobs {θ : MetricData (Fin 18)} (hθ : net.IsMetric θ) {ρ : ℝ} (hρ : 0 ≤ ρ ∧ ρ ≤ 1)
-    (hc : ∀ i, AllmanEtAl2023.IsStrictlyCutAt (nmscCF net θ ρ) (quartets i)) {α : ℕ → ℝ} (hα₀ : Tendsto α atTop (𝓝 0))
+    (hc : ∀ i, Allman2023.IsStrictlyCutAt (nmscCF net θ ρ) (quartets i)) {α : ℕ → ℝ} (hα₀ : Tendsto α atTop (𝓝 0))
     {β : ℝ} (hβ : 0 < β) {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)} (hml : IsMLSelection ml)
     {Q : Finset (Fin 7) → Finset (Finset (Fin 7))} (hQ : Q A₀ = cover) (hQ' : Q A₀ᶜ = cover) :
     Tendsto (fun k => iidProb (geneTreeDist net θ ρ) k fun ω =>
@@ -645,7 +645,7 @@ theorem tendsto_tobqmc_eq_treeOfBlobs {θ : MetricData (Fin 18)} (hθ : net.IsMe
 
 /-- At `ρ = 1` the concordance factors of the quartet trees of the cover are strictly cut, at all valid parameters. -/
 theorem isStrictlyCutAt_rho_one {θ : MetricData (Fin 18)} (hθ : net.IsMetric θ) (i : Fin 4) :
-    AllmanEtAl2023.IsStrictlyCutAt (nmscCF net θ 1) (quartets i) :=
+    Allman2023.IsStrictlyCutAt (nmscCF net θ 1) (quartets i) :=
   ⟨fun _ hr => (nmscCF_lt_rho_one net_isPhylogenetic hθ (inducedCutSplit_quartets i) hr).ne,
     NMSC.cut_alternatives net_isPhylogenetic hθ ⟨zero_le_one, le_rfl⟩ _ (inducedCutSplit_quartets i)⟩
 
@@ -659,17 +659,17 @@ theorem tendsto_tobqmc_eq_treeOfBlobs_rho_one {θ : MetricData (Fin 18)} (hθ : 
       tobqmc ml (α k) β (quartetCount unroot ω) B Q = treeOfBlobs net) atTop (𝓝 0) :=
   tendsto_tobqmc_eq_treeOfBlobs hθ ⟨zero_le_one, le_rfl⟩ (isStrictlyCutAt_rho_one hθ) hα₀ hβ hml hQ hQ'
 
-/-- (`tob2025:supplement_theorem1_generic`) **The method on `net` at `ρ = 0`, for generic parameters** (E25 of the report): at parameters with CF-detectability, as generic parameters have (`AllmanEtAl2023.cfDetectable_generic`), the 4-blobs have non-cut concordance factors, so all the assumptions of
+/-- (`tob2025:supplement_theorem1_generic`) **The method on `net` at `ρ = 0`, for generic parameters** (E25 of the report): at parameters with CF-detectability, as generic parameters have (`Allman2023.cfDetectable_generic`), the 4-blobs have non-cut concordance factors, so all the assumptions of
 `TOBQMC.consistency` but the level hold; and the same conclusion holds as at `ρ = 1`. -/
 theorem forGenericParams_tendsto_tobqmc_eq_treeOfBlobs :
-    AllmanEtAl2023.ForGenericParams net fun θ =>
-      (∀ q : Finset (Fin 7), q.card = 4 → ¬ IsTreelike net q → AllmanEtAl2023.IsNonCut (nmscCF net θ 0) q) ∧
+    Allman2023.ForGenericParams net fun θ =>
+      (∀ q : Finset (Fin 7), q.card = 4 → ¬ IsTreelike net q → Allman2023.IsNonCut (nmscCF net θ 0) q) ∧
       ∀ {α : ℕ → ℝ}, Tendsto α atTop (𝓝 0) → ∀ {β : ℝ}, 0 < β →
         ∀ {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)}, IsMLSelection ml →
         ∀ {Q : Finset (Fin 7) → Finset (Finset (Fin 7))}, Q A₀ = cover → Q A₀ᶜ = cover →
           Tendsto (fun k => iidProb (geneTreeDist net θ 0) k fun ω =>
             tobqmc ml (α k) β (quartetCount unroot ω) B Q = treeOfBlobs net) atTop (𝓝 0) := by
-  refine (AllmanEtAl2023.cfDetectable_generic net_isPhylogenetic net_isBinary).mono ?_
+  refine (Allman2023.cfDetectable_generic net_isPhylogenetic net_isBinary).mono ?_
   rintro θ ⟨hθ, hnot⟩
   refine ⟨hθ, fun hdet => hnot ⟨hdet.blob, ?_⟩⟩
   intro α hα₀ β hβ ml hml Q hQ hQ'
@@ -678,7 +678,7 @@ theorem forGenericParams_tendsto_tobqmc_eq_treeOfBlobs :
 /-- (`tob2025:supplement_theorem1_t3`) **The method on `net` at `ρ = 1`, with the T3 option** (E25 of the report), TINNiK's default: the same conclusion as `tendsto_tobqmc_eq_treeOfBlobs_rho_one`. -/
 theorem tendsto_tobqmcT3_eq_treeOfBlobs_rho_one {θ : MetricData (Fin 18)} (hθ : net.IsMetric θ) {α : ℕ → ℝ}
     (hα₀ : Tendsto α atTop (𝓝 0)) {β : ℝ} (hβ : 0 < β)
-    {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)} (hml : TINNiK.IsT3MLSelection ml)
+    {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)} (hml : Tinnik.IsT3MLSelection ml)
     {Q : Finset (Fin 7) → Finset (Finset (Fin 7))} (hQ : Q A₀ = cover) (hQ' : Q A₀ᶜ = cover) :
     Tendsto (fun k => iidProb (geneTreeDist net θ 1) k fun ω =>
       tobqmcT3 ml (α k) β (quartetCount unroot ω) B Q = treeOfBlobs net) atTop (𝓝 0) := by
@@ -689,7 +689,7 @@ theorem tendsto_tobqmcT3_eq_treeOfBlobs_rho_one {θ : MetricData (Fin 18)} (hθ 
     ⟨fun _ hr => nmscCF_lt_rho_one hN hθ (inducedCutSplit_quartets i) hr,
       NMSC.cut_alternatives hN hθ hρ _ (inducedCutSplit_quartets i)⟩
   have hall := tendsto_iidProb_forall hd (ι := Fin 4)
-    (fun i k ω => (quartets i).taxa ∉ TINNiK.testedBT3 ml (α k) β (quartetCount unroot ω))
+    (fun i k ω => (quartets i).taxa ∉ Tinnik.testedBT3 ml (α k) β (quartetCount unroot ω))
     fun i => tendsto_notMem_testedBT3 hN hθ hρ (hstrict i) hα₀ hβ hml
   have hlim := (tendsto_const_nhds (x := (1 : ℝ))).sub hall
   rw [sub_self] at hlim
@@ -720,10 +720,10 @@ theorem exists_isMLSelection : ∃ ml : (QuartetTree (Fin 7) → ℝ) → Finset
 with `cover` at the false edge, return the tree of blobs with probability tending to zero, at all levels. Main v5 restricts its Theorem 2 to level 1, as `TOBQMC.consistency` does. -/
 theorem not_supplementTheorem1 : ¬ SupplementTheorem1 := by
   intro h
-  have hθ := ECToBlob.isMetric_unitMetric net
-  have hStd : StandardAssumptions net (ECToBlob.unitMetric net) 1 :=
+  have hθ := TreeOfBlobs.isMetric_unitMetric net
+  have hStd : StandardAssumptions net (TreeOfBlobs.unitMetric net) 1 :=
     ⟨net_isPhylogenetic, net_isBinary, hθ, zero_le_one, le_rfl⟩
-  obtain ⟨α, hα₀, -, hcons⟩ := h net (ECToBlob.unitMetric net) 1 hStd (isRelaxedNonanomalous_rho_one net_isPhylogenetic hθ)
+  obtain ⟨α, hα₀, -, hcons⟩ := h net (TreeOfBlobs.unitMetric net) 1 hStd (isRelaxedNonanomalous_rho_one net_isPhylogenetic hθ)
     (isTQuartetNonanomalous _) (by decide) B B_isBinaryTree treeOfBlobs_subset Q₀ Q₀_isDisjointCover
   obtain ⟨ml, hml⟩ := exists_isMLSelection
   have h₁ := hcons 1 one_pos ml hml

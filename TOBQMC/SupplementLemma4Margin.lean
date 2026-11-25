@@ -1,6 +1,6 @@
 module
 
-public import TreeOfBlobs.InducedSplits
+public import PhyloNetwork.InducedSplits
 public import TOBQMC.WQC
 
 /-!
@@ -41,7 +41,7 @@ theorem isPrintedPi_zero {N : RootedNetwork V E X} [Fintype V] [Fintype E] (hN :
     (hθ : N.IsMetric θ) {ρ : ℝ} (hρ : 0 ≤ ρ ∧ ρ ≤ 1) {s : QuartetTree X} (hs : Displays (treeOfBlobs N) s) :
     IsPrintedPi (nmscCF N θ ρ) s.taxa 0 := by
   obtain ⟨A, hA, hAs⟩ := hs
-  have hcut : InducedCutSplit N s := ECToBlob.Deterministic.inducedCutSplit_of_mem hN hA hAs
+  have hcut : InducedCutSplit N s := PhyloNetwork.inducedCutSplit_of_mem hN hA hAs
   obtain ⟨r, hr, r', hr', hne⟩ := Finset.one_lt_card.1
     (by rw [s.card_alternatives]; norm_num : 1 < s.alternatives.card)
   have hmem : ∀ {t : QuartetTree X}, t ∈ s.alternatives → t ∈ treesOn s.taxa := fun ht =>

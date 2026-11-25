@@ -1,12 +1,12 @@
 module
 
-public import AllmanEtAl2023.Basic
+public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
-public import TreeOfBlobs.Testing.Combining
-public import TreeOfBlobs.Testing.Defs
-public import TreeOfBlobs.Testing.IID
+public import PhyloNetwork.Testing.Combining
+public import PhyloNetwork.Testing.Defs
+public import PhyloNetwork.Testing.IID
 public import TOBQMC.Consistency
 
 /-!
@@ -651,7 +651,7 @@ theorem contractSides_cover_union_eq [Fintype V] [Fintype E] (hN : N.IsPhylogene
       rw [← h2]
       simp only [contractSides, mem_filter (s := B)]
       exact h
-    exact ⟨h.1, htrue A hAT, htrue _ (Level1.mem_treeOfBlobs_compl hAT)⟩
+    exact ⟨h.1, htrue A hAT, htrue _ (PhyloNetwork.Level1.mem_treeOfBlobs_compl hAT)⟩
 
 end Oracle
 
@@ -737,14 +737,14 @@ def tobqmcSearch (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (
 /-- **Consistency with further four-taxon sets around the bipartitions**, under the hypotheses of
 `TOBQMC.consistency`, for any selection `R` of four-taxon sets around the bipartitions, possibly depending on the
 data. The levels are those of `TOBQMC.consistency`'s proof. On the event that the tests are correct on all four-taxon
-sets (`TINNiK.tests_correct`) and that the solution refines the tree of blobs, the method is the oracle's, and
+sets (`Tinnik.tests_correct`) and that the solution refines the tree of blobs, the method is the oracle's, and
 `contractSides_cover_union_eq` applies. That the solution refines the tree of blobs comes from `TOBQMC.consistency`
 itself, whose output is contained in the solution. -/
 theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -762,12 +762,12 @@ theorem consistency_around [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistency hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover R hR => ?_⟩
-  have htests := TINNiK.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
+    (Phylogenetics.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
   obtain ⟨⟨hB, -⟩, hout⟩ := hω
   obtain ⟨hbin, -⟩ := hsolve (quartetCount unroot ω)
   have hTB : treeOfBlobs N ⊆ solve (quartetCount unroot ω) := by
@@ -798,7 +798,7 @@ theorem consistency_search [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -844,7 +844,7 @@ theorem consistency_threeFixOneAlter_search [Fintype V] [Fintype E] {N : RootedN
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →

@@ -1,6 +1,6 @@
 module
 
-public import TreeOfBlobs.Level1Blobs
+public import PhyloNetwork.Level1Blobs
 
 /-!
 # TOB-QMC supplement, Lemma 8: a reticulation at the boundary of a blob
@@ -24,7 +24,7 @@ Two slips of the printed text:
 
 @[expose] public section
 
-open Phylogenetics Phylogenetics.RootedNetwork
+open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1
 
 namespace TOBQMC
 
@@ -43,7 +43,7 @@ reticulation then all its arcs are bridges (`forall_isBridge_of_indegree_le_one`
 theorem exists_reticulation_below (hN : N.IsPhylogenetic) {u : V} {f : E}
     (hf : N.graph.source f = u ∨ N.graph.target f = u) (hnb : ¬ N.graph.underlying.IsBridge f) :
     ∃ h, N.graph.blobSetoid u h ∧ N.graph.Reaches u h ∧ 2 ≤ N.graph.indegree h := by
-  obtain ⟨w, ⟨hw, hrw⟩, hmin⟩ := TOBQMC.Level1.exists_sink hN (S := {w | N.graph.blobSetoid u w ∧ N.graph.Reaches u w})
+  obtain ⟨w, ⟨hw, hrw⟩, hmin⟩ := PhyloNetwork.Level1.exists_sink hN (S := {w | N.graph.blobSetoid u w ∧ N.graph.Reaches u w})
     ⟨u, .refl, .refl⟩
   by_cases h2 : 2 ≤ N.graph.indegree w
   · exact ⟨w, hw, hrw, h2⟩
@@ -51,10 +51,10 @@ theorem exists_reticulation_below (hN : N.IsPhylogenetic) {u : V} {f : E}
     have hout : ∀ g, N.graph.source g = w → N.graph.underlying.IsBridge g := by
       rintro g rfl
       by_contra hg
-      exact hmin _ ⟨TOBQMC.Level1.sameBlob_trans hw (TOBQMC.Level1.sameBlob_of_not_isBridge hg),
+      exact hmin _ ⟨PhyloNetwork.Level1.sameBlob_trans hw (PhyloNetwork.Level1.sameBlob_of_not_isBridge hg),
         hrw.tail ⟨g, rfl, rfl⟩⟩ (.single ⟨g, rfl, rfl⟩)
-    have hall := TOBQMC.Level1.forall_isBridge_of_indegree_le_one hN (by omega) hout
-    have huw : u = w := TOBQMC.Level1.eq_of_sameBlob_of_forall_isBridge hall (TOBQMC.Level1.sameBlob_symm hw)
+    have hall := PhyloNetwork.Level1.forall_isBridge_of_indegree_le_one hN (by omega) hout
+    have huw : u = w := PhyloNetwork.Level1.eq_of_sameBlob_of_forall_isBridge hall (PhyloNetwork.Level1.sameBlob_symm hw)
     subst huw
     exact hnb (hall f hf)
 
@@ -76,8 +76,8 @@ theorem isBridge_of_lowest_reticulation (hN : N.IsPhylogenetic) {v u : V}
     {g : E} (hg : N.graph.source g = u) : N.graph.underlying.IsBridge g := by
   by_contra hnb
   obtain ⟨h, hh, hr, h2⟩ := exists_reticulation_below hN (Or.inr rfl) hnb
-  have hug : N.graph.blobSetoid u (N.graph.target g) := hg ▸ TOBQMC.Level1.sameBlob_of_not_isBridge hnb
-  exact hlow h (TOBQMC.Level1.sameBlob_trans hu (TOBQMC.Level1.sameBlob_trans hug hh)) h2
+  have hug : N.graph.blobSetoid u (N.graph.target g) := hg ▸ PhyloNetwork.Level1.sameBlob_of_not_isBridge hnb
+  exact hlow h (PhyloNetwork.Level1.sameBlob_trans hu (PhyloNetwork.Level1.sameBlob_trans hug hh)) h2
     (Relation.TransGen.head' ⟨g, hg, rfl⟩ hr)
 
 /-- **Lemma 8 of the supplement** (`tob2025supplied:lemma8`), for a non-trivial blob, the one containing `v` and
@@ -93,7 +93,7 @@ theorem supplement_lemma8 (hN : N.IsPhylogenetic) {v w : V} (hne : v ≠ w) (hvw
   have := hN.finite_arcs
   obtain ⟨f, hf, hnb⟩ := exists_not_isBridge_of_sameBlob hne hvw
   obtain ⟨h₀, hh₀, -, h₀2⟩ := exists_reticulation_below hN hf hnb
-  obtain ⟨u, ⟨hu, hu2⟩, hmin⟩ := TOBQMC.Level1.exists_sink hN
+  obtain ⟨u, ⟨hu, hu2⟩, hmin⟩ := PhyloNetwork.Level1.exists_sink hN
     (S := {u | N.graph.blobSetoid v u ∧ 2 ≤ N.graph.indegree u}) ⟨h₀, hh₀, h₀2⟩
   have hout : N.graph.outdegree u ≠ 0 := by
     intro h0
@@ -111,7 +111,7 @@ theorem supplement_lemma8 (hN : N.IsPhylogenetic) {v w : V} (hne : v ≠ w) (hvw
 /-- The printed Lemma 8 fails on trivial blobs: the blob of a taxon contains no reticulation. -/
 theorem not_two_le_indegree_of_sameBlob_leaf (hN : N.IsPhylogenetic) (x : X) {u : V}
     (hu : N.graph.blobSetoid (N.leaf x) u) : ¬ 2 ≤ N.graph.indegree u := by
-  have hux := TOBQMC.Level1.eq_of_sameBlob_of_forall_isBridge (TOBQMC.Level1.forall_isBridge_leaf hN x) hu
+  have hux := PhyloNetwork.Level1.eq_of_sameBlob_of_forall_isBridge (PhyloNetwork.Level1.forall_isBridge_leaf hN x) hu
   rw [hux, hN.leaf_indegree x]
   norm_num
 

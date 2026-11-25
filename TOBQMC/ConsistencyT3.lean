@@ -1,15 +1,15 @@
 module
 
-public import AllmanEtAl2023.Basic
+public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
-public import TreeOfBlobs.External.MitchellAllmanRhodes2019.T3Test
+public import PhyloNetwork.External.MitchellAllmanRhodes2019.T3Test
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
 public import Phylogenetics.NMSC.Exchangeability
-public import TreeOfBlobs.Testing.Defs
-public import TreeOfBlobs.Testing.Trinomial.Bridge
+public import PhyloNetwork.Testing.Defs
+public import PhyloNetwork.Testing.Trinomial.Bridge
 public import Phylogenetics.Tree.Detach
-public import TINNiK.T3
+public import Tinnik.Consistency.T3
 public import TOBQMC.Consistency
 
 /-!
@@ -24,7 +24,7 @@ gives the same claim with the T3 option, under the paper's conditions 5, 6a and 
 Condition 6b (lines 110–112) is class 1 quartet-nonanomaly: on *every* treelike four-taxon subset, the topology of the highest
 expected concordance factor is the tree of blobs of the subnetwork (`NoAnomalousQuartets`). Condition 4 is T-quartet-nonanomaly
 (`IsTQuartetNonanomalous`), on the subsets the tree of blobs of the whole network resolves. The T3 test does not reject exactly when
-the concordance factor is on its half-lines, so `TINNiK.tests_correct_t3` needs the inequality on all treelike subsets, 6b. The three
+the concordance factor is on its half-lines, so `Tinnik.tests_correct_t3` needs the inequality on all treelike subsets, 6b. The three
 classes of subsets (E21 of the report):
 
 * a subset with no cut-edge split on its induced network: the T3 test rejects by 6a, which says more than is needed (off the T3
@@ -36,7 +36,7 @@ classes of subsets (E21 of the report):
 So at level 1, 6b and condition 4 are equivalent (`noAnomalousQuartets_iff_tQuartetNonanomalous`). The paper's stated assumptions suffice,
 and 6b adds nothing to condition 4. On any network, 6b implies condition 4 (`isTQuartetNonanomalous_of_noAnomalous`); that condition 4 implies
 6b is proved here only at level 1. Beyond level 1 an anomalous subset of the third class would make the tests wrong on it
-(`TINNiK.tendsto_mem_testedBT3_of_anomalous`), but TINNiK's output needs only condition 4 (`TINNiK.theorem4T3_of_tQuartet`).
+(`Tinnik.tendsto_mem_testedBT3_of_anomalous`), but TINNiK's output needs only condition 4 (`Tinnik.theorem4T3_of_tQuartet`).
 
 ## Main results
 
@@ -58,14 +58,14 @@ variable {V E X : Type*} [Fintype X] [DecidableEq X]
 disjoint cover `Q` to be non-treelike. Parallel to `tobqmc`. -/
 def tobqmcT3 (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (α β : ℝ) (c : QuartetTree X → ℝ)
     (B : Finset (Finset X)) (Q : Finset X → Finset (Finset X)) : Finset (Finset X) :=
-  contractSides B ((internalSides B).filter fun A => ∃ Y ∈ Q A, Y ∈ TINNiK.testedBT3 ml α β c)
+  contractSides B ((internalSides B).filter fun A => ∃ Y ∈ Q A, Y ∈ Tinnik.testedBT3 ml α β c)
 
 /-- Condition 6b (class 1 quartet-nonanomaly) gives condition 4 (T-quartet-nonanomaly), on any network, as the paper says: "This
 assumption is no more restrictive than the one made by TINNiK (T3 option)" (v5, line 421). A quartet tree of the tree of blobs is a
 cut-edge split of the induced network. -/
 theorem isTQuartetNonanomalous_of_noAnomalous {N : RootedNetwork V E X} (hN : N.IsPhylogenetic)
     {p : QuartetTree X → ℝ} (h : NoAnomalousQuartets N p) : IsTQuartetNonanomalous N p :=
-  fun s hs r hr => h s (AllmanEtAl2023.inducedCutSplit_of_displays hN hs) r hr
+  fun s hs r hr => h s (Allman2023.inducedCutSplit_of_displays hN hs) r hr
 
 /-- **At level 1, conditions 4 and 6b are equivalent.** The direction from 4 to 6b is `Level1.nmscCF_lt_of_inducedCutSplit`, a fact
 that the paper does not state. So 6b is no extra assumption on a level-1 network. -/
@@ -83,7 +83,7 @@ theorem t3Detectable_of_level1 [Fintype V] [Fintype E] {N : RootedNetwork V E X}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hOff : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q → ¬ IsT3Null (nmscCF N θ ρ) q) :
-    TINNiK.T3Detectable N (nmscCF N θ ρ) :=
+    Tinnik.T3Detectable N (nmscCF N θ ρ) :=
   ⟨fun _ hs => ⟨fun _ hr =>
       Level1.nmscCF_lt_of_inducedCutSplit hStd.phylogenetic hLevel hStd.metric hStd.rho hNon hs hr,
     NMSC.cut_alternatives hStd.phylogenetic hStd.metric hStd.rho _ hs⟩, hOff⟩
@@ -98,7 +98,7 @@ theorem consistencyT3_of_offModel [Fintype V] [Fintype E] {N : RootedNetwork V E
     (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -111,11 +111,11 @@ theorem consistencyT3_of_offModel [Fintype V] [Fintype E] {N : RootedNetwork V E
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   -- the tests are correct on all four-taxon subsets
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover => ?_⟩
-  have htests := TINNiK.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
+    (Phylogenetics.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
   obtain ⟨⟨hB, -⟩, hopt⟩ := hω
   obtain ⟨hbin, hmax⟩ := hsolve (quartetCount unroot ω)
   have hTB := hopt _ hbin hmax
@@ -138,15 +138,15 @@ The paper lists 6b as an assumption of the T3 option. On a level-1 network it fo
 for Theorem 1 (`noAnomalousQuartets_iff_tQuartetNonanomalous`), so it does not appear here. See `consistencyT3_of_noAnomalous` for the
 statement with 6b.
 
-The proof is that of `consistency`, with `TINNiK.tests_correct_t3_of_t3Detectable` in place of `TINNiK.tests_correct`. -/
+The proof is that of `consistency`, with `Tinnik.tests_correct_t3_of_t3Detectable` in place of `Tinnik.tests_correct`. -/
 theorem consistencyT3 [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -154,7 +154,7 @@ theorem consistencyT3 [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Me
           tobqmcT3 ml (α k) β (quartetCount unroot ω) (solve (quartetCount unroot ω))
             (cover (solve (quartetCount unroot ω))) = treeOfBlobs N) atTop (𝓝 1) :=
   consistencyT3_of_offModel hStd hLevel hNon
-    (fun q hq hnt => QuartetTests.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
+    (fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
 
 /-- **The consistency claim of §4.3 with the T3 option, under conditions 5, 6a and 6b**, as the paper lists them for the FP edge detection
 step. Condition 4, needed for Theorem 1, follows from 6b. -/
@@ -162,10 +162,10 @@ theorem consistencyT3_of_noAnomalous [Fintype V] [Fintype E] {N : RootedNetwork 
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (h6b : NoAnomalousQuartets N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →

@@ -1,14 +1,14 @@
 module
 
-public import AllmanEtAl2023.Basic
-public import AllmanEtAl2023.Concordance
+public import Allman2023.LargeNetworks.Rule
+public import Allman2023.Networks.Concordance
 public import TreeOfBlobs.Defs
 public import TreeOfBlobs.FinNetwork
-public import TreeOfBlobs.Testing.Defs
-public import TreeOfBlobs.Testing.IID
+public import PhyloNetwork.Testing.Defs
+public import PhyloNetwork.Testing.IID
 public import TOBQMC.External.AneEtAl2024.Proposition12
 public import TOBQMC.External.DinhBanos2025.Theorem1
-public import TreeOfBlobs.External.HuberEtAl2025.Theorem51
+public import PhyloNetwork.External.HuberEtAl2025.Theorem51
 public import TOBQMC.External.KaneTao2017.PartitioningClusters
 public import Phylogenetics.Hierarchy.Defs
 public import Phylogenetics.NMSC.Defs
@@ -20,7 +20,7 @@ public import Phylogenetics.Network.Level1.Digraph.OfNet
 public import Phylogenetics.Network.Level1.ToRootedNetwork
 public import Phylogenetics.Network.Quartets
 public import Phylogenetics.Tree.Defs
-public import TINNiK.T3
+public import Tinnik.Consistency.T3
 public import TOBQMC.Consistency
 public import TOBQMC.ConsistencyT3
 public import TOBQMC.DisplayedRefinement
@@ -98,7 +98,7 @@ theorem consistency {V E X : Type*} [Fintype V] [Fintype E] [Fintype X] [Decidab
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -123,7 +123,7 @@ theorem tobqmc_consistency_implementation {V E X : Type*} [Fintype V] [Fintype E
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -175,7 +175,7 @@ theorem tobqmc_not_theorem2_without_level_one : ¬ TOBQMC.Theorem2WithoutLevelOn
 /-- **TOB-QMC's method at level 2, with the T3 option, at `ρ = 1`** (E25 of the report). On the network of `tobqmc_not_supplementLemma7`, with the cover at the false edge, the output is the tree of blobs with probability tending to zero, at all levels. -/
 theorem tobqmc_tendsto_tobqmcT3_rho_one {θ : MetricData (Fin 18)} (hθ : LevelTwo.net.IsMetric θ) {α : ℕ → ℝ}
     (hα₀ : Tendsto α atTop (𝓝 0)) {β : ℝ} (hβ : 0 < β)
-    {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)} (hml : TINNiK.IsT3MLSelection ml)
+    {ml : (QuartetTree (Fin 7) → ℝ) → Finset (Fin 7) → QuartetTree (Fin 7)} (hml : Tinnik.IsT3MLSelection ml)
     {Q : Finset (Fin 7) → Finset (Finset (Fin 7))} (hQ : Q LevelTwo.A₀ = LevelTwo.cover) (hQ' : Q LevelTwo.A₀ᶜ = LevelTwo.cover) :
     Tendsto (fun k => iidProb (geneTreeDist LevelTwo.net θ 1) k fun ω =>
       tobqmcT3 ml (α k) β (quartetCount unroot ω) LevelTwo.B Q = treeOfBlobs LevelTwo.net) atTop (𝓝 0) :=

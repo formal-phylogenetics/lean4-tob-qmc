@@ -1,7 +1,7 @@
 module
 
 public import Phylogenetics.Network.Level1.LevelOne
-public import TreeOfBlobs.Wedge
+public import PhyloNetwork.Wedge
 
 /-!
 # The two definitions of a level-1 network agree on binary networks
@@ -18,7 +18,7 @@ Nothing else imports this file.
 
 @[expose] public noncomputable section
 
-open Finset Phylogenetics Phylogenetics.RootedNetwork Phylogenetics.MetricDigraph
+open Finset Phylogenetics Phylogenetics.RootedNetwork Phylogenetics.MetricDigraph PhyloNetwork
 open scoped Classical
 
 namespace TOBQMC

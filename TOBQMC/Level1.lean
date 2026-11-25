@@ -1,11 +1,11 @@
 module
 
 public import TreeOfBlobs.Defs
-public import TreeOfBlobs.External.HuberEtAl2025.Theorem51
+public import PhyloNetwork.External.HuberEtAl2025.Theorem51
 public import Phylogenetics.Network.Cuts
 public import Phylogenetics.Tree.Splits
 public import Phylogenetics.Network.CutHierarchy
-public import TreeOfBlobs.Level1Blocks
+public import PhyloNetwork.Level1Blocks
 public import TreeOfBlobs.TreeCounts
 
 /-!
@@ -20,7 +20,7 @@ paths between them (`Level1.isTreelike_iff_hasWedgeCutSplit`), which is where Le
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1 Finset
 open scoped Classical
 
 namespace TOBQMC
@@ -550,7 +550,7 @@ theorem theorem2 (hN : N.IsPhylogenetic) (hBin : N.IsBinary) (hLevel : IsLevelOn
   simp only [contractSides, mem_filter (s := B)]
   constructor
   · rintro ⟨hAB, hnA, -⟩
-    obtain ⟨hne, hne'⟩ := nonempty_of_mem_isUnrootedTree hB hAB
+    obtain ⟨hne, hne'⟩ := TreeOfBlobs.nonempty_of_mem_isUnrootedTree hB hAB
     by_cases hint : A ∈ internalSides B
     · -- false positives are labelled: Lemma 4
       by_contra hAT

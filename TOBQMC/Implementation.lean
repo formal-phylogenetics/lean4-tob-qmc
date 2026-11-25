@@ -1,6 +1,6 @@
 module
 
-public import TreeOfBlobs.Testing.Tails
+public import PhyloNetwork.Testing.Tails
 public import TOBQMC.BipartitionSearch
 public import TOBQMC.ConsistencyT3
 
@@ -180,7 +180,7 @@ theorem tobqmcImplementation_eq_of_tests [Fintype V] [Fintype E] {N : RootedNetw
       rw [← h2]
       simp only [contractSides, mem_filter]
       exact h
-    refine ⟨h.1, fun hC => htrue A hAT (mem_filter.2 hC), fun hC => htrue _ (Level1.mem_treeOfBlobs_compl hAT) (mem_filter.2 hC)⟩
+    refine ⟨h.1, fun hC => htrue A hAT (mem_filter.2 hC), fun hC => htrue _ (PhyloNetwork.Level1.mem_treeOfBlobs_compl hAT) (mem_filter.2 hC)⟩
 
 /-! ### Consistency -/
 
@@ -190,15 +190,15 @@ Weighted Quartet Consensus, any selection `tested` of four-taxon subsets around 
 on the data, and any minimizers, the procedure with the star test on the minimizer returns the tree of blobs with probability tending
 to one.
 
-The levels are those of `TOBQMC.consistency`. On the event that the tests are correct on all four-taxon subsets (`TINNiK.tests_correct`), and
+The levels are those of `TOBQMC.consistency`. On the event that the tests are correct on all four-taxon subsets (`Tinnik.tests_correct`), and
 that the solution refines the tree of blobs, which `TOBQMC.consistency` gives, the cut test rejects on the non-treelike subsets
-(`TINNiK.Rejects`), and it does not reject on the treelike ones, on which the star test rejects. Then
+(`Tinnik.Rejects`), and it does not reject on the treelike ones, on which the star test rejects. Then
 `tobqmcImplementation_eq_of_tests` applies. -/
 theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -219,10 +219,10 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistency hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve tested hcover haround mini hmini => ?_⟩
-  have htests := TINNiK.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   -- the cut test rejects on the non-treelike subsets
   have hall := tendsto_iidProb_forall hd (ι := {q : Finset X // q.card = 4 ∧ ¬ IsTreelike N q})
     (fun q k ω => ∀ s ∈ treesOn q.val, cutPValue (quartetCount unroot ω) s < α k)
@@ -232,7 +232,7 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
     hcover (fun _ => 0) B hB A hA
   have hrefine := hcons β hβ ml hml solve hsolve Q₀ fun B hB A hA => (hQ₀ B hB A hA).2
   refine tendsto_iidProb_of_imp hd ?_
-    (TINNiK.tendsto_iidProb_and hd htests (TINNiK.tendsto_iidProb_and hd hall hrefine))
+    (Phylogenetics.tendsto_iidProb_and hd htests (Phylogenetics.tendsto_iidProb_and hd hall hrefine))
   filter_upwards [hα₀.eventually (gt_mem_nhds (zero_lt_one' ℝ))] with k hk ω hω
   obtain ⟨⟨hBq, -⟩, hnt, hout⟩ := hω
   obtain ⟨hbin, -⟩ := hsolve (quartetCount unroot ω)
@@ -251,16 +251,16 @@ theorem consistency_implementation [Fintype V] [Fintype E] {N : RootedNetwork V 
     exact hnt ⟨Y, hY, hnty⟩ _ (hml _ Y hY).1
 
 /-- **The claim of TOB-QMC for its implementation, with the T3 test**, the paper's default (`tob2025:implementation`), under conditions 4, 5
-and 6a. Parallel to `consistency_implementation`, through `TINNiK.tests_correct_t3_of_t3Detectable`. On a level-1 network 6b follows from
+and 6a. Parallel to `consistency_implementation`, through `Tinnik.tests_correct_t3_of_t3Detectable`. On a level-1 network 6b follows from
 condition 4 (`noAnomalousQuartets_iff_tQuartetNonanomalous`). -/
 theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : MetricData E} {ρ : ℝ}
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (tested : (QuartetTree X → ℝ) → Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ c B, IsBinaryTree B → ∀ A ∈ internalSides B, ∃ Q ⊆ tested c B A, IsDisjointCover B A Q) →
@@ -278,12 +278,12 @@ theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork 
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hOff : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q → ¬ IsT3Null (nmscCF N θ ρ) q :=
-    fun q hq hnt => QuartetTests.not_isT3Null_of_isNonCut (hBlob q hq hnt)
+    fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistencyT3 hStd hLevel hNon hBlob hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve tested hcover haround mini hmini => ?_⟩
-  have htests := TINNiK.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   have hall := tendsto_iidProb_forall hd (ι := {q : Finset X // q.card = 4 ∧ ¬ IsTreelike N q})
     (fun q k ω => ∀ s ∈ treesOn q.val, t3PValue (quartetCount unroot ω) s < α k)
     (fun q => hrej q.val q.property.1 q.property.2)
@@ -291,7 +291,7 @@ theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork 
     hcover (fun _ => 0) B hB A hA
   have hrefine := hcons β hβ ml hml solve hsolve Q₀ fun B hB A hA => (hQ₀ B hB A hA).2
   refine tendsto_iidProb_of_imp hd ?_
-    (TINNiK.tendsto_iidProb_and hd htests (TINNiK.tendsto_iidProb_and hd hall hrefine))
+    (Phylogenetics.tendsto_iidProb_and hd htests (Phylogenetics.tendsto_iidProb_and hd hall hrefine))
   filter_upwards [hα₀.eventually (gt_mem_nhds (zero_lt_one' ℝ))] with k hk ω hω
   obtain ⟨⟨hBq, -⟩, hnt, hout⟩ := hω
   obtain ⟨hbin, -⟩ := hsolve (quartetCount unroot ω)
@@ -301,10 +301,10 @@ theorem consistencyT3_implementation [Fintype V] [Fintype E] {N : RootedNetwork 
   refine tobqmcImplementation_eq_of_tests hN hStd.binary hLevel (IsBinaryTree.isUnrootedTree hbin) hTB
     (hcover _ _ hbin) (haround _ _ hbin) (fun A hA => (hmini _ _ hbin A hA).1) hk.le ?_ ?_
   · intro Y hY htl
-    have hnotB : Y ∉ TINNiK.testedBT3 ml (α k) β (quartetCount unroot ω) := by
+    have hnotB : Y ∉ Tinnik.testedBT3 ml (α k) β (quartetCount unroot ω) := by
       rw [hBq]
       exact fun h => h.2 htl
-    simp only [TINNiK.testedBT3, Set.mem_ofPred_eq, hY, true_and, not_or, not_le, not_lt] at hnotB
+    simp only [Tinnik.testedBT3, Set.mem_ofPred_eq, hY, true_and, not_or, not_le, not_lt] at hnotB
     exact ⟨hnotB.2, hnotB.1⟩
   · intro Y hY hnty
     exact hnt ⟨Y, hY, hnty⟩ _ (hml _ Y hY).1
@@ -402,7 +402,7 @@ theorem exists_isDisjointCover {T : Finset (Finset X)} (hT : IsBinaryTree T) {A 
     disjoint_left.2 fun x hx hx' => mem_compl.1 (hW hx') (hU hx)
   have hTu : IsUnrootedTree T := IsBinaryTree.isUnrootedTree hT
   have hne : ∀ {U : Finset X}, U ∈ T → U.Nonempty := fun hU =>
-    (Level1.nonempty_of_mem_isUnrootedTree hTu hU).1
+    (TreeOfBlobs.nonempty_of_mem_isUnrootedTree hTu hU).1
   let P : Fin 4 → Finset X := ![P₀, P₁, P₂, P₃]
   obtain ⟨z₀, hz₀⟩ := hne hP₀
   obtain ⟨z₁, hz₁⟩ := hne hP₁
@@ -462,7 +462,7 @@ theorem consistency_implementation_exhaustive [Fintype V] [Fintype E] {N : Roote
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -479,7 +479,7 @@ theorem consistency_implementation_exhaustive [Fintype V] [Fintype E] {N : Roote
   refine h β hβ ml hml solve hsolve (fun _ _ A => aroundSets A) (fun _ B hB A hA => ?_)
     (fun _ _ _ A _ Y hY => card_of_mem_aroundSets hY) mini hmini
   obtain ⟨Q, hQ⟩ := exists_isDisjointCover hB hA
-  exact ⟨Q, hQ.subset_aroundSets, hQ⟩
+  exact ⟨Q, IsDisjointCover.subset_aroundSets hQ, hQ⟩
 
 /-- **TOB-QMC-3f1a** (embedded lines 129-130), with the cut test: it tests Algorithm 1's subsets around each edge, on the blocks `P B A` of the
 quadripartition, with anchors `z B A`. -/
@@ -487,7 +487,7 @@ theorem consistency_implementation_threeFixOneAlter [Fintype V] [Fintype E] {N :
     {ρ : ℝ} (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -522,7 +522,7 @@ theorem consistency_implementation_search [Fintype V] [Fintype E] {N : RootedNet
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →

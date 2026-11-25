@@ -4,7 +4,7 @@ public import TreeOfBlobs.LCA
 public import TOBQMC.External.KaneTao2017.PartitioningClusters
 public import Phylogenetics.Tree.AstralDP
 public import Phylogenetics.Network.CutHierarchy
-public import TINNiK.Counts
+public import Tinnik.Algorithms.Counts
 public import TOBQMC.Astral
 public import TOBQMC.Counts
 
@@ -24,7 +24,7 @@ not a mathematical claim, and is not treated.
 * **Embedded lines 620-622, ASTRAL-III**, "`O(n^1.726 k^1.726 D)`, where `D = O(nk)`". `sum_card_astralSplits_le` counts the steps of the dynamic program by Kane and Tao's theorem (`External.KaneTao2017.theorem1`);
   `qi_eq_qiFast` is Lemma 1 of Zhang et al. 2018, scoring in `Θ(d)`; `sum_card_uniquePartitions_le` is `D = O(nk)`; `astralOperations_le` is their Theorem 1.
 * **ASTRAL-III's `|X| = O(nk)`**, read in its Additional file 1, Appendix A: `GreedyRun.card_sides_le`, `card_astral3Space_le` discharge the hypothesis `h𝒞`. The heuristics are parameters with the bounds the source states: their code is not modelled.
-* **Embedded lines 21, 123-124, 271, TOB-QMC against TINNiK.** `tobqmcOperations_le`: `O(n³ k)`, against `TINNiK.tinnikOperations_nj_le`.
+* **Embedded lines 21, 123-124, 271, TOB-QMC against TINNiK.** `tobqmcOperations_le`: `O(n³ k)`, against `Tinnik.tinnikOperations_nj_le`.
 * **Embedded line 570, the brute force**: "`Ω(n⁴)` per edge and thus `Ω(n⁵)` in total". `sum_choose_mul_choose`: on a caterpillar there are exactly `C(n + 1, 5)` subsets in total, so `Ω(n⁵)` is right there. As a statement about every
   edge or every tree it is not: an edge with `|A| = 2` has `C(n - 2, 2)` (`card_bipartitionQuartets_of_two`), and the balanced tree has at most `n⁴` in all (`balanced_total_le`). The sentence is read as a worst case.
 * **Supplement, lines 631-632.** `taxa_ne_of_mem_multipartitionQuartets`: `Q₄(e₁) ∩ Q₄(e₂) = ∅`, so 3f1a "avoids testing the same 4-taxon subsets on different edges".
@@ -359,11 +359,11 @@ theorem sum_card_nodePartitions_le {H : Finset (Finset X)} (hH : IsHierarchy H) 
     split_ifs
     · omega
     · exact card_insert_le _ _
-  have h₃ := TINNiK.sum_card_childClusters hH
-  have h₄ := TINNiK.card_add_one_le_of_isHierarchy hH
+  have h₃ := TreeOfBlobs.sum_card_childClusters hH
+  have h₄ := TreeOfBlobs.card_add_one_le_of_isHierarchy hH
   have h₅ : ∑ A ∈ H.filter (fun A => 2 ≤ A.card), (childClusters H A).card ≤ ∑ A ∈ H, (childClusters H A).card :=
     sum_le_sum_of_subset (filter_subset _ _)
-  have h₆ := TINNiK.card_filter_two_le_add_one_le hH
+  have h₆ := TreeOfBlobs.card_filter_two_le_add_one_le hH
   calc _ ≤ _ := h₁
     _ ≤ ∑ A ∈ H.filter (fun A => 2 ≤ A.card), ((childClusters H A).card + 1) := sum_le_sum h₂
     _ = ∑ A ∈ H.filter (fun A => 2 ≤ A.card), (childClusters H A).card + (H.filter fun A => 2 ≤ A.card).card := by
@@ -421,7 +421,7 @@ theorem card_astralClusters_le {Ω : Type*} {G : ℕ → Ω → Finset (Finset X
     (hG : ∀ i < k, IsBinaryTree (unroot (G i ω))) (h2 : 2 ≤ Fintype.card X) :
     (astralClusters G k ω).card ≤ 4 * Fintype.card X * k := by
   have hle : ∀ i ∈ range k, (unroot (G i ω)).card ≤ 4 * Fintype.card X := fun i hi => by
-    have := card_of_isBinaryTree (hG i (mem_range.1 hi)) h2
+    have := TreeOfBlobs.card_of_isBinaryTree (hG i (mem_range.1 hi)) h2
     omega
   have := card_biUnion_le_card_mul _ _ _ hle
   rw [card_range] at this

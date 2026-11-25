@@ -1,8 +1,8 @@
 module
 
-public import AllmanEtAl2023.Basic
+public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
-public import TreeOfBlobs.Level1CF
+public import PhyloNetwork.Level1CF
 public import Phylogenetics.NMSC.TreeCF
 public import Phylogenetics.Network.CutHierarchy
 /-!
@@ -25,7 +25,7 @@ induced cut-edge split `s` that the tree of blobs does not display. Nothing need
 
 @[expose] public noncomputable section
 
-open Phylogenetics Phylogenetics.RootedNetwork Finset
+open Phylogenetics Phylogenetics.RootedNetwork PhyloNetwork PhyloNetwork.Level1 Finset
 open scoped Classical
 
 namespace TOBQMC.Level1
@@ -55,8 +55,8 @@ This is what TOB-QMC §4.3 needs for TINNiK's tests to be correct on all subsets
 theorem cfDetectable {θ : MetricData E} {ρ : ℝ} (hStd : StandardAssumptions N θ ρ)
     (hLevel : IsLevelOne N) (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) :
-    AllmanEtAl2023.CFDetectable N (nmscCF N θ ρ) :=
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) :
+    Allman2023.CFDetectable N (nmscCF N θ ρ) :=
   ⟨fun s hs => ⟨fun _ hr =>
       (nmscCF_lt_of_inducedCutSplit hStd.phylogenetic hLevel hStd.metric hStd.rho hNon hs hr).ne,
     NMSC.cut_alternatives hStd.phylogenetic hStd.metric hStd.rho s hs⟩, hBlob⟩

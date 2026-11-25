@@ -1,15 +1,15 @@
 module
 
-public import TINNiK.Basic
+public import Tinnik.Consistency.Theorem4
 public import TOBQMC.Level1
 public import TOBQMC.Level1CF
 public import TOBQMC.WQC
-public import AllmanEtAl2023.Basic
+public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
-public import TreeOfBlobs.Testing.Defs
-public import TreeOfBlobs.Testing.Trinomial.Bridge
+public import PhyloNetwork.Testing.Defs
+public import PhyloNetwork.Testing.Trinomial.Bridge
 public import Phylogenetics.Tree.Detach
 
 /-!
@@ -125,7 +125,7 @@ The proof combines Theorem 1 (`theorem1_optimal`), Theorem 2 (`theorem2`) and th
 hypothesis tests on all four-taxon subsets, as the paper says.
 
 Departure from the paper, repairing E21 of the report: the paper cites TINNiK's Theorem 4 for that
-correctness; it is a step of that theorem's proof (`TINNiK.tests_correct`), whose hypothesis,
+correctness; it is a step of that theorem's proof (`Tinnik.tests_correct`), whose hypothesis,
 CF-detectability, holds under the paper's assumptions (`Level1.cfDetectable`). The paper does not say why:
 it is 6a on the non-treelike subsets, nonanomaly and exchangeability on those the tree of blobs resolves,
 and `Level1.nmscCF_lt_of_not_displays`, a fact about level-1 networks, on the other treelike subsets. -/
@@ -133,7 +133,7 @@ theorem consistency [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Metr
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
       ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), IsMLSelection ml →
@@ -149,11 +149,11 @@ theorem consistency [Fintype V] [Fintype E] {N : RootedNetwork V E X} {θ : Metr
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   -- the tests are correct on all four-taxon subsets
   have hdet := Level1.cfDetectable hStd hLevel hNon hBlob
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels hN hStd.metric hStd.rho hdet
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover => ?_⟩
-  have htests := TINNiK.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
+    (Phylogenetics.tendsto_iidProb_and hd htests (tendsto_optimaRefine hStd hNon hX hd))
   obtain ⟨⟨hB, -⟩, hopt⟩ := hω
   obtain ⟨hbin, hmax⟩ := hsolve (quartetCount unroot ω)
   have hTB := hopt _ hbin hmax

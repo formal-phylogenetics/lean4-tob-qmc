@@ -1,13 +1,13 @@
 module
 
-public import AllmanEtAl2023.Basic
+public import Allman2023.LargeNetworks.Rule
 public import TreeOfBlobs.Defs
-public import TreeOfBlobs.External.MitchellAllmanRhodes2019.T3Test
+public import PhyloNetwork.External.MitchellAllmanRhodes2019.T3Test
 public import Phylogenetics.NMSC.Basic
 public import Phylogenetics.Network.CutHierarchy
-public import TreeOfBlobs.Testing.Combining
-public import TreeOfBlobs.Testing.Defs
-public import TreeOfBlobs.Testing.IID
+public import PhyloNetwork.Testing.Combining
+public import PhyloNetwork.Testing.Defs
+public import PhyloNetwork.Testing.IID
 public import TOBQMC.BipartitionSearch
 public import TOBQMC.ConsistencyT3
 
@@ -25,7 +25,7 @@ same three forms as `src/TOBQMC/ConsistencyT3.lean`:
 
 The argument is that of the cut test. A true edge is not contracted, since all four-taxon subsets around its
 bipartition are treelike and the tests are correct on all four-taxon subsets
-(`TINNiK.tests_correct_t3_of_t3Detectable`). A false edge is contracted because of the disjoint cover, by Theorem 2.
+(`Tinnik.tests_correct_t3_of_t3Detectable`). A false edge is contracted because of the disjoint cover, by Theorem 2.
 Both are in `contractSides_cover_union_eq`, which does not depend on the test. The search itself, its counts
 (`SearchOut.counts`) and its minimum (`pValue_lt_iff`) do not depend on the test either.
 -/
@@ -39,7 +39,7 @@ namespace TOBQMC
 
 variable {V E X : Type*} [Fintype X] [DecidableEq X]
 
-/-- The p-value with which the tests of TINNiK's algorithm with the T3 option (`TINNiK.testedBT3`) judge a four-taxon
+/-- The p-value with which the tests of TINNiK's algorithm with the T3 option (`Tinnik.testedBT3`) judge a four-taxon
 set: `0` when the star test does not reject at level `β`, and the p-value of the T3 test otherwise. Parallel to
 `judgedP`. -/
 def judgedPT3 (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (β : ℝ) (c : QuartetTree X → ℝ)
@@ -48,8 +48,8 @@ def judgedPT3 (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (β 
 
 /-- The p-value is below `α` exactly when the tests judge the set non-treelike. -/
 theorem judgedPT3_lt_iff {ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X} {α β : ℝ} {c : QuartetTree X → ℝ}
-    {Y : Finset X} (hα : 0 < α) (hY : Y.card = 4) : judgedPT3 ml β c Y < α ↔ Y ∈ TINNiK.testedBT3 ml α β c := by
-  simp only [judgedPT3, TINNiK.testedBT3, Set.mem_ofPred_eq, hY, true_and]
+    {Y : Finset X} (hα : 0 < α) (hY : Y.card = 4) : judgedPT3 ml β c Y < α ↔ Y ∈ Tinnik.testedBT3 ml α β c := by
+  simp only [judgedPT3, Tinnik.testedBT3, Set.mem_ofPred_eq, hY, true_and]
   by_cases h : β ≤ starPValue .lrt c Y
   · simp [h, hα]
   · simp [h]
@@ -64,7 +64,7 @@ def edgePT3 (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (β : 
 `tobqmcAround`. -/
 def tobqmcAroundT3 (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X) (α β : ℝ) (c : QuartetTree X → ℝ)
     (B : Finset (Finset X)) (Q R : Finset X → Finset (Finset X)) : Finset (Finset X) :=
-  contractSides B ((internalSides B).filter fun A => ∃ Y ∈ Q A ∪ R A, Y ∈ TINNiK.testedBT3 ml α β c)
+  contractSides B ((internalSides B).filter fun A => ∃ Y ∈ Q A ∪ R A, Y ∈ Tinnik.testedBT3 ml α β c)
 
 /-- **The combination of §4.3 with the T3 option**: from the tree `B`, contract the edges whose p-value `edgePT3`, the
 minimum over the disjoint cover `Q` and over Algorithm 2 with limit `limit` and picks `pick`, is below `α`. Parallel
@@ -88,7 +88,7 @@ theorem consistencyT3_around_of_offModel [Fintype V] [Fintype E] {N : RootedNetw
     (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -103,12 +103,12 @@ theorem consistencyT3_around_of_offModel [Fintype V] [Fintype E] {N : RootedNetw
   have hd : IsDist (geneTreeDist N θ ρ) :=
     ⟨geneTreeDist_nonneg hN hStd.metric hStd.rho, sum_geneTreeDist hN hStd.metric hStd.rho⟩
   have hdet := t3Detectable_of_level1 hStd hLevel hNon hOff
-  obtain ⟨α, hα₀, hαpos, hrej⟩ := TINNiK.exists_levels_t3 hN hStd.metric hStd.rho hdet
+  obtain ⟨α, hα₀, hαpos, hrej⟩ := Tinnik.exists_levels_t3 hN hStd.metric hStd.rho hdet
   obtain ⟨α', -, -, hcons⟩ := consistencyT3_of_offModel hStd hLevel hNon hOff hX
   refine ⟨α, hα₀, hαpos, fun β hβ ml hml solve hsolve cover hcover R hR => ?_⟩
-  have htests := TINNiK.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
+  have htests := Tinnik.tests_correct_t3_of_t3Detectable hN hX hStd.metric hStd.rho hdet hα₀ hrej hβ hml
   refine tendsto_iidProb_of_imp hd (Eventually.of_forall fun k ω hω => ?_)
-    (TINNiK.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
+    (Phylogenetics.tendsto_iidProb_and hd htests (hcons β hβ ml hml solve hsolve cover hcover))
   obtain ⟨⟨hB, -⟩, hout⟩ := hω
   obtain ⟨hbin, -⟩ := hsolve (quartetCount unroot ω)
   have hTB : treeOfBlobs N ⊆ solve (quartetCount unroot ω) := by
@@ -139,7 +139,7 @@ theorem consistencyT3_search_of_offModel [Fintype V] [Fintype E] {N : RootedNetw
     (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -181,10 +181,10 @@ theorem consistencyT3_search [Fintype V] [Fintype E] {N : RootedNetwork V E X} {
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (hNon : IsTQuartetNonanomalous N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -196,7 +196,7 @@ theorem consistencyT3_search [Fintype V] [Fintype E] {N : RootedNetwork V E X} {
             (cover (solve (quartetCount unroot ω))) argmin limit
             (pick (quartetCount unroot ω) (solve (quartetCount unroot ω))) = treeOfBlobs N) atTop (𝓝 1) :=
   consistencyT3_search_of_offModel hStd hLevel hNon
-    (fun q hq hnt => QuartetTests.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
+    (fun q hq hnt => Tinnik.not_isT3Null_of_isNonCut (hBlob q hq hnt)) hX
 
 /-- **The claim of embedded lines 622-623 with the T3 option, under conditions 5, 6a and 6b**, as the paper lists them
 for the T3 option. Condition 4, needed for Theorem 1, follows from 6b. Parallel to `consistencyT3_of_noAnomalous`. -/
@@ -204,10 +204,10 @@ theorem consistencyT3_search_of_noAnomalous [Fintype V] [Fintype E] {N : RootedN
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (h6b : NoAnomalousQuartets N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (cover : Finset (Finset X) → Finset X → Finset (Finset X)),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B, IsDisjointCover B A (cover B A)) →
@@ -229,10 +229,10 @@ theorem consistencyT3_threeFixOneAlter_search [Fintype V] [Fintype E] {N : Roote
     (hStd : StandardAssumptions N θ ρ) (hLevel : IsLevelOne N)
     (h6b : NoAnomalousQuartets N (nmscCF N θ ρ))
     (hBlob : ∀ q : Finset X, q.card = 4 → ¬ IsTreelike N q →
-      AllmanEtAl2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
+      Allman2023.IsNonCut (nmscCF N θ ρ) q) (hX : 4 ≤ Fintype.card X) :
     ∃ α : ℕ → ℝ, Tendsto α atTop (𝓝 0) ∧ (∀ k, 0 < α k) ∧
       ∀ (β : ℝ), 0 < β →
-      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), TINNiK.IsT3MLSelection ml →
+      ∀ (ml : (QuartetTree X → ℝ) → Finset X → QuartetTree X), Tinnik.IsT3MLSelection ml →
       ∀ (solve : (QuartetTree X → ℝ) → Finset (Finset X)), (∀ c, IsWQCOptimal c (solve c)) →
       ∀ (P : Finset (Finset X) → Finset X → Fin 4 → Finset X) (z : Finset (Finset X) → Finset X → Fin 4 → X),
         (∀ B, IsBinaryTree B → ∀ A ∈ internalSides B,
