@@ -139,6 +139,7 @@ import all Phylogenetics.Network.Level1.ToRootedNetwork
 import all Phylogenetics.Network.OfHierarchy
 import all Phylogenetics.Network.PendantCuts
 import all Phylogenetics.Network.Quartets
+import all Phylogenetics.Network.Semidirected
 import all Phylogenetics.Network.TreeOfBlobs
 import all Phylogenetics.Tree.AstralDP
 import all Phylogenetics.Tree.Defs
