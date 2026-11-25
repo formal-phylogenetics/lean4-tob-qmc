@@ -3,7 +3,7 @@
 Source: E. S. Allman, H. Baños, J. D. Mitchell, J. A. Rhodes, *TINNiK: inference of the tree of blobs
 of a species network under the coalescent model*, Algorithms Mol. Biol. 19 (2024), 23,
 <https://doi.org/10.1186/s13015-024-00266-2>. Read in the publisher's XML (PMC11539473). It is a paper of
-the hub lean4-tob, formalized in its own repository, [lean4-tinnik](https://github.com/vltanh/lean4-tinnik),
+the hub lean4-phylo-tree-of-blobs, formalized in its own repository, [lean4-tinnik](https://github.com/vltanh/lean4-tinnik),
 which this repository requires; its [report](https://github.com/vltanh/lean4-tinnik/blob/main/docs/Tinnik/REPORT.md)
 is the audit of the source.
 
@@ -28,5 +28,5 @@ whose row `tinnik:theorem4` [`docs/TobQmc/paper_routes.tsv`](../../../docs/TobQm
 
 The statements use the definitions of lean4-tinnik ([`Tinnik.Rejects`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/Theorem4.lean#L315), [`Tinnik.T3Rejects`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/T3.lean#L298),
 [`Tinnik.T3Detectable`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/T3.lean#L101), [`Tinnik.IsT3MLSelection`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/T3.lean#L62), [`Tinnik.testedBT3`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/T3.lean#L71), [`Tinnik.testedTT3`](https://github.com/vltanh/lean4-tinnik/blob/de514e1f14522531f16dcdfa12244fe72fe05944/Tinnik/Consistency/T3.lean#L75)) and those of
-the libraries (the tests on quartet counts and the algorithm's Step 2, [`testedB`](https://github.com/vltanh/lean4-tob/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/Defs.lean#L158) and [`testedT`](https://github.com/vltanh/lean4-tob/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/Defs.lean#L162), in
-lean4-tob and lean4-phylo-network).
+the libraries (the tests on quartet counts and the algorithm's Step 2, [`testedB`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/Defs.lean#L158) and [`testedT`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/265ba443cb147a33ff2478cbc311a5597db1c1c7/TreeOfBlobs/Defs.lean#L162), in
+lean4-phylo-tree-of-blobs and lean4-phylo-network).

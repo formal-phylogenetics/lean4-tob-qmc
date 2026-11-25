@@ -6,7 +6,7 @@ A Lean 4 formalization of J. Dai, Y. Han, E. K. Molloy, *Quartet-based species t
 
 Every numbered result of the paper is proved, as printed or in a corrected form, by the paper's arguments except the departures that [Section 7 of the report](docs/TobQmc/REPORT.md#7-departures-from-the-papers-proofs) lists. The formalization is unconditional: no result of the literature is assumed, and there is no `sorry` or `axiom` outside the Challenge's statements. Three claims of the supplement are false, and their failure is proved; main v5 does not make them. No person has reviewed the proofs.
 
-This paper is one of the four of the hub [lean4-tob](https://github.com/vltanh/lean4-tob), a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), which presents them; it builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
+This paper is one of the four of the hub [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), a sub-hub of [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), which presents them; it builds on Allman et al. 2023 and TINNiK, formalized in [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik).
 
 ## Status
 
@@ -99,7 +99,7 @@ None of these affects a result of main v5, which states Theorem 2 at level 1, ke
 - [Mathlib](https://github.com/leanprover-community/mathlib4), at `v4.37.0-rc1`.
 - [lean4-phylogenetics](https://github.com/vltanh/lean4-phylogenetics), the library of the collection, pinned by commit in [`lakefile.toml`](lakefile.toml): networks, trees and quartets, blobs and the tree of blobs, induced networks, the network multispecies coalescent with inheritance correlation and its exchangeability, ASTRAL's dynamic program.
 - [lean4-phylo-network](https://github.com/vltanh/lean4-phylo-network), the library of the hub of network estimation, pinned by commit: the hypothesis tests on quartet counts and their limit laws, the blobs, blocks and wedge paths of level-1 networks, cut splits of induced networks, and the sources Huber et al. 2025 and Mitchell et al. 2019.
-- [lean4-tob](https://github.com/vltanh/lean4-tob), the library of this paper's hub, pinned by commit: TOB-QMC's algorithm and standing assumptions, the local objective at a multifurcation, no anomalous quartets at `ρ = 1`, lowest common ancestors, counts of tree edges, and networks given by tables.
+- [lean4-phylo-tree-of-blobs](https://github.com/vltanh/lean4-phylo-tree-of-blobs), the library of this paper's hub, pinned by commit: TOB-QMC's algorithm and standing assumptions, the local objective at a multifurcation, no anomalous quartets at `ρ = 1`, lowest common ancestors, counts of tree edges, and networks given by tables.
 - [lean4-allman2023](https://github.com/vltanh/lean4-allman2023) and [lean4-tinnik](https://github.com/vltanh/lean4-tinnik), Allman et al. 2023 and TINNiK, pinned by commit: the results the proofs here use, which [`TobQmc/External/Allman2023/`](TobQmc/External/Allman2023) and [`TobQmc/External/Tinnik/`](TobQmc/External/Tinnik) state and prove from their theorems.
 
 ## Palomar
@@ -122,7 +122,7 @@ python3 scripts/linkify_docs.py                                       # the docu
 
 - Toolchain: Lean and Mathlib `v4.37.0-rc1` ([`lean-toolchain`](lean-toolchain), [`lake-manifest.json`](lake-manifest.json)).
 - `lake comparator`, `leanexport` and `con-ron` come from the toolchain, under `lake env`. The kernels' replays need much memory.
-- [lean4-tob's `docs/CONFIGURATION.md`](https://github.com/vltanh/lean4-tob/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CONFIGURATION.md) records the versions, the decisions, and what "line N" means.
+- [lean4-phylo-tree-of-blobs's `docs/CONFIGURATION.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CONFIGURATION.md) records the versions, the decisions, and what "line N" means.
 
 ## Layout
 
@@ -159,7 +159,7 @@ An open question is whether, beyond level 1, every false edge of a refinement of
 
 - Requested and supervised by The-Anh Vu-Le, who chose the paper and its version, agreed to the corrections of its statements, and decided the library's boundary and the project's layout. **No person has reviewed the proofs.** Independent agents reviewed the statements and compared the proofs with the paper.
 - Codex made the source audit and first foundations of the collection, on 2026-10-27. Claude (Opus 5.5) in Claude Code, with sub-agents, wrote the statements, proofs, audit and documents, following the [formalize-math-paper](https://github.com/vltanh/formalize-math-paper) procedure.
-- Made in lean4-tob on 2026-10-27 and from 2026-10-31 to 2026-11-01, with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-tob's [`docs/CREDITS.md`](https://github.com/vltanh/lean4-tob/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
+- Made in lean4-phylo-tree-of-blobs on 2026-10-27 and from 2026-10-31 to 2026-11-01, with the other papers of the collection. [`docs/TobQmc/CREDITS.md`](docs/TobQmc/CREDITS.md) and lean4-phylo-tree-of-blobs's [`docs/CREDITS.md`](https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/05a024a837076455c700e5d0f88637aa22432b45/docs/CREDITS.md) have the details.
 
 ## License
 

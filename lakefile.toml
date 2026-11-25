@@ -24,7 +24,7 @@ rev = "4ed2bb0f7085acbf1326f43e2a5c582ba4566125"
 # The hub of the tree-of-blobs papers: what only they share.
 [[require]]
 name = "TreeOfBlobs"
-git = "https://github.com/vltanh/lean4-tob"
+git = "https://github.com/vltanh/lean4-phylo-tree-of-blobs"
 rev = "265ba443cb147a33ff2478cbc311a5597db1c1c7"
 
 # Allman, Baños, Mitchell, Rhodes 2023, whose results this paper uses.

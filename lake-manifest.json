@@ -31,7 +31,7 @@
    "inputRev": "46efa61d0988df12649089689ae77bc100be034f",
    "inherited": false,
    "configFile": "lakefile.toml"},
-  {"url": "https://github.com/vltanh/lean4-tob",
+  {"url": "https://github.com/vltanh/lean4-phylo-tree-of-blobs",
    "type": "git",
    "subDir": null,
    "scope": "",

@@ -70,7 +70,7 @@ PRIVATE = ('NEXT.md', 'notes')
 # The libraries that this project requires, by package, and where their sources are published.
 LIBRARIES = {'Phylogenetics': 'https://github.com/vltanh/lean4-phylogenetics/blob/',
              'PhyloNetwork': 'https://github.com/vltanh/lean4-phylo-network/blob/',
-             'TreeOfBlobs': 'https://github.com/vltanh/lean4-tob/blob/',
+             'TreeOfBlobs': 'https://github.com/vltanh/lean4-phylo-tree-of-blobs/blob/',
              'Allman2023': 'https://github.com/vltanh/lean4-allman2023/blob/',
              'Tinnik': 'https://github.com/vltanh/lean4-tinnik/blob/'}
 # ---------------------------------------------------------------------------------------------
